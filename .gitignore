@@ -1,6 +1,9 @@
 # Template Visual Studio Folder
 .vs/
 
+# Template data for Examwork
+.temp/
+
 # Template Microsoft Office files
 Documents/*.tmp
 Presentation/*.tmp
