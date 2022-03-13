@@ -1,2 +1,6 @@
 # Template Visual Studio Folder
 .vs/
+
+# Template Microsoft Office files
+Documents/*.tmp
+Presentation/*.tmp
