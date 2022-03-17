@@ -7,3 +7,10 @@
 # Template Microsoft Office files
 Documents/*.tmp
 Presentation/*.tmp
+
+# Template Visual Studio Folder on Folder "Product"
+Product/.vs
+
+# Metadata and libraries on project "Shedule"
+Product/Shedule/bin
+Product/Shedule/obj
