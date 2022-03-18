@@ -4,6 +4,29 @@
              xmlns:local="clr-namespace:Shedule"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="MainWindowStyle" TargetType="Window">
+            <Setter Property="Width" Value="1150"/>
+            <Setter Property="Height" Value="700"/>
+            <Setter Property="ResizeMode" Value="CanMinimize"/>
+        </Style>
+
+        <Style x:Key="MainPageStyle" TargetType="Page">
+            <Setter Property="Width" Value="1150"/>
+            <Setter Property="Height" Value="700"/>
+        </Style>
+
+        <Style x:Key="CaptionLabelStyle" TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style x:Key="StandartButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="MinWidth" Value="90"/>
+            <Setter Property="MaxWidth" Value="100"/>
+            <Setter Property="MinHeight" Value="25"/>
+            <Setter Property="MaxHeight" Value="30"/>
+        </Style>
     </Application.Resources>
 </Application>

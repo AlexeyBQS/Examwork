@@ -8,7 +8,10 @@
 Documents/*.tmp
 Presentation/*.tmp
 
-# Template Visual Studio Folder on Folder "Product"
+# Template Microsoft Visio files
+Schemes/*.~vsdx
+
+# Visual Studio Folder on Folder "Product"
 Product/.vs
 
 # Metadata and libraries on project "Shedule"

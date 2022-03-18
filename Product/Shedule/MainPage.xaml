@@ -1,0 +1,40 @@
+﻿<Page x:Class="Shedule.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Shedule"
+      mc:Ignorable="d" 
+      Title="MainPage"
+      Style="{StaticResource MainPageStyle}" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Style="{StaticResource CaptionLabelStyle}" Content="Разделы"/>
+
+            <Button Grid.Row="1" Style="{StaticResource StandartButtonStyle}" MaxWidth="200"
+                    x:Name="OpenTeacherViewPageButton" Content="Учителя" Click="OpenTeacherViewPageButton_Click"/>
+        </Grid>
+    </Grid>
+</Page>

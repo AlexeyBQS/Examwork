@@ -24,5 +24,29 @@ namespace Shedule
         {
             InitializeComponent();
         }
+
+        private string _WindowTitle = null!;
+        public string WindowTitle
+        {
+            get
+            {
+                return _WindowTitle;
+            }
+            set
+            {
+                _WindowTitle = value;
+                WindowTitle_ValueChanged();
+            }
+        }
+
+        private void WindowTitle_ValueChanged()
+        {
+            Title = WindowTitle;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new MainPage();
+        }
     }
 }
