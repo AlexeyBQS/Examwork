@@ -15,6 +15,6 @@ namespace Shedule.Database
 
         public Class Class { get; set; } = null!;
 
-        public ICollection<GroupLesson> GroupLesson { get; set; } = default!;
+        public ICollection<GroupLesson> GroupLessons { get; set; } = default!;
     }
 }

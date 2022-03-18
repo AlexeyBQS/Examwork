@@ -19,6 +19,6 @@ namespace Shedule.Database
 
         public ICollection<Cabinet> Cabinets { get; set; } = default!;
         public ICollection<Group> Groups { get; set; } = default!;
-        public ICollection<GroupLesson> GroupLesson { get; set; } = default!;
+        public ICollection<GroupLesson> GroupLessons { get; set; } = default!;
     }
 }
