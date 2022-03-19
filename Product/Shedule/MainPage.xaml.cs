@@ -27,7 +27,8 @@ namespace Shedule
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
+            MainWindow window = Window.GetWindow(this) as MainWindow ?? null!;
+            window.WindowTitle = "Расписание";
         }
 
         private void OpenTeacherViewPageButton_Click(object sender, RoutedEventArgs e)

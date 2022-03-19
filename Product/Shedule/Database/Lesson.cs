@@ -13,8 +13,8 @@ namespace Shedule.Database
         public string Name { get; set; } = null!;
         public int Difficulty { get; set; } = default;
 
-        public Class Class { get; set; } = null!;
+        public Class? Class { get; set; } = null!;
 
-        public ICollection<GroupLesson> GroupLessons { get; set; } = default!;
+        public ICollection<GroupLesson>? GroupLessons { get; set; } = default!;
     }
 }

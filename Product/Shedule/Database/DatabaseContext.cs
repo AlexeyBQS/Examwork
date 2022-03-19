@@ -17,9 +17,14 @@ namespace Shedule.Database
         public DbSet<GroupLesson> GroupLessons { get; set; } = default!;
         public DbSet<SheduleLesson> SheduleLessons { get; set; } = default!;
 
+        public DatabaseContext()
+        {
+            Database.EnsureCreated();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(System.Configuration.ConfigurationManager.ConnectionStrings["DatabaseConnection"].ConnectionString);
+            optionsBuilder.UseSqlite("Data Source=SheduleDatabase.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

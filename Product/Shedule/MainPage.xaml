@@ -34,7 +34,7 @@
             <Label Grid.Row="0" Style="{StaticResource CaptionLabelStyle}" Content="Разделы"/>
 
             <Button Grid.Row="1" Style="{StaticResource StandartButtonStyle}" MaxWidth="200"
-                    x:Name="OpenTeacherViewPageButton" Content="Учителя" Click="OpenTeacherViewPageButton_Click"/>
+                    x:Name="OpenTeacherViewPageButton" Content="Педагоги" Click="OpenTeacherViewPageButton_Click"/>
         </Grid>
     </Grid>
 </Page>

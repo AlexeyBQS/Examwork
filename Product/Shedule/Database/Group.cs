@@ -14,10 +14,10 @@ namespace Shedule.Database
         public string Name { get; set; } = null!;
         public int CountPupils { get; set; } = default;
 
-        public Teacher Teacher { get; set; } = null!;
-        public Class Class { get; set; } = null!;
+        public Teacher? Teacher { get; set; } = null!;
+        public Class? Class { get; set; } = null!;
         
-        public ICollection<Lesson> Lessons { get; set; } = default!;
-        public ICollection<GroupLesson> GroupLessons { get; set; } = default!;
+        public ICollection<Lesson>? Lessons { get; set; } = default!;
+        public ICollection<GroupLesson>? GroupLessons { get; set; } = default!;
     }
 }

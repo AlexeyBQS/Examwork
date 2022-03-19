@@ -3,6 +3,7 @@
 
 # Template data for Examwork
 .temp/
+.screenshots/
 
 # Template Microsoft Office files
 Documents/*.tmp

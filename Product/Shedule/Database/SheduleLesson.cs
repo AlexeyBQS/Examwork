@@ -13,7 +13,7 @@ namespace Shedule.Database
         public int? GroupLessonId { get; set; } = null!;
         public int? CabinetId { get; set; } = null!;
 
-        public GroupLesson GroupLesson { get; set; } = default!;
-        public Cabinet Cabinet { get; set; } = default!;
+        public GroupLesson? GroupLesson { get; set; } = default!;
+        public Cabinet? Cabinet { get; set; } = default!;
     }
 }

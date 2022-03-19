@@ -12,10 +12,10 @@ namespace Shedule.Database
         public int? TeacherId { get; set; } = null!;
         public string Name { get; set; } = null!;
         public int CountPlaces { get; set; } = default;
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; } = null!;
 
-        public Teacher Teacher { get; set; } = null!;
+        public Teacher? Teacher { get; set; } = null!;
 
-        public ICollection<SheduleLesson> SheduleLessons { get; set; } = default!;
+        public ICollection<SheduleLesson>? SheduleLessons { get; set; } = default!;
     }
 }
