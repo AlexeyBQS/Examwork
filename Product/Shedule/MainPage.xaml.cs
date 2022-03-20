@@ -25,16 +25,46 @@ namespace Shedule
             InitializeComponent();
         }
 
+        private class MenuElement
+        {
+            public string Name { get; set; } = null!;
+            public Page Page { get; set; } = null!;
+
+            public MenuElement(string name, Page page)
+            {
+                Name = name;
+                Page = page;
+            }
+        }
+
+
+        private readonly MenuElement[] Menu = new MenuElement[]
+        {
+            new("Педагоги", new TeacherViewPage())
+        };
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             MainWindow window = Window.GetWindow(this) as MainWindow ?? null!;
             window.WindowTitle = "Расписание";
+
+            MenuListBox.ItemsSource = Menu;
         }
 
         private void OpenTeacherViewPageButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow window = Window.GetWindow(this) as MainWindow ?? null!;
             window.MainFrame.Content = new TeacherViewPage();
+        }
+
+        private void MenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MenuListBox.SelectedItems.Count > 0)
+            {
+                MenuElement selectedMenuElement = (MenuListBox.SelectedItems[0] as MenuElement) ?? null!;
+
+                MenuFrame.Content = selectedMenuElement.Page ?? null!;
+            }
         }
     }
 }

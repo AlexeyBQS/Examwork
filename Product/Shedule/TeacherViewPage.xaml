@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Shedule"
       mc:Ignorable="d" 
       Title="TeacherViewPage"
-      Style="{StaticResource MainPageStyle}" Loaded="Page_Loaded">
+      Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -42,6 +42,11 @@
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Surname}"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Name}"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Patronymic}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Birthday_ToString}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
                                 </StackPanel>
 
                                 <TextBlock Margin="3" Text="{Binding Education}"/>
@@ -54,7 +59,7 @@
 
         <Grid Grid.Column="1" Margin="5">
             <TabControl Background="Transparent">
-                <TabItem Header="Просмотр">
+                <TabItem FontSize="14" Header="Просмотр">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="2.5*"/>
@@ -123,35 +128,107 @@
                                 <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                            Margin="3" Text="Фамилия"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="SurnameTextBox" TextChanged="TextBox_TextChanged"/>
+                                          x:Name="SurnameTextBox" TextChanged="ViewTextBox_TextChanged"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                            Margin="3" Text="Имя"/>
                                 <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="NameTextBox" TextChanged="TextBox_TextChanged"/>
+                                          x:Name="NameTextBox" TextChanged="ViewTextBox_TextChanged"/>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                            Margin="3" Text="Отчество"/>
                                 <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="PatronymicTextBox" TextChanged="TextBox_TextChanged"/>
+                                          x:Name="PatronymicTextBox" TextChanged="ViewTextBox_TextChanged"/>
 
                                 <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                            Margin="3" Text="Дата рождения"/>
                                 <DatePicker Grid.Row="4" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
-                                            x:Name="BirthdayDatePicker" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+                                            x:Name="BirthdayDatePicker" SelectedDateChanged="ViewDatePicker_SelectedDateChanged"/>
 
                                 <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                            Margin="3" Text="Паспорт"/>
                                 <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                         x:Name="PassportTextBox" TextChanged="TextBox_TextChanged"
+                                         x:Name="PassportTextBox" TextChanged="ViewTextBox_TextChanged"
                                          PreviewTextInput="OnlyDigit_PreviewTextInput" MaxLength="10"/>
 
                                 <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                           Margin="3" Text="Образование"/>
+                                           Grid.RowSpan="2" Margin="3" Text="Образование"/>
                                 <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
                                          Grid.RowSpan="2" Height="90" TextWrapping="Wrap" AcceptsReturn="True"
-                                         x:Name="EducationTextBox" TextChanged="TextBox_TextChanged"/>
+                                         x:Name="EducationTextBox" TextChanged="ViewTextBox_TextChanged"/>
                             </Grid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem FontSize="14" Header="Фильтры">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="6*"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="1.5*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Margin="3" Text="ИД Педагога"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                     x:Name="TeacherIdFilterTextBox" TextChanged="FilterTextBox_TextChanged"
+                                     PreviewTextInput="OnlyDigit_PreviewTextInput"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Margin="3" Text="Фамилия"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                     x:Name="SurnameFilterTextBox" TextChanged="FilterTextBox_TextChanged"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Margin="3" Text="Имя"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                     x:Name="NameFilterTextBox" TextChanged="FilterTextBox_TextChanged"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Margin="3" Text="Отчество"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                     x:Name="PatronymicFilterTextBox" TextChanged="FilterTextBox_TextChanged"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Grid.RowSpan="2" Margin="3" Text="Дата рождения"/>
+                            <DatePicker Grid.Row="4" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
+                                            x:Name="BirthdayStartFilterDatePicker" SelectedDateChanged="FilterDatePicker_SelectedDateChanged"/>
+                            <DatePicker Grid.Row="5" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
+                                            x:Name="BirthdayFinishFilterDatePicker" SelectedDateChanged="FilterDatePicker_SelectedDateChanged"/>
+
+                            <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Margin="3" Text="Паспорт"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                     x:Name="PassportFilterTextBox" TextChanged="FilterTextBox_TextChanged"
+                                     PreviewTextInput="OnlyDigit_PreviewTextInput"/>
+
+                            <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Grid.RowSpan="2" Margin="3" Text="Образование"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                     Grid.RowSpan="2" Height="80" TextWrapping="Wrap" AcceptsReturn="True"
+                                     x:Name="EducationFilterTextBox" TextChanged="FilterTextBox_TextChanged"/>
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <Button Style="{StaticResource StandartButtonStyle}" Width="200" Content="Очистить фильтры"
+                                    x:Name="ClearFiltresButton" Click="ClearFiltresButton_Click"/>
                         </Grid>
                     </Grid>
                 </TabItem>

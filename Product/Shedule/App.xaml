@@ -10,8 +10,13 @@
             <Setter Property="ResizeMode" Value="CanMinimize"/>
         </Style>
 
-        <Style x:Key="MainPageStyle" TargetType="Page">
-            <Setter Property="Width" Value="1134"/>
+        <Style x:Key="MenuPageStyle" TargetType="Page">
+            <Setter Property="Width" Value="1150"/>
+            <Setter Property="Height" Value="661"/>
+        </Style>
+
+        <Style x:Key="MenuElementPageStyle" TargetType="Page">
+            <Setter Property="Width" Value="1000"/>
             <Setter Property="Height" Value="661"/>
         </Style>
 

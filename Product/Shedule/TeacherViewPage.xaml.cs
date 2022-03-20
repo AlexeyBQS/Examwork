@@ -177,12 +177,12 @@ namespace Shedule
             SaveChangeTeacherButton.IsEnabled = true;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ViewTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             SaveChangeTeacherButton.IsEnabled = true;
         }
 
-        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void ViewDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveChangeTeacherButton.IsEnabled = true;
         }
@@ -261,6 +261,21 @@ namespace Shedule
         {
             Service.PreviewTextInput.OnlyDigit_PreiewTextInput(sender, e);
             base.OnPreviewTextInput(e);
+        }
+
+        private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateDataListBox();
+        }
+
+        private void FilterDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateDataListBox();
+        }
+
+        private void ClearFiltresButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
