@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace Shedule.Service
 {
-    public static partial class MyConvert
+    public static class MyConvert
     {
         public static BitmapImage ByteArrayToImage(byte[] byteArray)
         {
@@ -33,11 +33,18 @@ namespace Shedule.Service
 
         public static byte[] ImageToByteArray(BitmapImage image)
         {
-            MemoryStream memStream = new MemoryStream();
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            MemoryStream memStream = new();
+            JpegBitmapEncoder encoder = new();
             encoder.Frames.Add(BitmapFrame.Create(image));
             encoder.Save(memStream);
             return memStream.ToArray();
+        }
+
+        public static DateTime? GetOnlyDate(DateTime? dateTime)
+        {
+            return dateTime != null
+                ? new DateTime((dateTime ?? new()).Year, (dateTime ?? new()).Month, (dateTime ?? new()).Day)
+                : null!;
         }
     }
 }

@@ -5,14 +5,20 @@
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
 		<StartupObject>Shedule.Program</StartupObject>
+		<ApplicationIcon>Images\Icon.ico</ApplicationIcon>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Images\DefaultPhoto.png" />
+	  <None Remove="Images\Logo.png" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Images\Icon.ico" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Images\DefaultPhoto.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Images\Logo.png" />
 	</ItemGroup>
 
 	<!--

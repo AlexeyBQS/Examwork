@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shedule.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Shedule.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=SheduleDatabase.db");
+            optionsBuilder.UseSqlite(Config.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

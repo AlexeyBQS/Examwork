@@ -9,13 +9,19 @@
       Style="{StaticResource MainPageStyle}" Loaded="Page_Loaded">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Margin="5">
-            <ListBox x:Name="TeacherListBox" Background="Transparent" BorderThickness="0" ItemsSource="{Binding}">
+            <ListBox x:Name="TeacherListBox" Background="Transparent" BorderThickness="0" ItemsSource="{Binding}"
+                     SelectionMode="Single" SelectionChanged="TeacherListBox_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Height="50" Margin="5">
@@ -32,9 +38,10 @@
 
                             <StackPanel Grid.Column="1" Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="3" Text="{Binding Surname}"/>
-                                    <TextBlock Margin="3" Text="{Binding Name}"/>
-                                    <TextBlock Margin="3" Text="{Binding Patronymic}"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding TeacherId}"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Surname}"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Name}"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Patronymic}"/>
                                 </StackPanel>
 
                                 <TextBlock Margin="3" Text="{Binding Education}"/>
@@ -50,20 +57,21 @@
                 <TabItem Header="Просмотр">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
+                            <RowDefinition Height="2.5*"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="0.6*"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
                             <Grid Grid.Column="0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="180"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
@@ -78,16 +86,21 @@
                                 </Border>
 
                                 <Button Grid.Row="2" Style="{StaticResource StandartButtonStyle}" Width="130"
-                                        Content="Изменить фото" x:Name="ChangeTeacherPhotoButton"
-                                        Click="ChangePhotoButton_Click"/>
+                                        Content="Выгрузить фото" x:Name="SaveTeacherPhotoButton"
+                                        Click="SaveTeacherPhotoButton_Click"/>
 
                                 <Button Grid.Row="3" Style="{StaticResource StandartButtonStyle}" Width="130"
-                                        Content="Удалить фото" x:Name="DeleteTheacherPhotoButton"
-                                        Click="DeletePhotoButton_Click"/>
+                                        Content="Изменить фото" x:Name="ChangeTeacherPhotoButton"
+                                        Click="ChangeTeacherPhotoButton_Click"/>
+
+                                <Button Grid.Row="4" Style="{StaticResource StandartButtonStyle}" Width="130"
+                                        Content="Удалить фото" x:Name="DeleteTeacherPhotoButton"
+                                        Click="DeleteTeacherPhotoButton_Click"/>
                             </Grid>
 
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
+                                    <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -102,37 +115,65 @@
                                     <ColumnDefinition Width="1.6*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                           Margin="3" Text="Фамилия"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}"
+                                           Margin="3" Text="ИД Педагога"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="SurnameTextBox" TextChanged="SurnameTextBox_TextChanged"/>
+                                         x:Name="TeacherIdTextBox" IsReadOnly="True"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                           Margin="3" Text="Имя"/>
+                                           Margin="3" Text="Фамилия"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="NameTextBox" TextChanged="NameTextBox_TextChanged"/>
+                                          x:Name="SurnameTextBox" TextChanged="TextBox_TextChanged"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                           Margin="3" Text="Отчество"/>
+                                           Margin="3" Text="Имя"/>
                                 <TextBox Grid.Row="2" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="PatronymicTextBox" TextChanged="PatronymicTextBox_TextChanged"/>
+                                          x:Name="NameTextBox" TextChanged="TextBox_TextChanged"/>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                           Margin="3" Text="Дата рождения"/>
-                                <DatePicker Grid.Row="3" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
-                                            x:Name="BirthdayDatePicker" SelectedDateChanged="BirthdayDatePicker_SelectedDateChanged"/>
+                                           Margin="3" Text="Отчество"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                          x:Name="PatronymicTextBox" TextChanged="TextBox_TextChanged"/>
 
                                 <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Дата рождения"/>
+                                <DatePicker Grid.Row="4" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
+                                            x:Name="BirthdayDatePicker" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                            Margin="3" Text="Паспорт"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
-                                          x:Name="PassportTextBox" TextChanged="PassportTextBox_TextChanged"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         x:Name="PassportTextBox" TextChanged="TextBox_TextChanged"
+                                         PreviewTextInput="OnlyDigit_PreviewTextInput" MaxLength="10"/>
+
+                                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Образование"/>
+                                <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         Grid.RowSpan="2" Height="90" TextWrapping="Wrap" AcceptsReturn="True"
+                                         x:Name="EducationTextBox" TextChanged="TextBox_TextChanged"/>
                             </Grid>
                         </Grid>
-
-
                     </Grid>
                 </TabItem>
             </TabControl>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Button Style="{StaticResource StandartButtonStyle}" Content="Добавить педагога" Width="400"
+                    x:Name="AddTeacherButton" Click="AddTeacherButton_Click"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource StandartButtonStyle}" Width="150"
+                                    Content="Сохранить" x:Name="SaveChangeTeacherButton" Click="SaveChangeTeacherButton_Click"/>
+
+            <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Width="150"
+                                    Content="Удалить" x:Name="DeleteTeacherButton" Click="DeleteTeacherButton_Click"/>
         </Grid>
     </Grid>
 </Page>

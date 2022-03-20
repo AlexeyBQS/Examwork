@@ -10,11 +10,11 @@ namespace Shedule.Service
 {
     public static class ServiceImage
     {
-        private static BitmapImage? GetPhoto(string fileName) =>
+        private static BitmapImage GetImage(string fileName) =>
             File.Exists($"{Directory.GetCurrentDirectory()}\\Images\\{fileName}")
             ? new BitmapImage(new Uri($"{Directory.GetCurrentDirectory()}\\Images\\{fileName}"))
             : null!;
 
-        public static BitmapImage? DefaultPhoto() => GetPhoto("DefaultPhoto.png");
+        public static BitmapImage DefaultPhoto => GetImage("DefaultPhoto.png");
     }
 }

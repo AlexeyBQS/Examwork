@@ -11,8 +11,8 @@
         </Style>
 
         <Style x:Key="MainPageStyle" TargetType="Page">
-            <Setter Property="Width" Value="1150"/>
-            <Setter Property="Height" Value="700"/>
+            <Setter Property="Width" Value="1134"/>
+            <Setter Property="Height" Value="661"/>
         </Style>
 
         <Style x:Key="CaptionLabelStyle" TargetType="Label">
@@ -28,6 +28,10 @@
             <Setter Property="FontSize" Value="14"/>
         </Style>
 
+        <Style x:Key="StandartTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        
         <Style x:Key="LabelTextBlockStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
