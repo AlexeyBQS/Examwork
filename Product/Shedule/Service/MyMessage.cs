@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Shedule.Service
 {
-    public static class Message
+    public static class MyMessage
     {
         public static void Error_NonExistSqlLocalDb()
         {

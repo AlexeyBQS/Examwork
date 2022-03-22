@@ -30,7 +30,7 @@ namespace Shedule.ViewItemSource
         public string? Birthday_ToString => Teacher.Birthday?.ToShortDateString() ?? null!;
         public BitmapImage Photo_Image =>
             Photo != null || Photo?.Length > 0 
-            ? MyConvert.ByteArrayToImage(Teacher.Photo ?? null!)
-            : ServiceImage.DefaultPhoto;
+            ? MyService.ConvertByteArrayToImage(Teacher.Photo ?? null!)
+            : MyService.DefaultPhoto;
     }
 }

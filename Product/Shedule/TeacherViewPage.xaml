@@ -12,8 +12,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition/>
+            <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -45,8 +46,6 @@
 
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Birthday_ToString}"/>
-
-                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
                                 </StackPanel>
 
                                 <TextBlock Margin="3" Text="{Binding Education}"/>
@@ -209,9 +208,9 @@
                             <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                        Grid.RowSpan="2" Margin="3" Text="Дата рождения"/>
                             <DatePicker Grid.Row="4" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
-                                            x:Name="BirthdayStartFilterDatePicker" SelectedDateChanged="FilterDatePicker_SelectedDateChanged"/>
+                                            x:Name="BirthdayBeginFilterDatePicker" SelectedDateChanged="BirthdayBeginFilterDatePicker_SelectedDateChanged"/>
                             <DatePicker Grid.Row="5" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
-                                            x:Name="BirthdayFinishFilterDatePicker" SelectedDateChanged="FilterDatePicker_SelectedDateChanged"/>
+                                            x:Name="BirthdayEndFilterDatePicker" SelectedDateChanged="BirthdayEndFilterDatePicker_SelectedDateChanged"/>
 
                             <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                        Margin="3" Text="Паспорт"/>
@@ -236,7 +235,29 @@
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0">
-            <Button Style="{StaticResource StandartButtonStyle}" Content="Добавить педагога" Width="400"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}"
+                           TextAlignment="Right" Text="Отобразить"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource StandartComboBoxStyle}"
+                          x:Name="ViewCountRecordComboBox" SelectionChanged="ViewCountRecordComboBox_SelectionChanged"/>
+
+            </Grid>
+
+            <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Content="Добавить педагога" Width="150"
                     x:Name="AddTeacherButton" Click="AddTeacherButton_Click"/>
         </Grid>
 
@@ -251,6 +272,13 @@
 
             <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Width="150"
                                     Content="Удалить" x:Name="DeleteTeacherButton" Click="DeleteTeacherButton_Click"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+
+            <TextBlock Style="{StaticResource StandartTextBlockStyle}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                       x:Name="StatusTextBlock"/>
         </Grid>
     </Grid>
 </Page>
