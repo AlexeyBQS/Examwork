@@ -17,8 +17,8 @@ namespace Shedule.Database
 
         public Teacher? Teacher { get; set; } = null!;
 
-        public ICollection<Class>? Classes { get; set; } = null!;
-        public ICollection<ClassLesson>? ClassesLessons { get; set; } = null!;
+        public ICollection<Class>? Classes { get; set; } = default!;
+        public ICollection<ClassLesson>? ClassesLessons { get; set; } = default!;
         public ICollection<SheduleLesson>? SheduleLessons { get; set; } = default!;
     }
 }
