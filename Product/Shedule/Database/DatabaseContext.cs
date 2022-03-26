@@ -13,9 +13,8 @@ namespace Shedule.Database
         public DbSet<Teacher> Teachers { get; set; } = default!;
         public DbSet<Cabinet> Cabinets { get; set; } = default!;
         public DbSet<Class> Classes { get; set; } = default!;
-        public DbSet<Group> Groups { get; set; } = default!;
         public DbSet<Lesson> Lessons { get; set; } = default!;
-        public DbSet<GroupLesson> GroupLessons { get; set; } = default!;
+        public DbSet<ClassLesson> ClassLessons { get; set; } = default!;
         public DbSet<SheduleLesson> SheduleLessons { get; set; } = default!;
 
         public DatabaseContext()
@@ -43,7 +42,11 @@ namespace Shedule.Database
                 .HasKey(cabinet => cabinet.CabinetId);
 
             modelBuilder.Entity<Cabinet>()
-                .HasOne<Teacher>(cabinet => cabinet.Teacher)
+                .Property(cabinet => cabinet.Photo)
+                .HasColumnType("image");
+
+            modelBuilder.Entity<Cabinet>()
+                .HasOne(cabinet => cabinet.Teacher)
                 .WithMany(teacher => teacher.Cabinets)
                 .HasForeignKey(cabinet => cabinet.TeacherId)
                 .OnDelete(DeleteBehavior.SetNull);
@@ -52,66 +55,78 @@ namespace Shedule.Database
             modelBuilder.Entity<Class>()
                 .HasKey(_class => _class.ClassId);
 
-            // Groups
-            modelBuilder.Entity<Group>()
-                .HasKey(group => group.GroupId);
+            modelBuilder.Entity<Class>()
+                .Property(_class => _class.Photo)
+                .HasColumnType("image");
 
-            modelBuilder.Entity<Group>()
-                .HasOne(group => group.Teacher)
-                .WithMany(teacher => teacher.Groups)
-                .HasForeignKey(group => group.TeacherId)
+            modelBuilder.Entity<Class>()
+                .HasOne(_class => _class.Teacher)
+                .WithMany(teacher => teacher.Classes)
+                .HasForeignKey(_class => _class.TeacherId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Group>()
-                .HasOne(group => group.Class)
-                .WithMany(_class => _class.Groups)
-                .HasForeignKey(group => group.ClassId)
+            modelBuilder.Entity<Class>()
+                .HasOne(_class => _class.Cabinet)
+                .WithMany(cabinet => cabinet.Classes)
+                .HasForeignKey(_class => _class.CabinetId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             // Lessons
             modelBuilder.Entity<Lesson>()
                 .HasKey(lesson => lesson.LessonId);
 
-            modelBuilder.Entity<Lesson>()
-                .HasOne(lesson => lesson.Class)
-                .WithMany(_class => _class.Lessons)
-                .HasForeignKey(lesson => lesson.ClassId)
+            // ClassLessons
+            modelBuilder.Entity<ClassLesson>()
+                .HasKey(classLesson => classLesson.ClassLessonId);
+
+            modelBuilder.Entity<ClassLesson>()
+                .HasOne(classLesson => classLesson.Class)
+                .WithMany(_class => _class.ClassLessons)
+                .HasForeignKey(classLesson => classLesson.ClassId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClassLesson>()
+                .HasOne(classLesson => classLesson.Lesson)
+                .WithMany(lesson => lesson.ClassLessons)
+                .HasForeignKey(classLesson => classLesson.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClassLesson>()
+                .HasOne(classLesson => classLesson.Teacher)
+                .WithMany(teacher => teacher.ClassLessons)
+                .HasForeignKey(classLessons => classLessons.TeacherId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // GroupLessons
-            modelBuilder.Entity<GroupLesson>()
-                .HasKey(groupLesson => groupLesson.GroupLessonId);
-
-            modelBuilder.Entity<GroupLesson>()
-                .HasOne<Group>(groupLesson => groupLesson.Group)
-                .WithMany(group => group.GroupLessons)
-                .HasForeignKey(groupLesson => groupLesson.GroupId)
+            modelBuilder.Entity<ClassLesson>()
+                .HasOne(classLesson => classLesson.FirstClassLesson)
+                .WithMany()
+                .HasForeignKey(classLesson => classLesson.FirstClassLessonId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<GroupLesson>()
-                .HasOne<Lesson>(groupLesson => groupLesson.Lesson)
-                .WithMany(lesson => lesson.GroupLessons)
-                .HasForeignKey(groupLesson => groupLesson.LessonId)
+            modelBuilder.Entity<ClassLesson>()
+                .HasOne(ClassLesson => ClassLesson.SecondClassLesson)
+                .WithMany()
+                .HasForeignKey(classLesson => classLesson.SecondClassLessonId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<GroupLesson>()
-                .HasOne<Teacher>(groupLesson => groupLesson.Teacher)
-                .WithMany(teacher => teacher.GroupLessons)
-                .HasForeignKey(groupLesson => groupLesson.TeacherId)
+            modelBuilder.Entity<ClassLesson>()
+                .HasOne(classLesson => classLesson.DefaultCabinet)
+                .WithMany(cabinet => cabinet.ClassesLessons)
+                .HasForeignKey(classLesson => classLesson.DefaultCabinetId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             // SheduleLessons
             modelBuilder.Entity<SheduleLesson>()
-                .HasKey(SheduleLesson => new { SheduleLesson.Date, SheduleLesson.NumberLesson, SheduleLesson.GroupLessonId });
+                .HasKey(sheduleLesson => new { sheduleLesson.Date, sheduleLesson.NumberLesson, sheduleLesson.ClassLessonId });
 
             modelBuilder.Entity<SheduleLesson>()
-                .HasOne<GroupLesson>(sheduleLesson => sheduleLesson.GroupLesson)
-                .WithMany(groupLesson => groupLesson.SheduleLessons)
-                .HasForeignKey(sheduleLesson => sheduleLesson.GroupLessonId)
+                .HasOne(sheduleLesson => sheduleLesson.ClassLesson)
+                .WithMany(classLesson => classLesson.SheduleLessons)
+                .HasForeignKey(sheduleLesson => sheduleLesson.ClassLessonId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SheduleLesson>()
-                .HasOne<Cabinet>(sheduleLesson => sheduleLesson.Cabinet)
+                .HasOne(sheduleLesson => sheduleLesson.Cabinet)
                 .WithMany(cabinet => cabinet.SheduleLessons)
                 .HasForeignKey(sheduleLesson => sheduleLesson.CabinetId)
                 .OnDelete(DeleteBehavior.SetNull);

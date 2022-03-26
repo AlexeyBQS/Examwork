@@ -19,8 +19,8 @@ namespace Shedule.Database
         public string? Education { get; set; } = null!;
 
         public ICollection<Cabinet>? Cabinets { get; set; } = default!;
-        public ICollection<Group>? Groups { get; set; } = default!;
-        public ICollection<GroupLesson>? GroupLessons { get; set; } = default!;
+        public ICollection<Class>? Classes { get; set; } = default!;
+        public ICollection<ClassLesson>? ClassLessons { get; set; } = default!;
 
         public string ToShortString() => $"{Surname} {Name![0]}. {Patronymic![0]}.";
         public override string ToString() => $"{TeacherId}: {Surname} {Name} {Patronymic}";

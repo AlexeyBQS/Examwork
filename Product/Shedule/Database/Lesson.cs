@@ -9,12 +9,9 @@ namespace Shedule.Database
     public class Lesson
     {
         public int LessonId { get; set; } = default;
-        public int? ClassId { get; set; } = null!;
-        public string Name { get; set; } = null!;
-        public int Difficulty { get; set; } = default;
+        public string? Name { get; set; } = null!;
+        public string? Description { get; set; } = null!;
 
-        public Class? Class { get; set; } = null!;
-
-        public ICollection<GroupLesson>? GroupLessons { get; set; } = default!;
+        public ICollection<ClassLesson>? ClassLessons { get; set; } = default!;
     }
 }

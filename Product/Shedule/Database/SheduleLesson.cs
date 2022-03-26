@@ -10,10 +10,10 @@ namespace Shedule.Database
     {
         public DateTime Date { get; set; } = default;
         public int NumberLesson { get; set; } = default;
-        public int? GroupLessonId { get; set; } = null!;
+        public int ClassLessonId { get; set; } = default;
         public int? CabinetId { get; set; } = null!;
 
-        public GroupLesson? GroupLesson { get; set; } = default!;
-        public Cabinet? Cabinet { get; set; } = default!;
+        public ClassLesson ClassLesson { get; set; } = null!;
+        public Cabinet? Cabinet { get; set; } = null!;
     }
 }
