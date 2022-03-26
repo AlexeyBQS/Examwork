@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using Shedule.Database;
-using Shedule.Service;
-using Shedule.ViewItemSource;
+using Shedule.Services;
+using Shedule.ViewItemSources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Shedule
+namespace Shedule.Pages
 {
     /// <summary>
     /// Логика взаимодействия для TeacherViewPage.xaml
@@ -34,19 +34,12 @@ namespace Shedule
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow window = Window.GetWindow(this) as MainWindow ?? null!;
-            window.WindowTitle = "Расписание - Педагоги";
+            (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание - Педагоги";
 
-            MyService.FillViewCountRecordComboBox(ViewCountRecordComboBox);
-
-            PhotoBorder.Background = new ImageBrush(MyService.DefaultPhoto);
-            SaveTeacherPhotoButton.IsEnabled = false;
-            ChangeTeacherPhotoButton.IsEnabled = false;
-            DeleteTeacherPhotoButton.IsEnabled = false;
-            SaveChangeTeacherButton.IsEnabled = false;
-            DeleteTeacherButton.IsEnabled = false;
+            Service.FillViewCountRecordComboBox(ViewCountRecordComboBox);
 
             UpdateDataListBox();
+            UpdateViewTabControl();
         }
 
         #region [Updaters]
@@ -99,14 +92,55 @@ namespace Shedule
                     teachers = teachers.Where(teacher => teacher.Passport!.Contains(passport));
                 }
 
-                IEnumerable<TeacherViewItemSource> viewItemSource = CountViewRecord > 0
+                if (PhoneNumberFilterTextBox.Text != null)
+                {
+                    string phoneNumber = PhoneNumberFilterTextBox.Text;
+                    teachers = teachers.Where(teacher => teacher.PhoneNumber!.Contains(phoneNumber));
+                }
+
+                if (EducationFilterTextBox.Text != null)
+                {
+                    string education = EducationFilterTextBox.Text;
+                    teachers = teachers.Where(teacher => teacher.Education!.Contains(education));
+                }
+
+                IEnumerable<TeacherViewItemSource> viewItemSources = CountViewRecord > 0
                     ? teachers.ToList().Take(CountViewRecord).Select(x => new TeacherViewItemSource(x))
                     : teachers.ToList().Select(x => new TeacherViewItemSource(x));
 
-                TeacherListBox.ItemsSource = viewItemSource;
+                TeacherListBox.ItemsSource = viewItemSources;
 
-                StatusTextBlock.Text = $"Всего: {context.Teachers.Count()} | Всего с фильтрами: {teachers.Count()} | Отображается: {viewItemSource.Count()}";
+                StatusTextBlock.Text = $"Всего: {context.Teachers.Count()} | Всего с фильтрами: {teachers.Count()} | Отображается: {viewItemSources.Count()}";
             }
+        }
+
+        private void DefaultViewTabControl()
+        {
+            TeacherIdTextBox.Text = null!;
+            SurnameTextBox.Text = null!;
+            NameTextBox.Text = null!;
+            PatronymicTextBox.Text = null!;
+            BirthdayDatePicker.Text = null!;
+            PassportTextBox.Text = null!;
+            PhoneNumberTextBox.Text = null!;
+            PhotoBorder.Background = new ImageBrush(Service.DefaultPhoto);
+            EducationTextBox.Text = null!;
+
+            SaveTeacherPhotoButton.IsEnabled = false;
+            ChangeTeacherPhotoButton.IsEnabled = false;
+            DeleteTeacherPhotoButton.IsEnabled = false;
+
+            SaveChangeTeacherButton.IsEnabled = false;
+            DeleteTeacherButton.IsEnabled = false;
+
+            TeacherIdTextBox.IsEnabled = false;
+            SurnameTextBox.IsEnabled = false;
+            NameTextBox.IsEnabled = false;
+            PatronymicTextBox.IsEnabled = false;
+            BirthdayDatePicker.IsEnabled = false;
+            PassportTextBox.IsEnabled = false;
+            PhoneNumberTextBox.IsEnabled = false;
+            EducationTextBox.IsEnabled = false;
         }
 
         private void UpdateViewTabControl()
@@ -123,6 +157,7 @@ namespace Shedule
                     PatronymicTextBox.Text = teacher.Patronymic;
                     BirthdayDatePicker.Text = teacher.Birthday?.ToShortDateString();
                     PassportTextBox.Text = teacher.Passport;
+                    PhoneNumberTextBox.Text = teacher.PhoneNumber;
                     PhotoBorder.Background = new ImageBrush(teacher.Photo_Image);
                     EducationTextBox.Text = teacher.Education;
 
@@ -141,25 +176,24 @@ namespace Shedule
                         SaveTeacherPhotoButton.IsEnabled = true;
                         DeleteTeacherPhotoButton.IsEnabled = true;
                     }
+
+                    TeacherIdTextBox.IsEnabled = true;
+                    SurnameTextBox.IsEnabled = true;
+                    NameTextBox.IsEnabled = true;
+                    PatronymicTextBox.IsEnabled = true;
+                    BirthdayDatePicker.IsEnabled = true;
+                    PassportTextBox.IsEnabled = true;
+                    PhoneNumberTextBox.IsEnabled = true;
+                    EducationTextBox.IsEnabled = true;
+                }
+                else
+                {
+                    DefaultViewTabControl();
                 }
             }
             else
             {
-                TeacherIdTextBox.Text = null!;
-                SurnameTextBox.Text = null!;
-                NameTextBox.Text = null!;
-                PatronymicTextBox.Text = null!;
-                BirthdayDatePicker.Text = null!;
-                PassportTextBox.Text = null!;
-                PhotoBorder.Background = new ImageBrush(MyService.DefaultPhoto);
-                EducationTextBox.Text = null!;
-
-                SaveTeacherPhotoButton.IsEnabled = false;
-                ChangeTeacherPhotoButton.IsEnabled = false;
-                DeleteTeacherPhotoButton.IsEnabled = false;
-
-                SaveChangeTeacherButton.IsEnabled = false;
-                DeleteTeacherButton.IsEnabled = false;
+                DefaultViewTabControl();
             }
         }
 
@@ -174,7 +208,12 @@ namespace Shedule
 
         private void ViewCountRecordComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CountViewRecord = ((sender as ComboBox)!.SelectedItem as MyService.ViewCountRecord)!.Count;
+            Service.ViewCountRecord viewCountRecord = ((sender as ComboBox)!.SelectedItem as Service.ViewCountRecord)!;
+            if (viewCountRecord != null)
+            {
+                CountViewRecord = viewCountRecord.Count;
+            }
+
             UpdateDataListBox();
         }
 
@@ -208,10 +247,10 @@ namespace Shedule
                     {
                         if (teacher.Photo != null && teacher.Photo?.Length != 0)
                         {
-                            BitmapImage image = MyService.ConvertByteArrayToImage(teacher.Photo ?? null!);
+                            BitmapImage image = Service.ConvertByteArrayToImage(teacher.Photo ?? null!);
 
                             SaveFileDialog dialog = new();
-                            dialog.FileName = $"Image_{TeacherIdTextBox.Text ?? "0"}.png";
+                            dialog.FileName = $"Педагог_{TeacherIdTextBox.Text ?? "0"}.png";
                             dialog.Filter = "All Files (*.*)|*.*";
                             dialog.FilterIndex = 0;
 
@@ -222,7 +261,7 @@ namespace Shedule
                                 BitmapEncoder encoder = new PngBitmapEncoder();
                                 encoder.Frames.Add(BitmapFrame.Create(image));
 
-                                using (FileStream? fileStream = new FileStream(pathFile, FileMode.Create))
+                                using (FileStream? fileStream = new(pathFile, FileMode.Create))
                                 {
                                     encoder.Save(fileStream);
                                 }
@@ -230,8 +269,6 @@ namespace Shedule
                         }
                     }
                 }
-
-
             }
         }
 
@@ -256,7 +293,7 @@ namespace Shedule
 
         private void DeleteTeacherPhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            PhotoBorder.Background = new ImageBrush(MyService.DefaultPhoto);
+            PhotoBorder.Background = new ImageBrush(Service.DefaultPhoto);
 
             SaveTeacherPhotoButton.IsEnabled = false;
             DeleteTeacherPhotoButton.IsEnabled = false;
@@ -287,29 +324,34 @@ namespace Shedule
         {
             if (TeacherListBox.SelectedItems.Count > 0)
             {
-                TeacherViewItemSource viewItemSource = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource) ?? null!;
-                int? teacherId = viewItemSource?.TeacherId ?? -1;
-
-                using (DatabaseContext context = new())
+                if (Message.Action_SaveChangesRecord() == MessageBoxResult.Yes)
                 {
-                    Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
+                    TeacherViewItemSource viewItemSource = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource) ?? null!;
+                    int? teacherId = viewItemSource?.TeacherId ?? -1;
 
-                    if (teacher != null)
+                    using (DatabaseContext context = new())
                     {
-                        BitmapImage photo = (PhotoBorder.Background as ImageBrush)?.ImageSource as BitmapImage ?? null!;
+                        Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
 
-                        teacher.Surname = SurnameTextBox.Text;
-                        teacher.Name = NameTextBox.Text;
-                        teacher.Patronymic = PatronymicTextBox.Text;
-                        teacher.Birthday = MyService.GetOnlyDate(BirthdayDatePicker.SelectedDate ?? null!);
-                        teacher.Photo = photo != MyService.DefaultPhoto ? MyService.ConvertImageToByteArray(photo) : null!;
-                        teacher.Education = EducationTextBox.Text;
+                        if (teacher != null)
+                        {
+                            BitmapImage photo = (PhotoBorder.Background as ImageBrush)!.ImageSource as BitmapImage ?? null!;
+
+                            teacher.Surname = SurnameTextBox.Text;
+                            teacher.Name = NameTextBox.Text;
+                            teacher.Patronymic = PatronymicTextBox.Text;
+                            teacher.Birthday = Service.GetOnlyDate(BirthdayDatePicker.SelectedDate ?? null!);
+                            teacher.Passport = PassportTextBox.Text;
+                            teacher.PhoneNumber = PhoneNumberTextBox.Text;
+                            teacher.Photo = Service.ConvertImageToByteArray(photo);
+                            teacher.Education = EducationTextBox.Text;
+                        }
+
+                        context.SaveChangesAsync();
                     }
 
-                    context.SaveChangesAsync();
+                    UpdateDataListBox();
                 }
-
-                UpdateDataListBox();
             }
         }
 
@@ -317,21 +359,24 @@ namespace Shedule
         {
             if (TeacherListBox.SelectedItems.Count > 0)
             {
-                int? teacherId = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource)?.TeacherId ?? -1;
-
-                using (DatabaseContext context = new())
+                if (Message.Action_DeleteRecord() == MessageBoxResult.Yes)
                 {
-                    Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
+                    int? teacherId = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource)?.TeacherId ?? -1;
 
-                    if (teacher != null)
+                    using (DatabaseContext context = new())
                     {
-                        context.Teachers.Remove(teacher ?? new());
+                        Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
 
-                        context.SaveChangesAsync();
+                        if (teacher != null)
+                        {
+                            context.Teachers.Remove(teacher);
+
+                            context.SaveChangesAsync();
+                        }
                     }
-                }
 
-                UpdateDataListBox();
+                    UpdateDataListBox();
+                }
             }
         }
 
@@ -371,6 +416,7 @@ namespace Shedule
             BirthdayBeginFilterDatePicker.SelectedDate = null!;
             BirthdayEndFilterDatePicker.SelectedDate = null!;
             PassportFilterTextBox.Text = null!;
+            PhoneNumberFilterTextBox = null!;
             EducationFilterTextBox.Text = null!;
         }
 
@@ -378,7 +424,13 @@ namespace Shedule
 
         private void OnlyDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Service.MyService.OnlyDigit_PreiewTextInput(sender, e);
+            Service.OnlyDigit_PreviewTextInput(sender, e);
+            base.OnPreviewTextInput(e);
+        }
+
+        private void OnlyPhoneNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Service.OnlyPhoneNumber_PreviewTextInput(sender, e);
             base.OnPreviewTextInput(e);
         }
     }

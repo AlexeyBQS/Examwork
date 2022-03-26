@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Shedule
+namespace Shedule.Pages
 {
     /// <summary>
     /// Логика взаимодействия для MainPage.xaml
@@ -37,10 +37,16 @@ namespace Shedule
             }
         }
 
-
         private readonly MenuElement[] Menu = new MenuElement[]
         {
-            new("Педагоги", new TeacherViewPage())
+            new("Педагоги", new TeacherViewPage()),
+            new("Кабинеты", new CabinetViewPage()),
+            new("Шаблоны классов", null!),
+            new("Шаблоны дисциплин", null!),
+            new("Классы", null!),
+            new("Дисциплины классов", null!),
+            new("Дисциплины класса", null!),
+            new("Расиписание", null!)
         };
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,18 +57,11 @@ namespace Shedule
             MenuListBox.ItemsSource = Menu;
         }
 
-        private void OpenTeacherViewPageButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow window = Window.GetWindow(this) as MainWindow ?? null!;
-            window.MainFrame.Content = new TeacherViewPage();
-        }
-
         private void MenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MenuListBox.SelectedItems.Count > 0)
             {
                 MenuElement selectedMenuElement = (MenuListBox.SelectedItems[0] as MenuElement) ?? null!;
-
                 MenuFrame.Content = selectedMenuElement.Page ?? null!;
             }
         }

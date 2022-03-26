@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shedule.Service;
+using Shedule.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace Shedule.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(Config.ConnectionString);
+            optionsBuilder.UseSqlite(ConfigManager.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

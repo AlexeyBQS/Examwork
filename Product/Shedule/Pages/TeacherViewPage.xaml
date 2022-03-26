@@ -1,4 +1,4 @@
-﻿<Page x:Class="Shedule.TeacherViewPage"
+﻿<Page x:Class="Shedule.Pages.TeacherViewPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -39,7 +39,10 @@
 
                             <StackPanel Grid.Column="1" Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text=" "/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding TeacherId}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Surname}"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Name}"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Patronymic}"/>
@@ -61,7 +64,7 @@
                 <TabItem FontSize="14" Header="Просмотр">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="2.5*"/>
+                            <RowDefinition Height="3.5*"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
@@ -112,6 +115,7 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
                                 <Grid.ColumnDefinitions>
@@ -151,8 +155,14 @@
                                          PreviewTextInput="OnlyDigit_PreviewTextInput" MaxLength="10"/>
 
                                 <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                           Grid.RowSpan="2" Margin="3" Text="Образование"/>
+                                           Margin="3" Text="Телефон"/>
                                 <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         x:Name="PhoneNumberTextBox" TextChanged="ViewTextBox_TextChanged"
+                                         PreviewTextInput="OnlyPhoneNumber_PreviewTextInput"/>
+
+                                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Grid.RowSpan="2" Margin="3" Text="Образование"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
                                          Grid.RowSpan="2" Height="90" TextWrapping="Wrap" AcceptsReturn="True"
                                          x:Name="EducationTextBox" TextChanged="ViewTextBox_TextChanged"/>
                             </Grid>
@@ -162,13 +172,14 @@
                 <TabItem FontSize="14" Header="Фильтры">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="6*"/>
+                            <RowDefinition Height="10*"/>
                             <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="2*"/>
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0">
                             <Grid.RowDefinitions>
+                                <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -208,9 +219,11 @@
                             <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                        Grid.RowSpan="2" Margin="3" Text="Дата рождения"/>
                             <DatePicker Grid.Row="4" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
-                                            x:Name="BirthdayBeginFilterDatePicker" SelectedDateChanged="BirthdayBeginFilterDatePicker_SelectedDateChanged"/>
+                                        x:Name="BirthdayBeginFilterDatePicker"
+                                        SelectedDateChanged="BirthdayBeginFilterDatePicker_SelectedDateChanged"/>
                             <DatePicker Grid.Row="5" Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
-                                            x:Name="BirthdayEndFilterDatePicker" SelectedDateChanged="BirthdayEndFilterDatePicker_SelectedDateChanged"/>
+                                        x:Name="BirthdayEndFilterDatePicker"
+                                        SelectedDateChanged="BirthdayEndFilterDatePicker_SelectedDateChanged"/>
 
                             <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
                                        Margin="3" Text="Паспорт"/>
@@ -219,8 +232,14 @@
                                      PreviewTextInput="OnlyDigit_PreviewTextInput"/>
 
                             <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
-                                       Grid.RowSpan="2" Margin="3" Text="Образование"/>
+                                           Margin="3" Text="Телефон"/>
                             <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         x:Name="PhoneNumberFilterTextBox" TextChanged="FilterTextBox_TextChanged"
+                                         PreviewTextInput="OnlyPhoneNumber_PreviewTextInput"/>
+
+                            <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                       Grid.RowSpan="2" Margin="3" Text="Образование"/>
+                            <TextBox Grid.Row="8" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
                                      Grid.RowSpan="2" Height="80" TextWrapping="Wrap" AcceptsReturn="True"
                                      x:Name="EducationFilterTextBox" TextChanged="FilterTextBox_TextChanged"/>
                         </Grid>
@@ -268,10 +287,10 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Style="{StaticResource StandartButtonStyle}" Width="150"
-                                    Content="Сохранить" x:Name="SaveChangeTeacherButton" Click="SaveChangeTeacherButton_Click"/>
+                    Content="Сохранить" x:Name="SaveChangeTeacherButton" Click="SaveChangeTeacherButton_Click"/>
 
             <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Width="150"
-                                    Content="Удалить" x:Name="DeleteTeacherButton" Click="DeleteTeacherButton_Click"/>
+                    Content="Удалить" x:Name="DeleteTeacherButton" Click="DeleteTeacherButton_Click"/>
         </Grid>
 
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">

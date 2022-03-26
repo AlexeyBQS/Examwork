@@ -10,8 +10,9 @@ namespace Shedule.Database
     {
         public int CabinetId { get; set; } = default;
         public int? TeacherId { get; set; } = null!;
-        public string Name { get; set; } = null!;
-        public int CountPlaces { get; set; } = default;
+        public string? Name { get; set; } = null!;
+        public int? CountPlaces { get; set; } = default;
+        public byte[]? Photo { get; set; } = null!;
         public string? Description { get; set; } = null!;
 
         public Teacher? Teacher { get; set; } = null!;
