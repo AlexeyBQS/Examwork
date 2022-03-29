@@ -237,33 +237,36 @@ namespace Shedule.Pages
         {
             if (TeacherListBox.SelectedItems.Count > 0)
             {
-                int? teacherId = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource)?.TeacherId ?? -1;
+                int? teacherId = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource)?.TeacherId ?? null!;
 
-                using (DatabaseContext context = new())
+                if (teacherId != null)
                 {
-                    Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
-
-                    if (teacher != null)
+                    using (DatabaseContext context = new())
                     {
-                        if (teacher.Photo != null && teacher.Photo?.Length != 0)
+                        Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
+
+                        if (teacher != null)
                         {
-                            BitmapImage image = Service.ConvertByteArrayToImage(teacher.Photo ?? null!);
-
-                            SaveFileDialog dialog = new();
-                            dialog.FileName = $"Педагог_{TeacherIdTextBox.Text ?? "0"}.png";
-                            dialog.Filter = "All Files (*.*)|*.*";
-                            dialog.FilterIndex = 0;
-
-                            if (dialog.ShowDialog() == true)
+                            if (teacher.Photo != null && teacher.Photo?.Length != 0)
                             {
-                                string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
+                                BitmapImage image = Service.ConvertByteArrayToImage(teacher.Photo ?? null!);
 
-                                BitmapEncoder encoder = new PngBitmapEncoder();
-                                encoder.Frames.Add(BitmapFrame.Create(image));
+                                SaveFileDialog dialog = new();
+                                dialog.FileName = $"Педагог_{TeacherIdTextBox.Text ?? "0"}.png";
+                                dialog.Filter = "All Files (*.*)|*.*";
+                                dialog.FilterIndex = 0;
 
-                                using (FileStream? fileStream = new(pathFile, FileMode.Create))
+                                if (dialog.ShowDialog() == true)
                                 {
-                                    encoder.Save(fileStream);
+                                    string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
+
+                                    BitmapEncoder encoder = new PngBitmapEncoder();
+                                    encoder.Frames.Add(BitmapFrame.Create(image));
+
+                                    using (FileStream? fileStream = new(pathFile, FileMode.Create))
+                                    {
+                                        encoder.Save(fileStream);
+                                    }
                                 }
                             }
                         }
@@ -283,12 +286,12 @@ namespace Shedule.Pages
             {
                 string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
                 PhotoBorder.Background = new ImageBrush(new BitmapImage(new Uri(pathFile)));
+
+                SaveTeacherPhotoButton.IsEnabled = true;
+                DeleteTeacherPhotoButton.IsEnabled = true;
+
+                SaveChangeTeacherButton.IsEnabled = true;
             }
-
-            SaveTeacherPhotoButton.IsEnabled = true;
-            DeleteTeacherPhotoButton.IsEnabled = true;
-
-            SaveChangeTeacherButton.IsEnabled = true;
         }
 
         private void DeleteTeacherPhotoButton_Click(object sender, RoutedEventArgs e)
@@ -312,7 +315,7 @@ namespace Shedule.Pages
             using (DatabaseContext context = new())
             {
                 context.Teachers.Add(new Teacher());
-                context.SaveChanges();
+                context.SaveChangesAsync();
             }
 
             UpdateDataListBox();
@@ -324,11 +327,10 @@ namespace Shedule.Pages
         {
             if (TeacherListBox.SelectedItems.Count > 0)
             {
-                if (Message.Action_SaveChangesRecord() == MessageBoxResult.Yes)
-                {
-                    TeacherViewItemSource viewItemSource = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource) ?? null!;
-                    int? teacherId = viewItemSource?.TeacherId ?? -1;
+                int? teacherId = (TeacherListBox.SelectedItems[0] as TeacherViewItemSource)?.TeacherId ?? null!;
 
+                if (teacherId != null)
+                {
                     using (DatabaseContext context = new())
                     {
                         Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);

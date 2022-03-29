@@ -126,6 +126,8 @@ namespace Shedule.Pages
             NameTextBox.IsEnabled = false;
             CountPlacesTextBox.IsEnabled = false;
             DescriptionTextBox.IsEnabled = false;
+
+            TeacherIdComboBoxClearButton.IsEnabled = false;
         }
 
         private void UpdateViewTabControl()
@@ -237,7 +239,7 @@ namespace Shedule.Pages
             using (DatabaseContext context = new())
             {
                 context.Cabinets.Add(new Cabinet());
-                context.SaveChanges();
+                context.SaveChangesAsync();
             }
 
             UpdateDataListBox();
@@ -249,11 +251,10 @@ namespace Shedule.Pages
         {
             if (CabinetListBox.SelectedItems.Count > 0)
             {
-                if (Message.Action_SaveChangesRecord () == MessageBoxResult.Yes)
-                {
-                    CabinetViewItemSource viewItemSource = (CabinetListBox.SelectedItems[0] as CabinetViewItemSource) ?? null!;
-                    int? cabinetId = viewItemSource?.CabinetId ?? -1;
+                int? cabinetId = (CabinetListBox.SelectedItems[0] as CabinetViewItemSource)?.CabinetId ?? null!;
 
+                if (cabinetId != null)
+                {
                     using (DatabaseContext context = new())
                     {
                         Cabinet? cabinet = context.Cabinets.FirstOrDefault(x => x.CabinetId == (int)cabinetId);
@@ -262,7 +263,10 @@ namespace Shedule.Pages
                         {
                             BitmapImage photo = (PhotoBorder.Background as ImageBrush)!.ImageSource as BitmapImage ?? null!;
 
-                            cabinet.TeacherId = TeacherIdComboBox.SelectedIndex >= 0 ? (TeacherIdFilterComboBox.Items[TeacherIdComboBox.SelectedIndex] as Teacher)!.TeacherId : null!;
+                            cabinet.TeacherId = TeacherIdComboBox.SelectedIndex >= 0
+                                ? (TeacherIdComboBox.Items[TeacherIdComboBox.SelectedIndex] as Teacher)!.TeacherId
+                                : null!;
+
                             cabinet.Name = NameTextBox.Text;
                             cabinet.CountPlaces = CountPlacesTextBox.Text != string.Empty ? int.Parse(CountPlacesTextBox.Text) : null!;
                             cabinet.Photo = Service.ConvertImageToByteArray(photo);
@@ -313,33 +317,36 @@ namespace Shedule.Pages
         {
             if (CabinetListBox.SelectedItems.Count > 0)
             {
-                int? cabinetId = (CabinetListBox.SelectedItems[0] as CabinetViewItemSource)?.CabinetId ?? -1;
+                int? cabinetId = (CabinetListBox.SelectedItems[0] as CabinetViewItemSource)?.CabinetId ?? null!;
 
-                using (DatabaseContext context = new())
+                if (cabinetId != null!)
                 {
-                    Cabinet? cabinet = context.Cabinets.FirstOrDefault(x => x.CabinetId == (int)cabinetId);
-
-                    if (cabinet != null)
+                    using (DatabaseContext context = new())
                     {
-                        if (cabinet.Photo != null && cabinet.Photo?.Length != 0)
+                        Cabinet? cabinet = context.Cabinets.FirstOrDefault(x => x.CabinetId == (int)cabinetId);
+
+                        if (cabinet != null)
                         {
-                            BitmapImage image = Service.ConvertByteArrayToImage(cabinet.Photo ?? null!);
-
-                            SaveFileDialog dialog = new();
-                            dialog.FileName = $"Педагог_{CabinetIdTextBox.Text ?? "0"}.png";
-                            dialog.Filter = "All Files (*.*)|*.*";
-                            dialog.FilterIndex = 0;
-
-                            if (dialog.ShowDialog() == true)
+                            if (cabinet.Photo != null && cabinet.Photo?.Length != 0)
                             {
-                                string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
+                                BitmapImage image = Service.ConvertByteArrayToImage(cabinet.Photo ?? null!);
 
-                                BitmapEncoder encoder = new PngBitmapEncoder();
-                                encoder.Frames.Add(BitmapFrame.Create(image));
+                                SaveFileDialog dialog = new();
+                                dialog.FileName = $"Кабинет_{CabinetIdTextBox.Text ?? "0"}.png";
+                                dialog.Filter = "All Files (*.*)|*.*";
+                                dialog.FilterIndex = 0;
 
-                                using (FileStream? fileStream = new(pathFile, FileMode.Create))
+                                if (dialog.ShowDialog() == true)
                                 {
-                                    encoder.Save(fileStream);
+                                    string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
+
+                                    BitmapEncoder encoder = new PngBitmapEncoder();
+                                    encoder.Frames.Add(BitmapFrame.Create(image));
+
+                                    using (FileStream? fileStream = new(pathFile, FileMode.Create))
+                                    {
+                                        encoder.Save(fileStream);
+                                    }
                                 }
                             }
                         }
@@ -359,12 +366,12 @@ namespace Shedule.Pages
             {
                 string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
                 PhotoBorder.Background = new ImageBrush(new BitmapImage(new Uri(pathFile)));
+
+                SaveCabinetPhotoButton.IsEnabled = true;
+                DeleteCabinetPhotoButton.IsEnabled = true;
+
+                SaveChangeCabinetButton.IsEnabled = true;
             }
-
-            SaveCabinetPhotoButton.IsEnabled = true;
-            DeleteCabinetPhotoButton.IsEnabled = true;
-
-            SaveChangeCabinetButton.IsEnabled = true;
         }
 
         private void DeleteCabinetPhotoButton_Click(object sender, RoutedEventArgs e)

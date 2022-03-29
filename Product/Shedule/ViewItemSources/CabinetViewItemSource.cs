@@ -16,7 +16,7 @@ namespace Shedule.ViewItemSources
             Cabinet = cabinet;
         }
 
-        //Cabinet
+        // Cabinet
         public Cabinet Cabinet { get; set; } = null!;
 
         public int CabinetId => Cabinet.CabinetId;
@@ -31,7 +31,7 @@ namespace Shedule.ViewItemSources
             ? Service.ConvertByteArrayToImage(Photo ?? null!)
             : Service.DefaultPhoto;
 
-        //Teacher
+        // Class - Teacher
         public Teacher? Teacher => Cabinet.Teacher;
 
         public string? Teacher_Surname => Teacher?.Surname;

@@ -16,7 +16,7 @@ namespace Shedule.ViewItemSources
             Teacher = teacher;
         }
 
-        //Teacher
+        // Teacher
         public Teacher Teacher { get; set; } = null!;
 
         public int TeacherId => Teacher.TeacherId;

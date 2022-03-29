@@ -41,9 +41,9 @@ namespace Shedule.Pages
         {
             new("Педагоги", new TeacherViewPage()),
             new("Кабинеты", new CabinetViewPage()),
-            new("Классы", null!),
-            new("Дисциплины",null!),
-            new("Расписание",null!),
+            new("Классы", new ClassViewPage()),
+            new("Дисциплины", null!),
+            new("Расписание", null!)
         };
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

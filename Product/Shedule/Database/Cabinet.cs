@@ -20,5 +20,8 @@ namespace Shedule.Database
         public ICollection<Class>? Classes { get; set; } = default!;
         public ICollection<ClassLesson>? ClassesLessons { get; set; } = default!;
         public ICollection<SheduleLesson>? SheduleLessons { get; set; } = default!;
+
+        public string ToShortString() => $"{Name}";
+        public override string ToString() => $"{CabinetId}: {Name}";
     }
 }
