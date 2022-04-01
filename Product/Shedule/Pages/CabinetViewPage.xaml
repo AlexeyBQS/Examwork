@@ -235,7 +235,7 @@
 
                         <Grid Grid.Row="2">
                             <Button Style="{StaticResource StandartButtonStyle}" Width="200" Content="Очистить фильтры"
-                                        x:Name="ClearFiltresButton" Click="ClearFiltresButton_Click"/>
+                                    x:Name="ClearFiltresButton" Click="ClearFiltresButton_Click"/>
                         </Grid>
                     </Grid>
                 </TabItem>
