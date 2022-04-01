@@ -42,7 +42,7 @@ namespace Shedule.Pages
             new("Педагоги", new TeacherViewPage()),
             new("Кабинеты", new CabinetViewPage()),
             new("Классы", new ClassViewPage()),
-            new("Дисциплины", null!),
+            new("Дисциплины", new LessonViewPage()),
             new("Дисциплины класса", null!),
             new("Расписание", null!),
         };

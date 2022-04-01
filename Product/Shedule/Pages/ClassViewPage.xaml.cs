@@ -237,11 +237,6 @@ namespace Shedule.Pages
             SaveChangeClassButton.IsEnabled = true;
         }
 
-        private void ViewDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SaveChangeClassButton.IsEnabled = true;
-        }
-
         private void ViewComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SaveChangeClassButton.IsEnabled = true;
