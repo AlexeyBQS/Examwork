@@ -1,5 +1,6 @@
 # Template Visual Studio Folder
 .vs/
+Product/.vs
 
 # Template data for Examwork
 .temp/
@@ -12,9 +13,10 @@ Presentation/*.tmp
 # Template Microsoft Visio files
 Schemes/*.~vsdx
 
-# Visual Studio Folder on Folder "Product"
-Product/.vs
-
 # Metadata and libraries on project "Shedule"
 Product/Shedule/bin
 Product/Shedule/obj
+
+# Metadata and libraries on project "GenTestData"
+Product/GenTestData/bin
+Product/GenTestData/obj
