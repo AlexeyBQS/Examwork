@@ -36,8 +36,6 @@
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
                                     <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Description}"/>
                                 </StackPanel>
-
-
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

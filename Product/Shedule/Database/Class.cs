@@ -19,5 +19,7 @@ namespace Shedule.Database
         public Cabinet? Cabinet { get; set; } = null!;
 
         public ICollection<ClassLesson>? ClassLessons { get; set; } = default!;
+
+        public override string ToString() => $"{ClassId}: {Name}";
     }
 }

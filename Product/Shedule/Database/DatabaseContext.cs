@@ -98,15 +98,9 @@ namespace Shedule.Database
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<ClassLesson>()
-                .HasOne(classLesson => classLesson.FirstClassLesson)
+                .HasOne(classLesson => classLesson.PairClassLesson)
                 .WithMany()
-                .HasForeignKey(classLesson => classLesson.FirstClassLessonId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<ClassLesson>()
-                .HasOne(ClassLesson => ClassLesson.SecondClassLesson)
-                .WithMany()
-                .HasForeignKey(classLesson => classLesson.SecondClassLessonId)
+                .HasForeignKey(classLessons => classLessons.PairClassLessonId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<ClassLesson>()

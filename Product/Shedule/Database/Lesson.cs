@@ -13,5 +13,7 @@ namespace Shedule.Database
         public string? Description { get; set; } = null!;
 
         public ICollection<ClassLesson>? ClassLessons { get; set; } = default!;
+
+        public override string ToString() => $"{LessonId}: {Name}";
     }
 }
