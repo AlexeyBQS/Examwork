@@ -41,17 +41,16 @@ namespace Shedule.Pages
 
         private void UpdateDataClassListBox()
         {
-            using (DatabaseContext context = new())
-            {
-                IQueryable<Class> classes = context.Classes
-                    .Include(_class => _class.Teacher)
-                    .Include(_class => _class.Cabinet)
-                    .Include(_class => _class.Cabinet!.Teacher);
+            using DatabaseContext context = new();
 
-                IEnumerable<ClassViewItemSource> viewItemSources = classes.ToList().Select(x => new ClassViewItemSource(x));
+            IQueryable<Class> classes = context.Classes
+                .Include(_class => _class.Teacher)
+                .Include(_class => _class.Cabinet)
+                .Include(_class => _class.Cabinet!.Teacher);
 
-                ClassListBox.ItemsSource = viewItemSources;
-            }
+            IEnumerable<ClassViewItemSource> viewItemSources = classes.ToList().Select(x => new ClassViewItemSource(x));
+
+            ClassListBox.ItemsSource = viewItemSources;
         }
 
         private void UpdateDataLessonAndClassLessonListBox()
@@ -62,25 +61,24 @@ namespace Shedule.Pages
 
                 if (classId != null)
                 {
-                    using (DatabaseContext context = new())
+                    using DatabaseContext context = new();
+
+                    Class? _class = context.Classes.FirstOrDefault(x => x.ClassId == classId);
+
+                    if (_class != null)
                     {
-                        Class? _class = context.Classes.FirstOrDefault(x => x.ClassId == classId);
+                        IQueryable<Lesson> lessons = context.Lessons;
 
-                        if (_class != null)
-                        {
-                            IQueryable<Lesson> lessons = context.Lessons;
+                        List<LessonAndClassLessonViewItemSource> viewItemSources = lessons
+                            .ToList().Select(x => new LessonAndClassLessonViewItemSource(x)).ToList();
 
-                            List<LessonAndClassLessonViewItemSource> viewItemSources = lessons
-                                .ToList().Select(x => new LessonAndClassLessonViewItemSource(x)).ToList();
+                        viewItemSources.ForEach(x =>
+                            x.ClassLesson = context.ClassLessons
+                                .Where(classLesson => classLesson.LessonId == x.LessonId)
+                                .FirstOrDefault(classLesson => classLesson.ClassId == (int)classId)
+                            );
 
-                            viewItemSources.ForEach(x =>
-                                x.ClassLesson = context.ClassLessons
-                                    .Where(classLesson => classLesson.LessonId == x.LessonId)
-                                    .FirstOrDefault(classLesson => classLesson.ClassId == (int)classId)
-                                );
-
-                            LessonAndClassLessonListBox.ItemsSource = viewItemSources;
-                        }
+                        LessonAndClassLessonListBox.ItemsSource = viewItemSources;
                     }
                 }
             }
@@ -291,59 +289,58 @@ namespace Shedule.Pages
 
                     if (classLessonId != null)
                     {
-                        using (DatabaseContext context = new())
+                        using DatabaseContext context = new();
+
+                        ClassLesson classLesson = context.ClassLessons.First(cl => cl.ClassLessonId == (int)classLessonId);
+
+                        classLesson.TeacherId = TeacherIdComboBox.SelectedIndex >= 0
+                            ? (TeacherIdComboBox.Items[TeacherIdComboBox.SelectedIndex] as Teacher)!.TeacherId
+                            : null!;
+
+                        int? previousPairClassLessonId = classLesson.PairClassLessonId;
+
+                        classLesson.PairClassLessonId = PairClassLessonIdComboBox.SelectedIndex >= 0
+                            ? (PairClassLessonIdComboBox.Items[PairClassLessonIdComboBox.SelectedIndex] as ClassLesson)!.ClassLessonId
+                            : null!;
+
+                        if (classLesson.PairClassLessonId != previousPairClassLessonId)
                         {
-                            ClassLesson classLesson = context.ClassLessons.First(cl => cl.ClassLessonId == (int)classLessonId);
-
-                            classLesson.TeacherId = TeacherIdComboBox.SelectedIndex >= 0
-                                ? (TeacherIdComboBox.Items[TeacherIdComboBox.SelectedIndex] as Teacher)!.TeacherId
-                                : null!;
-
-                            int? previousPairClassLessonId = classLesson.PairClassLessonId;
-
-                            classLesson.PairClassLessonId = PairClassLessonIdComboBox.SelectedIndex >= 0
-                                ? (PairClassLessonIdComboBox.Items[PairClassLessonIdComboBox.SelectedIndex] as ClassLesson)!.ClassLessonId
-                                : null!;
-
-                            if (classLesson.PairClassLessonId != previousPairClassLessonId)
+                            if (previousPairClassLessonId != null && classLesson.PairClassLessonId == null)
                             {
-                                if (previousPairClassLessonId != null && classLesson.PairClassLessonId == null)
-                                {
-                                    ClassLesson pairClassLesson = context.ClassLessons
-                                        .First(cl => cl.ClassLessonId == (int)previousPairClassLessonId);
+                                ClassLesson pairClassLesson = context.ClassLessons
+                                    .First(cl => cl.ClassLessonId == (int)previousPairClassLessonId);
 
-                                    pairClassLesson.PairClassLessonId = null!;
-                                }
-                                else if (previousPairClassLessonId == null && classLesson.PairClassLessonId != null)
-                                {
-                                    ClassLesson pairClassLesson = context.ClassLessons
-                                        .First(cl => cl.ClassLessonId == (int)classLesson.PairClassLessonId);
-
-                                    pairClassLesson.PairClassLessonId = classLesson.ClassLessonId;
-                                }
-                                else if (previousPairClassLessonId != null && classLesson.PairClassLessonId != null)
-                                {
-                                    ClassLesson oldPairClassLesson = context.ClassLessons
-                                        .First(cl => cl.ClassLessonId == (int)previousPairClassLessonId);
-
-                                    oldPairClassLesson.PairClassLessonId = null!;
-
-                                    ClassLesson newPairClassLesson = context.ClassLessons
-                                        .First(cl => cl.ClassLessonId == (int)classLesson.PairClassLessonId);
-
-                                    newPairClassLesson.PairClassLessonId = classLesson.ClassLessonId;
-                                }
+                                pairClassLesson.PairClassLessonId = null!;
                             }
+                            else if (previousPairClassLessonId == null && classLesson.PairClassLessonId != null)
+                            {
+                                ClassLesson pairClassLesson = context.ClassLessons
+                                    .First(cl => cl.ClassLessonId == (int)classLesson.PairClassLessonId);
 
-                            classLesson.DefaultCabinetId = DefaultCabinetIdComboBox.SelectedIndex >= 0
-                                ? (DefaultCabinetIdComboBox.Items[DefaultCabinetIdComboBox.SelectedIndex] as Cabinet)!.CabinetId
-                                : null!;
+                                pairClassLesson.PairClassLessonId = classLesson.ClassLessonId;
+                            }
+                            else if (previousPairClassLessonId != null && classLesson.PairClassLessonId != null)
+                            {
+                                ClassLesson oldPairClassLesson = context.ClassLessons
+                                    .First(cl => cl.ClassLessonId == (int)previousPairClassLessonId);
 
-                            classLesson.CountLesson = CountLessonTextBox.Text != string.Empty ? int.Parse(CountLessonTextBox.Text) : null!;
-                            classLesson.Difficulty = DifficultyTextBox.Text != string.Empty ? int.Parse(DifficultyTextBox.Text) : null!;
+                                oldPairClassLesson.PairClassLessonId = null!;
 
-                            context.SaveChangesAsync();
+                                ClassLesson newPairClassLesson = context.ClassLessons
+                                    .First(cl => cl.ClassLessonId == (int)classLesson.PairClassLessonId);
+
+                                newPairClassLesson.PairClassLessonId = classLesson.ClassLessonId;
+                            }
                         }
+
+                        classLesson.DefaultCabinetId = DefaultCabinetIdComboBox.SelectedIndex >= 0
+                            ? (DefaultCabinetIdComboBox.Items[DefaultCabinetIdComboBox.SelectedIndex] as Cabinet)!.CabinetId
+                            : null!;
+
+                        classLesson.CountLesson = CountLessonTextBox.Text != string.Empty ? int.Parse(CountLessonTextBox.Text) : null!;
+                        classLesson.Difficulty = DifficultyTextBox.Text != string.Empty ? int.Parse(DifficultyTextBox.Text) : null!;
+
+                        context.SaveChangesAsync();
                     }
 
                     UpdateDataLessonAndClassLessonListBox();

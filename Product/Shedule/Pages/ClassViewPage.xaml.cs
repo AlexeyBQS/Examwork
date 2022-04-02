@@ -48,67 +48,65 @@ namespace Shedule.Pages
 
         private void UpdateDataComboBox()
         {
-            using (DatabaseContext context = new())
-            {
-                IEnumerable<Teacher> teachers = context.Teachers.ToList();
+            using DatabaseContext context = new();
 
-                TeacherIdComboBox.ItemsSource = teachers;
-                TeacherIdFilterComboBox.ItemsSource = teachers;
+            IEnumerable<Teacher> teachers = context.Teachers.ToList();
 
-                IEnumerable<Cabinet> cabinets = context.Cabinets.ToList();
+            TeacherIdComboBox.ItemsSource = teachers;
+            TeacherIdFilterComboBox.ItemsSource = teachers;
 
-                CabinetIdComboBox.ItemsSource = cabinets;
-                CabinetIdFilterComboBox.ItemsSource = cabinets;
-            }
+            IEnumerable<Cabinet> cabinets = context.Cabinets.ToList();
+
+            CabinetIdComboBox.ItemsSource = cabinets;
+            CabinetIdFilterComboBox.ItemsSource = cabinets;
         }
 
         private void UpdateDataListBox()
         {
-            using (DatabaseContext context = new())
+            using DatabaseContext context = new();
+
+            IQueryable<Class> classes = context.Classes
+                .Include(_class => _class.Teacher)
+                .Include(_class => _class.Cabinet)
+                .Include(_class => _class.Cabinet!.Teacher);
+
+            if (ClassIdFilterTextBox.Text != null)
             {
-                IQueryable<Class> classes = context.Classes
-                    .Include(_class => _class.Teacher)
-                    .Include(_class => _class.Cabinet)
-                    .Include(_class => _class.Cabinet!.Teacher);
-
-                if (ClassIdFilterTextBox.Text != null)
-                {
-                    string classId = ClassIdFilterTextBox.Text;
-                    classes = classes.Where(_class => _class.ClassId.ToString().Contains(classId));
-                }
-
-                if (TeacherIdFilterComboBox.SelectedItem != null)
-                {
-                    int teacherId = (TeacherIdFilterComboBox.SelectedItem as Teacher)!.TeacherId;
-                    classes = classes.Where(_class => _class.TeacherId == teacherId);
-                }
-
-                if (CabinetIdFilterComboBox.SelectedItem != null)
-                {
-                    int cabinetId = (CabinetIdFilterComboBox.SelectedItem as Cabinet)!.CabinetId;
-                    classes = classes.Where(_class => _class.CabinetId == cabinetId);
-                }
-
-                if (NameFilterTextBox.Text != null!)
-                {
-                    string name = NameFilterTextBox.Text;
-                    classes = classes.Where(_class => _class.Name!.Contains(name));
-                }
-
-                if (CountPupilsFilterTextBox.Text != null)
-                {
-                    string countPupils = CountPupilsFilterTextBox.Text;
-                    classes = classes.Where(_class => _class.CountPupils.ToString()!.Contains(countPupils));
-                }
-
-                IEnumerable<ClassViewItemSource> viewItemSources = CountViewRecord > 0
-                    ? classes.ToList().Take(CountViewRecord).Select(x => new ClassViewItemSource(x))
-                    : classes.ToList().Select(x => new ClassViewItemSource(x));
-
-                ClassListBox.ItemsSource = viewItemSources;
-
-                StatusTextBlock.Text = $"Всего: {context.Classes.Count()} | Всего с фильтрами: {classes.Count()} | Отображается: {viewItemSources.Count()}";
+                string classId = ClassIdFilterTextBox.Text;
+                classes = classes.Where(_class => _class.ClassId.ToString().Contains(classId));
             }
+
+            if (TeacherIdFilterComboBox.SelectedItem != null)
+            {
+                int teacherId = (TeacherIdFilterComboBox.SelectedItem as Teacher)!.TeacherId;
+                classes = classes.Where(_class => _class.TeacherId == teacherId);
+            }
+
+            if (CabinetIdFilterComboBox.SelectedItem != null)
+            {
+                int cabinetId = (CabinetIdFilterComboBox.SelectedItem as Cabinet)!.CabinetId;
+                classes = classes.Where(_class => _class.CabinetId == cabinetId);
+            }
+
+            if (NameFilterTextBox.Text != null!)
+            {
+                string name = NameFilterTextBox.Text;
+                classes = classes.Where(_class => _class.Name!.Contains(name));
+            }
+
+            if (CountPupilsFilterTextBox.Text != null)
+            {
+                string countPupils = CountPupilsFilterTextBox.Text;
+                classes = classes.Where(_class => _class.CountPupils.ToString()!.Contains(countPupils));
+            }
+
+            IEnumerable<ClassViewItemSource> viewItemSources = CountViewRecord > 0
+                ? classes.ToList().Take(CountViewRecord).Select(x => new ClassViewItemSource(x))
+                : classes.ToList().Select(x => new ClassViewItemSource(x));
+
+            ClassListBox.ItemsSource = viewItemSources;
+
+            StatusTextBlock.Text = $"Всего: {context.Classes.Count()} | Всего с фильтрами: {classes.Count()} | Отображается: {viewItemSources.Count()}";
         }
 
         private void DefaultViewTabControl()
@@ -341,31 +339,29 @@ namespace Shedule.Pages
 
                 if (classId != null)
                 {
-                    using (DatabaseContext context = new())
+                    using DatabaseContext context = new();
+
+                    Class? _class = context.Classes.FirstOrDefault(c => c.ClassId == (int)classId);
+
+                    if (_class != null)
                     {
-                        Class? _class = context.Classes.FirstOrDefault(c => c.ClassId == (int)classId);
+                        BitmapImage image = Service.ConvertByteArrayToImage(_class.Photo ?? null!);
 
-                        if (_class != null)
+                        SaveFileDialog dialog = new();
+                        dialog.FileName = $"Класс_{ClassIdTextBox.Text ?? "0"}.png";
+                        dialog.Filter = "All Files (*.*)|*.*";
+                        dialog.FilterIndex = 0;
+
+                        if (dialog.ShowDialog() == true)
                         {
-                            BitmapImage image = Service.ConvertByteArrayToImage(_class.Photo ?? null!);
+                            string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
 
-                            SaveFileDialog dialog = new();
-                            dialog.FileName = $"Класс_{ClassIdTextBox.Text ?? "0"}.png";
-                            dialog.Filter = "All Files (*.*)|*.*";
-                            dialog.FilterIndex = 0;
+                            BitmapEncoder encoder = new PngBitmapEncoder();
+                            encoder.Frames.Add(BitmapFrame.Create(image));
 
-                            if (dialog.ShowDialog() == true)
-                            {
-                                string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
+                            using FileStream? fileStream = new(pathFile, FileMode.Create);
 
-                                BitmapEncoder encoder = new PngBitmapEncoder();
-                                encoder.Frames.Add(BitmapFrame.Create(image));
-
-                                using (FileStream? fileStream = new(pathFile, FileMode.Create))
-                                {
-                                    encoder.Save(fileStream);
-                                }
-                            }
+                            encoder.Save(fileStream);
                         }
                     }
                 }

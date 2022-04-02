@@ -44,36 +44,35 @@ namespace Shedule.Pages
 
         private void UpdateDataListBox()
         {
-            using (DatabaseContext context = new())
+            using DatabaseContext context = new();
+
+            IQueryable<Lesson> lessons = context.Lessons;
+
+            if (LessonIdFilterTextBox.Text != null)
             {
-                IQueryable<Lesson> lessons = context.Lessons;
-
-                if (LessonIdFilterTextBox.Text != null)
-                {
-                    string lessonId = LessonIdFilterTextBox.Text;
-                    lessons = lessons.Where(lesson => lesson.LessonId.ToString().Contains(lessonId));
-                }
-
-                if (NameFilterTextBox.Text != null)
-                {
-                    string name = NameFilterTextBox.Text;
-                    lessons = lessons.Where(lesson => lesson.Name!.Contains(name));
-                }
-
-                if (DescriptionFilterTextBox.Text != null)
-                {
-                    string description = DescriptionFilterTextBox.Text;
-                    lessons = lessons.Where(lesson => lesson.Description!.Contains(description));
-                }
-
-                IEnumerable<LessonViewItemSource> viewItemSources = CountViewRecord > 0
-                    ? lessons.ToList().Take(CountViewRecord).Select(x => new LessonViewItemSource(x))
-                    : lessons.ToList().Select(x => new LessonViewItemSource(x));
-
-                LessonListBox.ItemsSource = viewItemSources;
-
-                StatusTextBlock.Text = $"Всего: {context.Lessons.Count()} | Всего с фильтрами: {lessons.Count()} | Отображается: {viewItemSources.Count()}";
+                string lessonId = LessonIdFilterTextBox.Text;
+                lessons = lessons.Where(lesson => lesson.LessonId.ToString().Contains(lessonId));
             }
+
+            if (NameFilterTextBox.Text != null)
+            {
+                string name = NameFilterTextBox.Text;
+                lessons = lessons.Where(lesson => lesson.Name!.Contains(name));
+            }
+
+            if (DescriptionFilterTextBox.Text != null)
+            {
+                string description = DescriptionFilterTextBox.Text;
+                lessons = lessons.Where(lesson => lesson.Description!.Contains(description));
+            }
+
+            IEnumerable<LessonViewItemSource> viewItemSources = CountViewRecord > 0
+                ? lessons.ToList().Take(CountViewRecord).Select(x => new LessonViewItemSource(x))
+                : lessons.ToList().Select(x => new LessonViewItemSource(x));
+
+            LessonListBox.ItemsSource = viewItemSources;
+
+            StatusTextBlock.Text = $"Всего: {context.Lessons.Count()} | Всего с фильтрами: {lessons.Count()} | Отображается: {viewItemSources.Count()}";
         }
 
         private void DefaultViewTabControl()
