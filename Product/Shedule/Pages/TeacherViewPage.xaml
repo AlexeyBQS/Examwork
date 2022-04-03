@@ -11,16 +11,19 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
+            <RowDefinition Height="2"/>
             <RowDefinition/>
+            <RowDefinition Height="2"/>
             <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Margin="5">
+        <Grid Grid.Column="0">
             <ListBox x:Name="TeacherListBox" Background="Transparent" BorderThickness="0" ItemsSource="{Binding}"
                      SelectionMode="Single" SelectionChanged="TeacherListBox_SelectionChanged">
                 <ListBox.ItemTemplate>
@@ -59,8 +62,11 @@
             </ListBox>
         </Grid>
 
-        <Grid Grid.Column="1" Margin="5">
-            <TabControl Background="Transparent">
+        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Width="2" ShowsPreview="False"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
+        <Grid Grid.Column="2">
+            <TabControl Background="Transparent" BorderThickness="0">
                 <TabItem FontSize="14" Header="Просмотр">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -253,7 +259,10 @@
             </TabControl>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0">
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="2" ShowsPreview="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="2" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -280,7 +289,7 @@
                     x:Name="AddTeacherButton" Click="AddTeacherButton_Click"/>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid Grid.Row="2" Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -293,7 +302,10 @@
                     Content="Удалить" x:Name="DeleteTeacherButton" Click="DeleteTeacherButton_Click"/>
         </Grid>
 
-        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" Height="2" ShowsPreview="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
 
             <TextBlock Style="{StaticResource StandartTextBlockStyle}"
                        VerticalAlignment="Center" HorizontalAlignment="Left"

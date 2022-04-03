@@ -11,11 +11,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
         <ListBox Grid.Column="0" Background="Transparent" SelectionMode="Single" ItemsSource="{Binding}"
-                 x:Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged">
+                 x:Name="MenuListBox" BorderThickness="0" SelectionChanged="MenuListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="Auto">
@@ -26,6 +27,9 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Frame Grid.Column="1" x:Name="MenuFrame" NavigationUIVisibility="Hidden"/>
+        <GridSplitter Grid.Column="1" Width="2" ShowsPreview="False"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
+        <Frame Grid.Column="2" x:Name="MenuFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Page>
