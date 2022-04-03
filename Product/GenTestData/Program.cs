@@ -112,7 +112,7 @@ byte[] GetImageByteArray(string path)
 {
     Image image = Image.FromFile(path);
 
-    using (MemoryStream ms = new MemoryStream())
+    using (MemoryStream ms = new())
     {
         image.Save(ms, image.RawFormat);
         return ms.ToArray();
