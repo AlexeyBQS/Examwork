@@ -14,8 +14,8 @@ Presentation/*.tmp
 Schemes/*.~vsdx
 
 # Metadata and libraries on project "Shedule"
-Product/Shedule/bin
-Product/Shedule/obj
+Product/Schedule/bin
+Product/Schedule/obj
 
 # Metadata and libraries on project "GenTestData"
 Product/GenTestData/bin

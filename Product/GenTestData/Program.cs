@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shedule.Database;
+using Schedule.Database;
 using System.Drawing;
 
 #region Methods
@@ -222,7 +222,7 @@ IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Teacher> teachers, IEnumera
     return default!;
 }
 
-IEnumerable<SheduleLesson> GenSheduleLessons()
+IEnumerable<ScheduleLesson> GenScheduleLessons()
 {
     return default!;
 }
@@ -240,7 +240,7 @@ void AddRangeEntities<T>(IEnumerable<T> entities) where T : class
         context.Classes,
         context.Lessons,
         context.ClassLessons,
-        context.SheduleLessons,
+        context.ScheduleLessons,
     };
 
     DbSet<T> dbSet = null!;
@@ -269,7 +269,7 @@ IEnumerable<Cabinet> cabinets = default!;
 IEnumerable<Class> classes = default!;
 IEnumerable<Lesson> lessons = default!;
 IEnumerable<ClassLesson> classLessons = default!;
-IEnumerable<SheduleLesson> sheduleLessons = default!;
+IEnumerable<ScheduleLesson> scheduleLessons = default!;
 
 LogAction("Getting data to create teachers"
     , () => dataTeachers = File.ReadAllLines($"{Directory.GetCurrentDirectory()}\\TestData\\Teacher\\Data.txt"));
@@ -298,8 +298,8 @@ LogAction("Creating class lessons", () => classLessons = GenClassLessons(teacher
 LogAction("Adding class lessons in database", () => AddRangeEntities(classLessons));
 Console.WriteLine();
 
-LogAction("Creating shedule lessons", () => sheduleLessons = GenSheduleLessons());
-LogAction("Adding shedule lessons in database", () => AddRangeEntities(sheduleLessons));
+LogAction("Creating schedule lessons", () => scheduleLessons = GenScheduleLessons());
+LogAction("Adding schedule lessons in database", () => AddRangeEntities(scheduleLessons));
 
 Console.WriteLine("\nSuccess creating and adding data on database!");
 

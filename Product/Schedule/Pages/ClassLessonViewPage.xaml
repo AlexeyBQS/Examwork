@@ -1,0 +1,264 @@
+﻿<Page x:Class="Schedule.Pages.ClassLessonViewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Schedule.Pages"
+      mc:Ignorable="d" 
+      Title="ClassLessonViewPage"
+      Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="0.4*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0" x:Name="ClassListBox" Background="Transparent" BorderThickness="0"
+                     ItemsSource="{Binding}" SelectionMode="Single" SelectionChanged="ClassListBox_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="20" Margin="5">
+                            <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding ClassId}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Name}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Teacher_ToShortString}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <GridSplitter Grid.Column="1" Width="2" ShowsPreview="False"
+                          VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
+            <ListBox Grid.Column="2" x:Name="LessonAndClassLessonListBox" Background="Transparent" BorderThickness="0"
+                     ItemsSource="{Binding}" SelectionMode="Single" SelectionChanged="LessonAndClassLessonLessonListBox_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="20" Margin="5">
+                            <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Margin="3" IsHitTestVisible="False" VerticalAlignment="Center"
+                                              IsChecked="{Binding Mode=OneWay, Path=ClassLesson_IsEnabled}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding LessonId}"/>
+
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="|"/>
+                                    <TextBlock Margin="3" Style="{StaticResource StandartTextBlockStyle}" Text="{Binding Name}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Width="2" ShowsPreview="False"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
+        <Grid Grid.Column="2">
+            <TabControl Background="Transparent" BorderThickness="0">
+                <TabItem FontSize="14" Header="Просмотр">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3.5*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.6*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="3*"/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                            </Grid>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="1.6*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}"
+                                           TextWrapping="Wrap" TextAlignment="Right" Margin="3" Text="ИД Дисциплины класса"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         x:Name="ClassLessonIdTextBox" IsReadOnly="True"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Класс"/>
+                                <Grid Grid.Row="1" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox Grid.Column="0" Style="{StaticResource StandartComboBoxStyle}"
+                                              Margin="0" Height="30" HorizontalAlignment="Left" Width="150" IsHitTestVisible="False"
+                                              x:Name="ClassIdComboBox" SelectionChanged="ViewComboBox_SelectionChanged"/>
+
+                                    <!--
+                                    <Button Grid.Column="1" Margin="3" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                                            x:Name="ClassIdComboBoxClearButton" Click="ClassIdComboBoxClearButton_Click"/>
+                                    -->
+                                </Grid>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Дисциплина"/>
+                                <Grid Grid.Row="2" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox Grid.Column="0" Style="{StaticResource StandartComboBoxStyle}"
+                                              Margin="0" Height="30" HorizontalAlignment="Left" Width="150" IsHitTestVisible="False"
+                                              x:Name="LessonIdComboBox" SelectionChanged="ViewComboBox_SelectionChanged"/>
+
+                                    <!--
+                                    <Button Grid.Column="1" Margin="3" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                                            x:Name="LessonIdComboBoxClearButton" Click="LessonIdComboBoxClearButton_Click"/>
+                                    -->
+                                </Grid>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Педагог"/>
+                                <Grid Grid.Row="3" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox Grid.Column="0" Style="{StaticResource StandartComboBoxStyle}"
+                                              Margin="0" Height="30" HorizontalAlignment="Left" Width="150"
+                                              x:Name="TeacherIdComboBox" SelectionChanged="ViewComboBox_SelectionChanged"/>
+
+                                    <Button Grid.Column="1" Margin="3" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                                            x:Name="TeacherIdComboBoxClearButton" Click="TeacherIdComboBoxClearButton_Click"/>
+                                </Grid>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           TextWrapping="Wrap" TextAlignment="Right" Margin="3" Text="Парная дисциплина"/>
+                                <Grid Grid.Row="4" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox Grid.Column="0" Style="{StaticResource StandartComboBoxStyle}"
+                                              Margin="0" Height="30" HorizontalAlignment="Left" Width="150"
+                                              x:Name="PairClassLessonIdComboBox" SelectionChanged="ViewComboBox_SelectionChanged"/>
+
+                                    <Button Grid.Column="1" Margin="3" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                                            x:Name="PairClassLessonIdComboBoxClearButton" Click="PairClassLessonIdComboBoxClearButton_Click"/>
+                                </Grid>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           TextWrapping="Wrap" TextAlignment="Right" Margin="3" Text="Кабинет по умолчанию"/>
+                                <Grid Grid.Row="5" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox Grid.Column="0" Style="{StaticResource StandartComboBoxStyle}"
+                                              Margin="0" Height="30" HorizontalAlignment="Left" Width="150"
+                                              x:Name="DefaultCabinetIdComboBox" SelectionChanged="ViewComboBox_SelectionChanged"/>
+
+                                    <Button Grid.Column="1" Margin="3" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                                            x:Name="DefaultCabinetIdComboBoxClearButton" Click="DefaultCabinetIdComboBoxClearButton_Click"/>
+                                </Grid>
+
+                                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Кол-во уроков"/>
+                                <TextBox Grid.Row="6" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         x:Name="CountLessonTextBox" TextChanged="ViewTextBox_TextChanged"
+                                         MaxLength="3" PreviewTextInput="OnlyDigit_PreviewTextInput"/>
+
+                                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Сложность"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                         x:Name="DifficultyTextBox" TextChanged="ViewTextBox_TextChanged"
+                                         MaxLength="3" PreviewTextInput="OnlyDigit_PreviewTextInput"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <!-- -->
+            </TabControl>
+        </Grid>
+
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="2" ShowsPreview="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Content="Добавить" Width="150"
+                    x:Name="AddClassLessonButton" Click="AddClassLessonButton_Click"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource StandartButtonStyle}" Width="150"
+                    Content="Сохранить" x:Name="SaveChangeClassLessonButton" Click="SaveChangeClassLessonButton_Click"/>
+
+            <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Width="150"
+                    Content="Удалить" x:Name="DeleteClassLessonButton" Click="DeleteClassLessonButton_Click"/>
+        </Grid>
+
+        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" Height="2" ShowsPreview="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+    </Grid>
+</Page>

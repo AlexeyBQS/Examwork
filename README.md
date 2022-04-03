@@ -10,5 +10,5 @@
 || [Руководство программиста](https://github.com/AlexeyBQS/Examwork/blob/master/Documents/(Приложение%20Г)%20Руководство%20программиста.docx) | Описание принципа работы и методы реализации решений проблем в программном продукте |
 | Презентация | [Презентация](https://github.com/AlexeyBQS/Examwork/blob/master/Presentation/Презентация.pptx) | Визуальная часть презентации |
 || [Речь](https://github.com/AlexeyBQS/Examwork/blob/master/Presentation/Речь.docx) | Речевая часть презентации |
-| Продукт | [Shedule](https://github.com/AlexeyBQS/Examwork/tree/master/Product/Shedule) | Объект разработки |
+| Продукт | [Schedule](https://github.com/AlexeyBQS/Examwork/tree/master/Product/Schedule) | Объект разработки |
 | Тестовые данные | [TestGenData](https://github.com/AlexeyBQS/Examwork/tree/master/Product/GenTestData) | Генератор тестовых данных для демонстрации программного продукта |

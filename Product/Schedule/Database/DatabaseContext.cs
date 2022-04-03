@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Schedule.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Schedule.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=ScheduleDatabase.db");
+            optionsBuilder.UseSqlite(ConfigManager.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
