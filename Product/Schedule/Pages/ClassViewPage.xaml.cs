@@ -116,6 +116,7 @@ namespace Schedule.Pages
             CabinetIdComboBox.SelectedIndex = -1;
             NameTextBox.Text = null!;
             CountPupilsTextBox.Text = null!;
+            MaxDifficultyTextBox.Text = null!;
             PhotoBorder.Background = new ImageBrush(Service.DefaultPhoto);
 
             SaveClassPhotoButton.IsEnabled = false;
@@ -130,6 +131,7 @@ namespace Schedule.Pages
             CabinetIdComboBox.IsEnabled = false;
             NameTextBox.IsEnabled = false;
             CountPupilsTextBox.IsEnabled = false;
+            MaxDifficultyTextBox.IsEnabled = false;
 
             TeacherIdComboBoxClearButton.IsEnabled = false;
             CabinetIdComboBoxClearButton.IsEnabled = false;
@@ -168,6 +170,7 @@ namespace Schedule.Pages
 
                     NameTextBox.Text = _class.Name;
                     CountPupilsTextBox.Text = _class.CountPupils.ToString();
+                    MaxDifficultyTextBox.Text = _class.MaxDifficulty.ToString();
                     PhotoBorder.Background = new ImageBrush(_class.Photo_Image);
 
                     TeacherIdComboBoxClearButton.IsEnabled = true;
@@ -194,6 +197,7 @@ namespace Schedule.Pages
                     CabinetIdComboBox.IsEnabled = true;
                     NameTextBox.IsEnabled = true;
                     CountPupilsTextBox.IsEnabled = true;
+                    MaxDifficultyTextBox.IsEnabled = true;
                 }
                 else
                 {
@@ -287,6 +291,7 @@ namespace Schedule.Pages
 
                             _class.Name = NameTextBox.Text;
                             _class.CountPupils = CountPupilsTextBox.Text != string.Empty ? int.Parse(CountPupilsTextBox.Text) : null!;
+                            _class.MaxDifficulty = MaxDifficultyTextBox.Text != string.Empty ? int.Parse(MaxDifficultyTextBox.Text) : null!;
                             _class.Photo = photoByteArray;
                         }
 

@@ -181,6 +181,7 @@ IEnumerable<Class> GenClasses(IEnumerable<Teacher> teachers)
                 CabinetId = id,
                 Name = $"{i}{new string[] { "А", "Б", "В" }[j - 1]}",
                 CountPupils = random.Next(25, 30),
+                MaxDifficulty = random.Next(40, 50),
                 Photo = null!
             });
 

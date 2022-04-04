@@ -13,6 +13,7 @@ namespace Schedule.Database
         public int? CabinetId { get; set; } = null!;
         public string? Name { get; set; } = null!;
         public int? CountPupils { get; set; } = null!;
+        public int? MaxDifficulty { get; set; } = null!;
         public byte[]? Photo { get; set; } = null!;
 
         public Teacher? Teacher { get; set; } = null!;

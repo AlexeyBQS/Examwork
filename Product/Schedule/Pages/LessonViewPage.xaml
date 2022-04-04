@@ -46,7 +46,7 @@
             </ListBox>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Width="2" ShowsPreview="False"
+        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Width="2" ShowsPreview="False" IsEnabled="False"
                       VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
 
         <Grid Grid.Column="2">
@@ -166,7 +166,7 @@
             </TabControl>
         </Grid>
 
-        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="2" ShowsPreview="False"
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="2" ShowsPreview="False" IsEnabled="False"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
         <Grid Grid.Row="2" Grid.Column="0">
@@ -208,7 +208,7 @@
                     Content="Удалить" x:Name="DeleteLessonButton" Click="DeleteLessonButton_Click"/>
         </Grid>
 
-        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" Height="2" ShowsPreview="False"
+        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" Height="2" ShowsPreview="False" IsEnabled="False"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
         <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">

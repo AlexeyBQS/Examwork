@@ -24,6 +24,8 @@ namespace Schedule.ViewItemSources
         public int? CabinetId => Class.CabinetId;
         public string? Name => Class.Name;
         public int? CountPupils => Class.CountPupils;
+        public int? MaxDifficulty => Class.MaxDifficulty;
+            
         public byte[]? Photo => Class.Photo;
 
         public BitmapImage Photo_Image =>
