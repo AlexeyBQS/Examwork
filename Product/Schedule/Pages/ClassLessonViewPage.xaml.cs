@@ -69,8 +69,8 @@ namespace Schedule.Pages
                     {
                         IQueryable<Lesson> lessons = context.Lessons;
 
-                        List<LessonAndClassLessonViewItemSource> viewItemSources = lessons
-                            .ToList().Select(x => new LessonAndClassLessonViewItemSource(x)).ToList();
+                        List<ClassLessonViewItemSource> viewItemSources = lessons
+                            .ToList().Select(x => new ClassLessonViewItemSource(x)).ToList();
 
                         viewItemSources.ForEach(x =>
                             x.ClassLesson = context.ClassLessons
@@ -123,8 +123,8 @@ namespace Schedule.Pages
         {
             if (LessonAndClassLessonListBox.SelectedItems.Count > 0)
             {
-                LessonAndClassLessonViewItemSource lessonAndClassLesson =
-                    (LessonAndClassLessonListBox.SelectedItems[0] as LessonAndClassLessonViewItemSource)!;
+                ClassLessonViewItemSource lessonAndClassLesson =
+                    (LessonAndClassLessonListBox.SelectedItems[0] as ClassLessonViewItemSource)!;
 
                 if (lessonAndClassLesson.ClassLesson != null)
                 {
@@ -241,10 +241,10 @@ namespace Schedule.Pages
         private void AddClassLessonButton_Click(object sender, RoutedEventArgs e)
         {
             if (LessonAndClassLessonListBox.SelectedItems.Count > 0 &&
-                !(LessonAndClassLessonListBox.SelectedItems[0] as LessonAndClassLessonViewItemSource)!.ClassLesson_IsEnabled)
+                !(LessonAndClassLessonListBox.SelectedItems[0] as ClassLessonViewItemSource)!.ClassLesson_IsEnabled)
             {
                 int classId = (ClassListBox.SelectedItems[0] as ClassViewItemSource)!.ClassId;
-                int lessonId = (LessonAndClassLessonListBox.SelectedItems[0] as LessonAndClassLessonViewItemSource)!.LessonId;
+                int lessonId = (LessonAndClassLessonListBox.SelectedItems[0] as ClassLessonViewItemSource)!.LessonId;
 
                 using (DatabaseContext context = new())
                 {
@@ -261,10 +261,10 @@ namespace Schedule.Pages
 
                 using (DatabaseContext context = new())
                 {
-                    IEnumerable<LessonAndClassLessonViewItemSource> items =
-                        (LessonAndClassLessonListBox.ItemsSource as IEnumerable<LessonAndClassLessonViewItemSource>) ?? null!;
+                    IEnumerable<ClassLessonViewItemSource> items =
+                        (LessonAndClassLessonListBox.ItemsSource as IEnumerable<ClassLessonViewItemSource>) ?? null!;
 
-                    LessonAndClassLessonViewItemSource? selectedItem = items?.FirstOrDefault(i => i.LessonId == lessonId);
+                    ClassLessonViewItemSource? selectedItem = items?.FirstOrDefault(i => i.LessonId == lessonId);
 
                     if (selectedItem != null)
                     {
@@ -279,8 +279,8 @@ namespace Schedule.Pages
         {
             if (LessonAndClassLessonListBox.SelectedItems.Count > 0)
             {
-                LessonAndClassLessonViewItemSource viewItemSource =
-                    (LessonAndClassLessonListBox.SelectedItems[0] as LessonAndClassLessonViewItemSource) ?? null!;
+                ClassLessonViewItemSource viewItemSource =
+                    (LessonAndClassLessonListBox.SelectedItems[0] as ClassLessonViewItemSource) ?? null!;
 
                 if (viewItemSource != null)
                 {
@@ -347,10 +347,10 @@ namespace Schedule.Pages
 
                     using (DatabaseContext context = new())
                     {
-                        IEnumerable<LessonAndClassLessonViewItemSource> items =
-                            (LessonAndClassLessonListBox.ItemsSource as IEnumerable<LessonAndClassLessonViewItemSource>) ?? null!;
+                        IEnumerable<ClassLessonViewItemSource> items =
+                            (LessonAndClassLessonListBox.ItemsSource as IEnumerable<ClassLessonViewItemSource>) ?? null!;
 
-                        LessonAndClassLessonViewItemSource? selectedItem = items?.FirstOrDefault(i => i.LessonId == lessonId);
+                        ClassLessonViewItemSource? selectedItem = items?.FirstOrDefault(i => i.LessonId == lessonId);
 
                         if (selectedItem != null)
                         {
@@ -366,8 +366,8 @@ namespace Schedule.Pages
         {
             if (LessonAndClassLessonListBox.SelectedItems.Count > 0)
             {
-                LessonAndClassLessonViewItemSource viewItemSource =
-                    (LessonAndClassLessonListBox.SelectedItems[0] as LessonAndClassLessonViewItemSource) ?? null!;
+                ClassLessonViewItemSource viewItemSource =
+                    (LessonAndClassLessonListBox.SelectedItems[0] as ClassLessonViewItemSource) ?? null!;
 
                 if (viewItemSource != null)
                 {

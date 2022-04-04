@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Schedule.ViewItemSources
 {
-    public class LessonAndClassLessonViewItemSource
+    public class ClassLessonViewItemSource
     {
-        public LessonAndClassLessonViewItemSource(Lesson lesson, ClassLesson classLesson = null!)
+        public ClassLessonViewItemSource(Lesson lesson, ClassLesson classLesson = null!)
         {
             Lesson = lesson;
             ClassLesson = classLesson;
