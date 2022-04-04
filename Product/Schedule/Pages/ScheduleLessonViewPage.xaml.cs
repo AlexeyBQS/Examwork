@@ -27,7 +27,9 @@ namespace Schedule.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание - Расписание занятий";
 
+            //
         }
     }
 }

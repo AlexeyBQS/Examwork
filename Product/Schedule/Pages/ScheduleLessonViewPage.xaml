@@ -9,6 +9,28 @@
       Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+        </Grid>
+
+        <GridSplitter Grid.Row="2" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <ScrollViewer Grid.Row="3" x:Name="ScheduleScrollViewer" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="ScheduleItemsControl" ItemsSource="{Binding}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Page>

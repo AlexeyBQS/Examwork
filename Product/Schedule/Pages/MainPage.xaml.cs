@@ -44,7 +44,7 @@ namespace Schedule.Pages
             new("Классы", new ClassViewPage()),
             new("Дисциплины", new LessonViewPage()),
             new("Дисциплины класса", new ClassLessonViewPage()),
-            new("Расписание", null!),
+            new("Расписание", new ScheduleLessonViewPage()),
         };
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ namespace Schedule.Pages
             if (MenuListBox.SelectedItems.Count > 0)
             {
                 MenuElement selectedMenuElement = (MenuListBox.SelectedItems[0] as MenuElement) ?? null!;
-                MenuFrame.Content = selectedMenuElement.Page ?? null!;
+                MenuFrame.Content = selectedMenuElement?.Page;
             }
         }
     }
