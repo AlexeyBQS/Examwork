@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GenTestData.Service;
+using Microsoft.EntityFrameworkCore;
 using Schedule.Database;
 using System.Drawing;
 
@@ -108,17 +109,6 @@ void LogAction(string message, Action action)
     Console.WriteLine("Completed!");
 }
 
-byte[] GetImageByteArray(string path)
-{
-    Image image = Image.FromFile(path);
-
-    using (MemoryStream ms = new())
-    {
-        image.Save(ms, image.RawFormat);
-        return ms.ToArray();
-    }
-}
-
 IEnumerable<Teacher> GenTeachers(string[] dataTeachers)
 {
     Random rand = new();
@@ -147,7 +137,7 @@ IEnumerable<Teacher> GenTeachers(string[] dataTeachers)
             Birthday = new DateTime(rand.Next(1960, 1999), rand.Next(1, 13), rand.Next(1, 27)),
             Passport = passport,
             PhoneNumber = phone,
-            Photo = GetImageByteArray($"TestData\\Teacher\\Teacher{dataSplit[0]}.jpg"),
+            Photo = Service.ConvertFileToImageByteArray($"TestData\\Teacher\\Teacher{dataSplit[0]}.jpg"),
             Education = "Образование"
         });
     }

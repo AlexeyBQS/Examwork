@@ -4,6 +4,7 @@ using Schedule.Services;
 using Schedule.ViewItemSources;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -249,7 +250,7 @@ namespace Schedule.Pages
                         {
                             if (teacher.Photo != null && teacher.Photo?.Length != 0)
                             {
-                                BitmapImage image = Service.ConvertByteArrayToImage(teacher.Photo ?? null!);
+                                BitmapImage image = Service.ConvertByteArrayToBitmapImage(teacher.Photo ?? null!);
 
                                 SaveFileDialog dialog = new();
                                 dialog.FileName = $"Педагог_{TeacherIdTextBox.Text ?? "0"}.png";
@@ -263,10 +264,9 @@ namespace Schedule.Pages
                                     BitmapEncoder encoder = new PngBitmapEncoder();
                                     encoder.Frames.Add(BitmapFrame.Create(image));
 
-                                    using (FileStream? fileStream = new(pathFile, FileMode.Create))
-                                    {
-                                        encoder.Save(fileStream);
-                                    }
+                                    using FileStream fileStream = new(pathFile, FileMode.Create);
+                                    
+                                    encoder.Save(fileStream);
                                 }
                             }
                         }
@@ -337,7 +337,11 @@ namespace Schedule.Pages
 
                         if (teacher != null)
                         {
-                            BitmapImage photo = (PhotoBorder.Background as ImageBrush)!.ImageSource as BitmapImage ?? null!;
+                            ImageSource photo = (PhotoBorder.Background as ImageBrush)!.ImageSource;
+                            byte[]? photoByteArray =
+                                Service.ConvertImageToByteArray(
+                                Service.ResizeImage(
+                                Service.ConvertImageSourceToBitmap(photo)));
 
                             teacher.Surname = SurnameTextBox.Text;
                             teacher.Name = NameTextBox.Text;
@@ -345,7 +349,7 @@ namespace Schedule.Pages
                             teacher.Birthday = Service.GetOnlyDate(BirthdayDatePicker.SelectedDate ?? null!);
                             teacher.Passport = PassportTextBox.Text;
                             teacher.PhoneNumber = PhoneNumberTextBox.Text;
-                            teacher.Photo = Service.ConvertImageToByteArray(photo);
+                            teacher.Photo = photoByteArray;
                             teacher.Education = EducationTextBox.Text;
                         }
 

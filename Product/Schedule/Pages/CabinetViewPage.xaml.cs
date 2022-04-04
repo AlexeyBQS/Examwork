@@ -261,7 +261,11 @@ namespace Schedule.Pages
 
                         if (cabinet != null)
                         {
-                            BitmapImage photo = (PhotoBorder.Background as ImageBrush)!.ImageSource as BitmapImage ?? null!;
+                            ImageSource photo = (PhotoBorder.Background as ImageBrush)!.ImageSource;
+                            byte[]? photoByteArray =
+                                Service.ConvertImageToByteArray(
+                                Service.ResizeImage(
+                                Service.ConvertImageSourceToBitmap(photo)));
 
                             cabinet.TeacherId = TeacherIdComboBox.SelectedIndex >= 0
                                 ? (TeacherIdComboBox.Items[TeacherIdComboBox.SelectedIndex] as Teacher)!.TeacherId
@@ -269,7 +273,7 @@ namespace Schedule.Pages
 
                             cabinet.Name = NameTextBox.Text;
                             cabinet.CountPlaces = CountPlacesTextBox.Text != string.Empty ? int.Parse(CountPlacesTextBox.Text) : null!;
-                            cabinet.Photo = Service.ConvertImageToByteArray(photo);
+                            cabinet.Photo = photoByteArray;
                             cabinet.Description = DescriptionTextBox.Text;
                         }
 
@@ -329,7 +333,7 @@ namespace Schedule.Pages
                         {
                             if (cabinet.Photo != null && cabinet.Photo?.Length != 0)
                             {
-                                BitmapImage image = Service.ConvertByteArrayToImage(cabinet.Photo ?? null!);
+                                BitmapImage image = Service.ConvertByteArrayToBitmapImage(cabinet.Photo ?? null!);
 
                                 SaveFileDialog dialog = new();
                                 dialog.FileName = $"Кабинет_{CabinetIdTextBox.Text ?? "0"}.png";

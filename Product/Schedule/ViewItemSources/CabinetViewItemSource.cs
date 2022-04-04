@@ -28,7 +28,7 @@ namespace Schedule.ViewItemSources
 
         public BitmapImage Photo_Image =>
             Photo != null || Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Photo ?? null!)
             : Service.DefaultPhoto;
 
         // Class - Teacher
@@ -46,7 +46,7 @@ namespace Schedule.ViewItemSources
         public string? Teacher_ToShortString => Teacher?.ToShortString();
         public BitmapImage Teacher_Photo_Image =>
             Teacher_Photo != null || Teacher_Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Teacher_Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Teacher_Photo ?? null!)
             : Service.DefaultPhoto;
     }
 }

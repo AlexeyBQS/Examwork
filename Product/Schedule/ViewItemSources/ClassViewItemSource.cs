@@ -28,7 +28,7 @@ namespace Schedule.ViewItemSources
 
         public BitmapImage Photo_Image =>
             Photo != null || Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Photo ?? null!)
             : Service.DefaultPhoto;
 
         // Class - Teacher
@@ -46,7 +46,7 @@ namespace Schedule.ViewItemSources
         public string? Teacher_ToShortString => Teacher?.ToShortString();
         public BitmapImage Teacher_Photo_Image =>
             Teacher_Photo != null || Teacher_Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Teacher_Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Teacher_Photo ?? null!)
             : Service.DefaultPhoto;
 
         // Class - Cabinet
@@ -61,7 +61,7 @@ namespace Schedule.ViewItemSources
         public string? Cabinet_ToShortString => Cabinet?.ToShortString();
         public BitmapImage Cabinet_Photo_Image =>
             Cabinet_Photo != null || Cabinet_Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Cabinet_Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Cabinet_Photo ?? null!)
             : Service.DefaultPhoto;
 
         // Class - Cabinet - Teacher
@@ -79,7 +79,7 @@ namespace Schedule.ViewItemSources
         public string? Cabinet_Teacher_ToShortString => Cabinet_Teacher?.ToShortString();
         public BitmapImage Cabinet_Teacher_Photo_Image =>
             Cabinet_Teacher_Photo != null || Cabinet_Teacher_Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Cabinet_Teacher_Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Cabinet_Teacher_Photo ?? null!)
             : Service.DefaultPhoto;
     }
 }

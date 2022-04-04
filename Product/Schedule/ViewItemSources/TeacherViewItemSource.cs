@@ -2,9 +2,11 @@
 using Schedule.Services;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Schedule.ViewItemSources
@@ -31,9 +33,10 @@ namespace Schedule.ViewItemSources
 
         public string ToShortString => Teacher.ToShortString();
         public string? Birthday_ToString => Teacher.Birthday?.ToShortDateString() ?? null!;
+
         public BitmapImage Photo_Image =>
             Photo != null || Photo?.Length > 0
-            ? Service.ConvertByteArrayToImage(Teacher.Photo ?? null!)
+            ? Service.ConvertByteArrayToBitmapImage(Photo ?? null!)
             : Service.DefaultPhoto;
     }
 }
