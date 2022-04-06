@@ -109,6 +109,40 @@ void LogAction(string message, Action action)
     Console.WriteLine("Completed!");
 }
 
+void AddRangeEntities<T>(IEnumerable<T> entities) where T : class
+{
+    if (entities == null) return;
+
+    using DatabaseContext context = new();
+
+    object[] dbSets = new object[]
+    {
+        context.Teachers,
+        context.Cabinets,
+        context.Classes,
+        context.Lessons,
+        context.ClassLessons,
+        context.ScheduleLessons,
+    };
+
+    DbSet<T> dbSet = null!;
+
+    for (int i = 0; i < dbSets.Length && dbSet == null; i++)
+    {
+        dbSet = (dbSets[i] as DbSet<T>)!;
+    }
+
+    if (dbSet != null)
+    {
+        dbSet.AddRange(entities);
+        context.SaveChanges();
+    }
+}
+
+#endregion
+
+#region Generators
+
 IEnumerable<Teacher> GenTeachers(string[] dataTeachers)
 {
     Random rand = new();
@@ -155,7 +189,7 @@ IEnumerable<Cabinet> GenCabinets(IEnumerable<Teacher> teachers)
         cabinets.Add(new Cabinet
         {
             TeacherId = teacher.TeacherId,
-            Name = $"Кабинет {teacher.TeacherId}",
+            Name = $"к{teacher.TeacherId}",
             CountPlaces = rand.Next(25, 30),
             Photo = null!,
             Description = "Описание"
@@ -210,42 +244,118 @@ IEnumerable<Lesson> GenLessons(string[] dataLessons)
 
 IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Teacher> teachers, IEnumerable<Cabinet> cabinets, IEnumerable<Class> classes, IEnumerable<Lesson> lessons)
 {
-    return default!;
+    List<ClassLesson> classLessons = new();
+    Random rand = new();
+
+    foreach (Class _class in classes)
+    {
+        foreach (Lesson lesson in lessons)
+        {
+            bool add = false;
+            ClassLesson classLesson = new();
+
+            classLesson.ClassId = _class.ClassId;
+            classLesson.LessonId = null!;
+            classLesson.TeacherId = _class.TeacherId;
+            classLesson.PairClassLessonId = null!;
+            classLesson.DefaultCabinetId = null!;
+            classLesson.CountLesson = rand.Next(30, 60);
+            classLesson.Difficulty = rand.Next(5, 10);
+
+            if (_class.Name == "1А" || _class.Name == "1Б" || _class.Name == "1В" ||
+                _class.Name == "2А" || _class.Name == "2Б" || _class.Name == "2В" ||
+                _class.Name == "3А" || _class.Name == "3Б" || _class.Name == "3В" ||
+                _class.Name == "4А" || _class.Name == "4Б" || _class.Name == "4В")
+            {
+                if (lesson.Name == "Литература" || lesson.Name == "Математика" || lesson.Name == "Музыка" ||
+                    lesson.Name == "Окружающий мир" || lesson.Name == "Русский язык" || lesson.Name == "ФЗК")
+                {
+                    add = true;
+                }
+            }
+            else if (_class.Name == "5А" || _class.Name == "5Б" || _class.Name == "5В" ||
+                     _class.Name == "6А" || _class.Name == "6Б" || _class.Name == "6В" ||
+                     _class.Name == "7А" || _class.Name == "7Б" || _class.Name == "7В" ||
+                     _class.Name == "8А" || _class.Name == "8Б" || _class.Name == "8В" ||
+                     _class.Name == "9А" || _class.Name == "9Б" || _class.Name == "9В")
+            {
+                if (lesson.Name == "Алгебра" || lesson.Name == "Английский язык" || lesson.Name == "Биология" ||
+                    lesson.Name == "География" || lesson.Name == "Геометрия" || lesson.Name == "Информатика" ||
+                    lesson.Name == "История" || lesson.Name == "Литература" || lesson.Name == "Музыка" ||
+                    lesson.Name == "Немецкий язык" || lesson.Name == "Обществознание" || lesson.Name == "ОБЖ" ||
+                    lesson.Name == "Риторика" || lesson.Name == "Русский язык" || lesson.Name == "Технология" ||
+                    lesson.Name == "Физика" || lesson.Name == "ФЗК" || lesson.Name == "Химия" || lesson.Name == "Экология")
+                {
+                    add = true;
+                }
+            }
+            else if (_class.Name == "10А" || _class.Name == "10Б" || _class.Name == "10В" ||
+                     _class.Name == "11А" || _class.Name == "11Б" || _class.Name == "11В")
+            {
+                if (lesson.Name == "Алгебра" || lesson.Name == "Английский язык" || lesson.Name == "Астрономия" ||
+                    lesson.Name == "Биология" || lesson.Name == "География" || lesson.Name == "Геометрия" ||
+                    lesson.Name == "Информатика" || lesson.Name == "История" || lesson.Name == "Литература" ||
+                    lesson.Name == "Математика" || lesson.Name == "Немецкий язык" || lesson.Name == "Обществознание" ||
+                    lesson.Name == "ОБЖ" || lesson.Name == "Русский язык" || lesson.Name == "Технология" ||
+                    lesson.Name == "Физика" || lesson.Name == "ФЗК" || lesson.Name == "Черчение" ||
+                    lesson.Name == "Химия")
+                {
+                    add = true;
+                }
+            }
+
+            if (add)
+            {
+                classLesson.LessonId = lesson.LessonId;
+
+                if (lesson.Name != "Английский язык" || lesson.Name != "Немецкий язык")
+                {
+                    classLesson.TeacherId = _class.TeacherId;
+                    classLesson.DefaultCabinetId = _class.CabinetId;
+                }
+
+                classLessons.Add(classLesson);
+            }
+        }
+    }
+
+    return classLessons;
+}
+
+IEnumerable<ClassLesson> GenPairClassLesson()
+{
+    using DatabaseContext context = new();
+
+    int? englishLessonId = context.Lessons.FirstOrDefault(lesson => lesson.Name == "Английский язык")?.LessonId ?? null!;
+    int? germanLessonId = context.Lessons.FirstOrDefault(lesson => lesson.Name == "Немецкий язык")?.LessonId ?? null!;
+
+    int countClass = 33;
+
+    for (int classId = 1; classId <= countClass; ++classId)
+    {
+        ClassLesson? english = context.ClassLessons
+            .Where(classLessons => classLessons.ClassId == classId)
+            .FirstOrDefault(classLesson => classLesson.LessonId == englishLessonId);
+        
+        ClassLesson? german = context.ClassLessons
+            .Where(classLessons => classLessons.ClassId == classId)
+            .FirstOrDefault(classLesson => classLesson.LessonId == germanLessonId);
+
+        if (english != null && german != null)
+        {
+            english.PairClassLessonId = german.ClassLessonId;
+            german.PairClassLessonId = english.ClassLessonId;
+        }
+    }
+
+    context.SaveChanges();
+
+    return context.ClassLessons.ToList();
 }
 
 IEnumerable<ScheduleLesson> GenScheduleLessons()
 {
     return default!;
-}
-
-void AddRangeEntities<T>(IEnumerable<T> entities) where T : class
-{
-    if (entities == null) return;
-
-    using DatabaseContext context = new();
-
-    object[] dbSets = new object[]
-    {
-        context.Teachers,
-        context.Cabinets,
-        context.Classes,
-        context.Lessons,
-        context.ClassLessons,
-        context.ScheduleLessons,
-    };
-
-    DbSet<T> dbSet = null!;
-
-    for (int i = 0; i < dbSets.Length && dbSet == null; i++)
-    {
-        dbSet = (dbSets[i] as DbSet<T>)!;
-    }
-
-    if (dbSet != null)
-    {
-        dbSet.AddRange(entities);
-        context.SaveChanges();
-    }
 }
 
 #endregion
@@ -287,6 +397,7 @@ Console.WriteLine();
 
 LogAction("Creating class lessons", () => classLessons = GenClassLessons(teachers, cabinets, classes, lessons));
 LogAction("Adding class lessons in database", () => AddRangeEntities(classLessons));
+LogAction("Creating reference to pair lessons", () => classLessons = GenPairClassLesson());
 Console.WriteLine();
 
 LogAction("Creating schedule lessons", () => scheduleLessons = GenScheduleLessons());
