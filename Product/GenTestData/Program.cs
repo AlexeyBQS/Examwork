@@ -242,9 +242,10 @@ IEnumerable<Lesson> GenLessons(string[] dataLessons)
     return lessons;
 }
 
-IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Teacher> teachers, IEnumerable<Cabinet> cabinets, IEnumerable<Class> classes, IEnumerable<Lesson> lessons)
+IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Class> classes, IEnumerable<Lesson> lessons)
 {
     List<ClassLesson> classLessons = new();
+
     Random rand = new();
 
     foreach (Class _class in classes)
@@ -267,8 +268,8 @@ IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Teacher> teachers, IEnumera
                 _class.Name == "3А" || _class.Name == "3Б" || _class.Name == "3В" ||
                 _class.Name == "4А" || _class.Name == "4Б" || _class.Name == "4В")
             {
-                if (lesson.Name == "Литература" || lesson.Name == "Математика" || lesson.Name == "Музыка" ||
-                    lesson.Name == "Окружающий мир" || lesson.Name == "Русский язык" || lesson.Name == "ФЗК")
+                if (lesson.Name == "Окружающий мир" || lesson.Name == "Математика" || lesson.Name == "Музыка" ||
+                    lesson.Name == "Русский язык"   || lesson.Name == "Литература" || lesson.Name == "ФЗК")
                 {
                     add = true;
                 }
@@ -279,12 +280,13 @@ IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Teacher> teachers, IEnumera
                      _class.Name == "8А" || _class.Name == "8Б" || _class.Name == "8В" ||
                      _class.Name == "9А" || _class.Name == "9Б" || _class.Name == "9В")
             {
-                if (lesson.Name == "Алгебра" || lesson.Name == "Английский язык" || lesson.Name == "Биология" ||
-                    lesson.Name == "География" || lesson.Name == "Геометрия" || lesson.Name == "Информатика" ||
-                    lesson.Name == "История" || lesson.Name == "Литература" || lesson.Name == "Музыка" ||
-                    lesson.Name == "Немецкий язык" || lesson.Name == "Обществознание" || lesson.Name == "ОБЖ" ||
-                    lesson.Name == "Риторика" || lesson.Name == "Русский язык" || lesson.Name == "Технология" ||
-                    lesson.Name == "Физика" || lesson.Name == "ФЗК" || lesson.Name == "Химия" || lesson.Name == "Экология")
+                if (lesson.Name == "История" || lesson.Name == "Литература" || lesson.Name == "Английский язык" ||
+                    lesson.Name == "Алгебра" || lesson.Name == "География"  || lesson.Name == "Обществознание"  ||
+                    lesson.Name == "Музыка"  || lesson.Name == "Геометрия"  || lesson.Name == "Немецкий язык"   ||
+                    lesson.Name == "Физика"  || lesson.Name == "Риторика"   || lesson.Name == "Русский язык"    ||
+                    lesson.Name == "Химия"   || lesson.Name == "Экология"   || lesson.Name == "Информатика"     ||
+                    lesson.Name == "ОБЖ"     || lesson.Name == "Биология"   || lesson.Name == "Технология"      ||
+                    lesson.Name == "ФЗК")       
                 {
                     add = true;
                 }
@@ -292,14 +294,16 @@ IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Teacher> teachers, IEnumera
             else if (_class.Name == "10А" || _class.Name == "10Б" || _class.Name == "10В" ||
                      _class.Name == "11А" || _class.Name == "11Б" || _class.Name == "11В")
             {
-                if (lesson.Name == "Алгебра" || lesson.Name == "Английский язык" || lesson.Name == "Астрономия" ||
-                    lesson.Name == "Биология" || lesson.Name == "География" || lesson.Name == "Геометрия" ||
-                    lesson.Name == "Информатика" || lesson.Name == "История" || lesson.Name == "Литература" ||
-                    lesson.Name == "Математика" || lesson.Name == "Немецкий язык" || lesson.Name == "Обществознание" ||
-                    lesson.Name == "ОБЖ" || lesson.Name == "Русский язык" || lesson.Name == "Технология" ||
-                    lesson.Name == "Физика" || lesson.Name == "ФЗК" || lesson.Name == "Черчение" ||
-                    lesson.Name == "Химия")
+                if (lesson.Name == "Алгебра" || lesson.Name == "Астрономия" || lesson.Name == "Английский язык" ||
+                    lesson.Name == "История" || lesson.Name == "Литература" || lesson.Name == "Обществознание"  ||
+                    lesson.Name == "Физика"  || lesson.Name == "География"  || lesson.Name == "Немецкий язык"   ||
+                    lesson.Name == "Химия"   || lesson.Name == "Геометрия"  || lesson.Name == "Русский язык"    ||
+                    lesson.Name == "ОБЖ"     || lesson.Name == "Биология"   || lesson.Name == "Информатика"     ||
+                    lesson.Name == "ФЗК"     || lesson.Name == "Черчение"   || lesson.Name == "Технология")
                 {
+                    
+
+
                     add = true;
                 }
             }
@@ -336,7 +340,7 @@ IEnumerable<ClassLesson> GenPairClassLesson()
         ClassLesson? english = context.ClassLessons
             .Where(classLessons => classLessons.ClassId == classId)
             .FirstOrDefault(classLesson => classLesson.LessonId == englishLessonId);
-        
+
         ClassLesson? german = context.ClassLessons
             .Where(classLessons => classLessons.ClassId == classId)
             .FirstOrDefault(classLesson => classLesson.LessonId == germanLessonId);
@@ -355,7 +359,89 @@ IEnumerable<ClassLesson> GenPairClassLesson()
 
 IEnumerable<ScheduleLesson> GenScheduleLessons()
 {
-    return default!;
+    using DatabaseContext context = new();
+
+    IQueryable<Class> classes = context.Classes;
+    IQueryable<Lesson> lessons = context.Lessons;
+    List<ScheduleLesson> scheduleLessons = new();
+
+    DateOnly dateCurrent = new(2021, 1, 2);
+    DateOnly dateEnd = new(2022, 5, 31);
+
+    while (dateCurrent <= dateEnd)
+    {
+        if (dateCurrent.DayOfWeek != DayOfWeek.Saturday && dateCurrent.DayOfWeek != DayOfWeek.Sunday)
+        {
+            foreach (Class _class in classes)
+            {
+                IQueryable<ClassLesson> classLessons = context.ClassLessons
+                    .Where(classLesson => classLesson.ClassId == _class.ClassId);
+
+                int numberLesson = 1;
+                foreach (ClassLesson classLesson in classLessons)
+                {
+                    bool add = false;
+                    string lessonName = lessons
+                        .First(lesson => lesson.LessonId == classLesson.LessonId).Name!;
+
+                    if (numberLesson <= 6)
+                    {
+                        if (_class.Name == "1А" || _class.Name == "1Б" || _class.Name == "1В" ||
+                            _class.Name == "2А" || _class.Name == "2Б" || _class.Name == "2В" ||
+                            _class.Name == "3А" || _class.Name == "3Б" || _class.Name == "3В" ||
+                            _class.Name == "4А" || _class.Name == "4Б" || _class.Name == "4В")
+                        {
+                            if (lessonName == "Литература" || lessonName == "Окружающий мир" ||
+                                lessonName == "Математика" || lessonName == "Русский язык")
+                            {
+                                add = true;
+                            }
+                        }
+                        else if (_class.Name == "5А" || _class.Name == "5Б" || _class.Name == "5В" ||
+                                 _class.Name == "6А" || _class.Name == "6Б" || _class.Name == "6В" ||
+                                 _class.Name == "7А" || _class.Name == "7Б" || _class.Name == "7В" ||
+                                 _class.Name == "8А" || _class.Name == "8Б" || _class.Name == "8В" ||
+                                 _class.Name == "9А" || _class.Name == "9Б" || _class.Name == "9В")
+                        {
+                            if (lessonName == "Информатика" || lessonName == "Английский язык" ||
+                                lessonName == "Литература"  || lessonName == "Немецкий язык"   ||
+                                lessonName == "Алгебра"     || lessonName == "Русский язык")
+                            {
+                                add = true;
+                            }
+                        }
+                        else if (_class.Name == "10А" || _class.Name == "10Б" || _class.Name == "10В" ||
+                                 _class.Name == "11А" || _class.Name == "11Б" || _class.Name == "11В")
+                        {
+                            if (lessonName == "Информатика" || lessonName == "Английский язык" ||
+                                lessonName == "Литература"  || lessonName == "Немецкий язык" ||
+                                lessonName == "Алгебра"     || lessonName == "Русский язык")
+                            {
+                                add = true;
+                            }
+                        }
+                    }
+
+                    if (add)
+                    {
+                        scheduleLessons.Add(new ScheduleLesson
+                        {
+                            Date = new(dateCurrent.Year, dateCurrent.Month, dateCurrent.Day),
+                            NumberLesson = numberLesson,
+                            ClassLessonId = classLesson.ClassLessonId,
+                            CabinetId = _class.ClassId,
+                        });
+
+                        ++numberLesson;
+                    }
+                }
+            }
+        }
+
+        dateCurrent = dateCurrent.AddDays(1);
+    }
+
+    return scheduleLessons;
 }
 
 #endregion
@@ -395,7 +481,7 @@ LogAction("Creating lessons", () => lessons = GenLessons(dataLessons));
 LogAction("Adding lessons in database", () => AddRangeEntities(lessons));
 Console.WriteLine();
 
-LogAction("Creating class lessons", () => classLessons = GenClassLessons(teachers, cabinets, classes, lessons));
+LogAction("Creating class lessons", () => classLessons = GenClassLessons(classes, lessons));
 LogAction("Adding class lessons in database", () => AddRangeEntities(classLessons));
 LogAction("Creating reference to pair lessons", () => classLessons = GenPairClassLesson());
 Console.WriteLine();
