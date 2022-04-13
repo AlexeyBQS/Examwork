@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using Schedule.Database;
 using Schedule.Services;
 using Schedule.ViewItemSources;
@@ -38,6 +39,7 @@ namespace Schedule.Pages
             (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание - Педагоги";
 
             Service.FillViewCountRecordComboBox(ViewCountRecordComboBox);
+            ScheduleLessonsTeacherDatePicker.SelectedDate = DateTime.Today.Date;
 
             UpdateDataListBox();
             UpdateViewTabControl();
@@ -205,6 +207,7 @@ namespace Schedule.Pages
         private void TeacherListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateViewTabControl();
+            UpdateBusynessTabItem();
         }
 
         private void ViewCountRecordComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -265,7 +268,7 @@ namespace Schedule.Pages
                                     encoder.Frames.Add(BitmapFrame.Create(image));
 
                                     using FileStream fileStream = new(pathFile, FileMode.Create);
-                                    
+
                                     encoder.Save(fileStream);
                                 }
                             }
@@ -424,6 +427,73 @@ namespace Schedule.Pages
             PassportFilterTextBox.Text = null!;
             PhoneNumberFilterTextBox = null!;
             EducationFilterTextBox.Text = null!;
+        }
+
+        #endregion
+
+        #region Busyness
+
+        private void UpdateBusynessTabItem()
+        {
+            TeacherViewItemSource? teacher = (TeacherListBox.SelectedItem as TeacherViewItemSource);
+            DateTime? date = ScheduleLessonsTeacherDatePicker.SelectedDate;
+
+            if (teacher != null && date != null)
+            {
+                using DatabaseContext context = new();
+
+                IQueryable<ScheduleLesson> scheduleLessonsTeacher = context.ScheduleLessons
+                    .Include(x => x.Cabinet)
+                    .Include(x => x.ClassLesson)
+                    .Include(x => x.ClassLesson.Class)
+                    .Include(x => x.ClassLesson.Lesson)
+                    .Include(x => x.PairCabinet)
+                    .Include(x => x.ClassLesson.PairClassLesson)
+                    .Include(x => x.ClassLesson.PairClassLesson!.Class)
+                    .Include(x => x.ClassLesson.PairClassLesson!.Lesson)
+                    .Where(x => x.Date == date)
+                    .Where(x => x.ClassLesson.TeacherId == teacher.TeacherId || x.ClassLesson.PairClassLesson!.TeacherId == teacher.TeacherId);
+
+                for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+                {
+                    ScheduleLesson? scheduleLesson = scheduleLessonsTeacher.FirstOrDefault(x => x.NumberLesson == numberLesson);
+
+                    CheckBox isAvailableCheckBox = (FindName($"Lesson{numberLesson}_IsAvailableCheckBox") as CheckBox)!;
+                    TextBox classNameTextBox = (FindName($"Lesson{numberLesson}_ClassNameTextBox") as TextBox)!;
+                    TextBox lessonNameTextBox = (FindName($"Lesson{numberLesson}_LessonNameTextBox") as TextBox)!;
+                    TextBox cabinetNameTextBox = (FindName($"Lesson{numberLesson}_CabinetNameTextBox") as TextBox)!;
+
+                    if (scheduleLesson != null)
+                    {
+                        if (scheduleLesson.ClassLesson.TeacherId == teacher.TeacherId)
+                        {
+                            isAvailableCheckBox.IsChecked = true;
+                            classNameTextBox.Text = scheduleLesson.ClassLesson.Class!.Name;
+                            lessonNameTextBox.Text = scheduleLesson.ClassLesson.Lesson!.Name;
+                            cabinetNameTextBox.Text = scheduleLesson.Cabinet!.Name;
+                        }
+                        else
+                        {
+                            isAvailableCheckBox.IsChecked = true;
+                            classNameTextBox.Text = scheduleLesson.ClassLesson.PairClassLesson!.Class!.Name;
+                            lessonNameTextBox.Text = scheduleLesson.ClassLesson.PairClassLesson!.Lesson!.Name;
+                            cabinetNameTextBox.Text = scheduleLesson.PairCabinet!.Name;
+                        }
+                    }
+                    else
+                    {
+                        isAvailableCheckBox.IsChecked = false;
+                        classNameTextBox.Text = null!;
+                        lessonNameTextBox.Text = null!;
+                        cabinetNameTextBox.Text = null!;
+                    }
+                }
+            }
+        }
+
+        private void ScheduleLessonsTeacherDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateBusynessTabItem();
         }
 
         #endregion
