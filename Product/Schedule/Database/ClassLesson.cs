@@ -26,5 +26,6 @@ namespace Schedule.Database
         public ICollection<ScheduleLesson>? ScheduleLessons { get; set; } = default!;
 
         public override string ToString() => $"{ClassLessonId}{(PairClassLessonId != null ? "п" : "")}-{LessonId}: {Lesson?.Name}{(PairClassLesson != null ? $" {PairClassLesson.Lesson?.Name}" : "")}";
+        public string ToShortString() => $"{Lesson?.Name}{(PairClassLesson != null ? $" {PairClassLesson.Lesson?.Name}" : "")}";
     }
 }

@@ -443,6 +443,8 @@ namespace Schedule.Pages
                 using DatabaseContext context = new();
 
                 IQueryable<ScheduleLesson> scheduleLessonsTeacher = context.ScheduleLessons
+                    .Where(x => x.Date == date)
+                    .Where(x => x.ClassLesson.TeacherId == teacher.TeacherId || x.ClassLesson.PairClassLesson!.TeacherId == teacher.TeacherId)
                     .Include(x => x.Cabinet)
                     .Include(x => x.ClassLesson)
                     .Include(x => x.ClassLesson.Class)
@@ -450,9 +452,7 @@ namespace Schedule.Pages
                     .Include(x => x.PairCabinet)
                     .Include(x => x.ClassLesson.PairClassLesson)
                     .Include(x => x.ClassLesson.PairClassLesson!.Class)
-                    .Include(x => x.ClassLesson.PairClassLesson!.Lesson)
-                    .Where(x => x.Date == date)
-                    .Where(x => x.ClassLesson.TeacherId == teacher.TeacherId || x.ClassLesson.PairClassLesson!.TeacherId == teacher.TeacherId);
+                    .Include(x => x.ClassLesson.PairClassLesson!.Lesson);
 
                 for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
                 {
@@ -469,14 +469,14 @@ namespace Schedule.Pages
                         {
                             isAvailableCheckBox.IsChecked = true;
                             classNameTextBox.Text = scheduleLesson.ClassLesson.Class!.Name;
-                            lessonNameTextBox.Text = scheduleLesson.ClassLesson.Lesson!.Name;
+                            lessonNameTextBox.Text = scheduleLesson.ClassLesson.ToShortString();
                             cabinetNameTextBox.Text = scheduleLesson.Cabinet!.Name;
                         }
                         else
                         {
                             isAvailableCheckBox.IsChecked = true;
                             classNameTextBox.Text = scheduleLesson.ClassLesson.PairClassLesson!.Class!.Name;
-                            lessonNameTextBox.Text = scheduleLesson.ClassLesson.PairClassLesson!.Lesson!.Name;
+                            lessonNameTextBox.Text = scheduleLesson.ClassLesson.PairClassLesson!.ToShortString();
                             cabinetNameTextBox.Text = scheduleLesson.PairCabinet!.Name;
                         }
                     }

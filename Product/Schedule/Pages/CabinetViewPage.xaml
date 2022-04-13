@@ -245,6 +245,176 @@
                         </Grid>
                     </Grid>
                 </TabItem>
+
+                <TabItem FontSize="14" Header="Занятость">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="1" Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Дата:"/>
+                                <DatePicker Grid.Column="1" x:Name="ScheduleLessonsCabinetDatePicker" Style="{StaticResource StandartDatePickerStyle}"
+                                            SelectedDateChanged="ScheduleLessonsCabinetDatePicker_SelectedDateChanged"/>
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <!-- Header -->
+                                <TextBlock Grid.Column="2" Grid.Row="0" Style="{StaticResource LabelTextBlockStyle}"
+                                           Margin="3" Text="Педагог" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Grid.Row="0" Style="{StaticResource LabelTextBlockStyle}"
+                                           Margin="3" Text="Предмет" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Grid.Row="0" Style="{StaticResource LabelTextBlockStyle}"
+                                           Margin="3" Text="Педагог" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <!-- FirstLesson -->
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №1"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="1" Grid.Column="1" x:Name="Lesson1_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="1" Grid.Column="2" x:Name="Lesson1_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" x:Name="Lesson1_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="1" Grid.Column="4" x:Name="Lesson1_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- SecondLesson -->
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №2"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="2" Grid.Column="1" x:Name="Lesson2_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="2" Grid.Column="2" x:Name="Lesson2_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="2" Grid.Column="3" x:Name="Lesson2_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="2" Grid.Column="4" x:Name="Lesson2_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- ThirdLesson -->
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №3"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="3" Grid.Column="1" x:Name="Lesson3_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="3" Grid.Column="2" x:Name="Lesson3_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="3" Grid.Column="3" x:Name="Lesson3_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="3" Grid.Column="4" x:Name="Lesson3_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- FourthLesson -->
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №4"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="4" Grid.Column="1" x:Name="Lesson4_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="4" Grid.Column="2" x:Name="Lesson4_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="4" Grid.Column="3" x:Name="Lesson4_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="4" Grid.Column="4" x:Name="Lesson4_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- FifthLesson -->
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №5"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="5" Grid.Column="1" x:Name="Lesson5_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="5" Grid.Column="2" x:Name="Lesson5_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="5" Grid.Column="3" x:Name="Lesson5_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="5" Grid.Column="4" x:Name="Lesson5_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- SixthLesson -->
+                                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №6"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="Lesson6_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="6" Grid.Column="2" x:Name="Lesson6_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="6" Grid.Column="3" x:Name="Lesson6_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="6" Grid.Column="4" x:Name="Lesson6_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- SeventhLesson -->
+                                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №7"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="7" Grid.Column="1" x:Name="Lesson7_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="7" Grid.Column="2" x:Name="Lesson7_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="7" Grid.Column="3" x:Name="Lesson7_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="7" Grid.Column="4" x:Name="Lesson7_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                                
+                                <!-- EighthLesson -->
+                                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}" Text="Урок №8"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,5"/>
+                                <CheckBox Grid.Row="8" Grid.Column="1" x:Name="Lesson8_IsAvailableCheckBox" Margin="3,5"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBox Grid.Row="8" Grid.Column="2" x:Name="Lesson8_ClassNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="80" Margin="5"/>
+                                <TextBox Grid.Row="8" Grid.Column="3" x:Name="Lesson8_LessonNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Margin="5"/>
+                                <TextBox Grid.Row="8" Grid.Column="4" x:Name="Lesson8_TeacherNameTextBox" IsReadOnly="True"
+                                         Style="{StaticResource StandartTextBoxStyle}" Width="130" Margin="5"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
             </TabControl>
         </Grid>
 
