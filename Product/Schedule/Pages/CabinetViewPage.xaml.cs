@@ -49,60 +49,58 @@ namespace Schedule.Pages
 
         private void UpdateDataComboBox()
         {
-            using (DatabaseContext context = new())
-            {
-                IEnumerable<Teacher> teachers = context.Teachers.ToList();
+            using DatabaseContext context = new();
 
-                TeacherIdComboBox.ItemsSource = teachers;
-                TeacherIdFilterComboBox.ItemsSource = teachers;
-            }
+            IEnumerable<Teacher> teachers = context.Teachers.ToList();
+
+            TeacherIdComboBox.ItemsSource = teachers;
+            TeacherIdFilterComboBox.ItemsSource = teachers;
         }
 
         private void UpdateDataListBox()
         {
-            using (DatabaseContext context = new())
+            using DatabaseContext context = new();
+
+            IQueryable<Cabinet> cabinets = context.Cabinets
+                .Include(cabinet => cabinet.Teacher);
+
+            if (CabinetIdFilterTextBox.Text != null)
             {
-                IQueryable<Cabinet> cabinets = context.Cabinets
-                    .Include(cabinet => cabinet.Teacher);
-
-                if (CabinetIdFilterTextBox.Text != null)
-                {
-                    string cabinetId = CabinetIdFilterTextBox.Text;
-                    cabinets = cabinets.Where(cabinet => cabinet.CabinetId.ToString().Contains(cabinetId));
-                }
-
-                if (TeacherIdFilterComboBox.SelectedItem != null)
-                {
-                    int teacherId = (TeacherIdFilterComboBox.SelectedItem as Teacher)!.TeacherId;
-                    cabinets = cabinets.Where(cabinet => cabinet.TeacherId == teacherId);
-                }
-
-                if (NameFilterTextBox.Text != null)
-                {
-                    string name = NameFilterTextBox.Text;
-                    cabinets = cabinets.Where(cabinet => cabinet.Name!.Contains(name));
-                }
-
-                if (CountPlacesFilterTextBox.Text != null)
-                {
-                    string countPlaces = CountPlacesFilterTextBox.Text;
-                    cabinets = cabinets.Where(cabinet => cabinet.CountPlaces.ToString()!.Contains(countPlaces));
-                }
-
-                if (DescriptionFilterTextBox.Text != null)
-                {
-                    string description = DescriptionFilterTextBox.Text;
-                    cabinets = cabinets.Where(cabinet => cabinet.Description!.Contains(description));
-                }
-
-                IEnumerable<CabinetViewItemSource> viewItemSources = CountViewRecord > 0
-                    ? cabinets.ToList().Take(CountViewRecord).Select(x => new CabinetViewItemSource(x))
-                    : cabinets.ToList().Select(x => new CabinetViewItemSource(x));
-
-                CabinetListBox.ItemsSource = viewItemSources;
-
-                StatusTextBlock.Text = $"Всего: {context.Cabinets.Count()} | Всего с фильтрами: {cabinets.Count()} | Отображается: {viewItemSources.Count()}";
+                string cabinetId = CabinetIdFilterTextBox.Text;
+                cabinets = cabinets.Where(cabinet => cabinet.CabinetId.ToString().Contains(cabinetId));
             }
+
+            if (TeacherIdFilterComboBox.SelectedItem != null)
+            {
+                int teacherId = (TeacherIdFilterComboBox.SelectedItem as Teacher)!.TeacherId;
+                cabinets = cabinets.Where(cabinet => cabinet.TeacherId == teacherId);
+            }
+
+            if (NameFilterTextBox.Text != null)
+            {
+                string name = NameFilterTextBox.Text;
+                cabinets = cabinets.Where(cabinet => cabinet.Name!.Contains(name));
+            }
+
+            if (CountPlacesFilterTextBox.Text != null)
+            {
+                string countPlaces = CountPlacesFilterTextBox.Text;
+                cabinets = cabinets.Where(cabinet => cabinet.CountPlaces.ToString()!.Contains(countPlaces));
+            }
+
+            if (DescriptionFilterTextBox.Text != null)
+            {
+                string description = DescriptionFilterTextBox.Text;
+                cabinets = cabinets.Where(cabinet => cabinet.Description!.Contains(description));
+            }
+
+            IEnumerable<CabinetViewItemSource> viewItemSources = CountViewRecord > 0
+                ? cabinets.ToList().Take(CountViewRecord).Select(x => new CabinetViewItemSource(x))
+                : cabinets.ToList().Select(x => new CabinetViewItemSource(x));
+
+            CabinetListBox.ItemsSource = viewItemSources;
+
+            StatusTextBlock.Text = $"Всего: {context.Cabinets.Count()} | Всего с фильтрами: {cabinets.Count()} | Отображается: {viewItemSources.Count()}";
         }
 
         private void DefaultViewTabControl()
@@ -327,33 +325,31 @@ namespace Schedule.Pages
 
                 if (cabinetId != null!)
                 {
-                    using (DatabaseContext context = new())
+                    using DatabaseContext context = new();
+                    
+                    Cabinet? cabinet = context.Cabinets.FirstOrDefault(x => x.CabinetId == (int)cabinetId);
+
+                    if (cabinet != null)
                     {
-                        Cabinet? cabinet = context.Cabinets.FirstOrDefault(x => x.CabinetId == (int)cabinetId);
-
-                        if (cabinet != null)
+                        if (cabinet.Photo != null && cabinet.Photo?.Length != 0)
                         {
-                            if (cabinet.Photo != null && cabinet.Photo?.Length != 0)
+                            BitmapImage image = Service.ConvertByteArrayToBitmapImage(cabinet.Photo ?? null!);
+
+                            SaveFileDialog dialog = new();
+                            dialog.FileName = $"Кабинет_{CabinetIdTextBox.Text ?? "0"}.png";
+                            dialog.Filter = "All Files (*.*)|*.*";
+                            dialog.FilterIndex = 0;
+
+                            if (dialog.ShowDialog() == true)
                             {
-                                BitmapImage image = Service.ConvertByteArrayToBitmapImage(cabinet.Photo ?? null!);
+                                string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
 
-                                SaveFileDialog dialog = new();
-                                dialog.FileName = $"Кабинет_{CabinetIdTextBox.Text ?? "0"}.png";
-                                dialog.Filter = "All Files (*.*)|*.*";
-                                dialog.FilterIndex = 0;
+                                BitmapEncoder encoder = new PngBitmapEncoder();
+                                encoder.Frames.Add(BitmapFrame.Create(image));
 
-                                if (dialog.ShowDialog() == true)
-                                {
-                                    string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
-
-                                    BitmapEncoder encoder = new PngBitmapEncoder();
-                                    encoder.Frames.Add(BitmapFrame.Create(image));
-
-                                    using (FileStream? fileStream = new(pathFile, FileMode.Create))
-                                    {
-                                        encoder.Save(fileStream);
-                                    }
-                                }
+                                using FileStream? fileStream = new(pathFile, FileMode.Create);
+                                
+                                encoder.Save(fileStream);
                             }
                         }
                     }

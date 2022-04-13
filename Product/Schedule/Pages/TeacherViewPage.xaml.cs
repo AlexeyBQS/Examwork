@@ -49,72 +49,71 @@ namespace Schedule.Pages
 
         private void UpdateDataListBox()
         {
-            using (DatabaseContext context = new())
+            using DatabaseContext context = new();
+
+            IQueryable<Teacher> teachers = context.Teachers;
+
+            if (TeacherIdFilterTextBox.Text != null)
             {
-                IQueryable<Teacher> teachers = context.Teachers;
-
-                if (TeacherIdFilterTextBox.Text != null)
-                {
-                    string teacherId = TeacherIdFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.TeacherId.ToString().Contains(teacherId));
-                }
-
-                if (SurnameFilterTextBox.Text != null)
-                {
-                    string surname = SurnameFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.Surname!.Contains(surname));
-                }
-
-                if (NameFilterTextBox.Text != null)
-                {
-                    string name = NameFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.Name!.Contains(name));
-                }
-
-                if (PatronymicFilterTextBox.Text != null)
-                {
-                    string patronymic = PatronymicFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.Patronymic!.Contains(patronymic));
-                }
-
-                if (BirthdayBeginFilterDatePicker.SelectedDate != null)
-                {
-                    DateTime birthdayBegin = (DateTime)BirthdayBeginFilterDatePicker.SelectedDate;
-                    teachers = teachers.Where(teacher => teacher.Birthday >= birthdayBegin);
-                }
-
-                if (BirthdayEndFilterDatePicker.SelectedDate != null)
-                {
-                    DateTime birthdayEnd = (DateTime)BirthdayEndFilterDatePicker.SelectedDate;
-                    teachers = teachers.Where(teacher => teacher.Birthday <= birthdayEnd);
-                }
-
-                if (PassportFilterTextBox.Text != null)
-                {
-                    string passport = PassportFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.Passport!.Contains(passport));
-                }
-
-                if (PhoneNumberFilterTextBox.Text != null)
-                {
-                    string phoneNumber = PhoneNumberFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.PhoneNumber!.Contains(phoneNumber));
-                }
-
-                if (EducationFilterTextBox.Text != null)
-                {
-                    string education = EducationFilterTextBox.Text;
-                    teachers = teachers.Where(teacher => teacher.Education!.Contains(education));
-                }
-
-                IEnumerable<TeacherViewItemSource> viewItemSources = CountViewRecord > 0
-                    ? teachers.ToList().Take(CountViewRecord).Select(x => new TeacherViewItemSource(x))
-                    : teachers.ToList().Select(x => new TeacherViewItemSource(x));
-
-                TeacherListBox.ItemsSource = viewItemSources;
-
-                StatusTextBlock.Text = $"Всего: {context.Teachers.Count()} | Всего с фильтрами: {teachers.Count()} | Отображается: {viewItemSources.Count()}";
+                string teacherId = TeacherIdFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.TeacherId.ToString().Contains(teacherId));
             }
+
+            if (SurnameFilterTextBox.Text != null)
+            {
+                string surname = SurnameFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.Surname!.Contains(surname));
+            }
+
+            if (NameFilterTextBox.Text != null)
+            {
+                string name = NameFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.Name!.Contains(name));
+            }
+
+            if (PatronymicFilterTextBox.Text != null)
+            {
+                string patronymic = PatronymicFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.Patronymic!.Contains(patronymic));
+            }
+
+            if (BirthdayBeginFilterDatePicker.SelectedDate != null)
+            {
+                DateTime birthdayBegin = (DateTime)BirthdayBeginFilterDatePicker.SelectedDate;
+                teachers = teachers.Where(teacher => teacher.Birthday >= birthdayBegin);
+            }
+
+            if (BirthdayEndFilterDatePicker.SelectedDate != null)
+            {
+                DateTime birthdayEnd = (DateTime)BirthdayEndFilterDatePicker.SelectedDate;
+                teachers = teachers.Where(teacher => teacher.Birthday <= birthdayEnd);
+            }
+
+            if (PassportFilterTextBox.Text != null)
+            {
+                string passport = PassportFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.Passport!.Contains(passport));
+            }
+
+            if (PhoneNumberFilterTextBox.Text != null)
+            {
+                string phoneNumber = PhoneNumberFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.PhoneNumber!.Contains(phoneNumber));
+            }
+
+            if (EducationFilterTextBox.Text != null)
+            {
+                string education = EducationFilterTextBox.Text;
+                teachers = teachers.Where(teacher => teacher.Education!.Contains(education));
+            }
+
+            IEnumerable<TeacherViewItemSource> viewItemSources = CountViewRecord > 0
+                ? teachers.ToList().Take(CountViewRecord).Select(x => new TeacherViewItemSource(x))
+                : teachers.ToList().Select(x => new TeacherViewItemSource(x));
+
+            TeacherListBox.ItemsSource = viewItemSources;
+
+            StatusTextBlock.Text = $"Всего: {context.Teachers.Count()} | Всего с фильтрами: {teachers.Count()} | Отображается: {viewItemSources.Count()}";
         }
 
         private void DefaultViewTabControl()
@@ -245,32 +244,31 @@ namespace Schedule.Pages
 
                 if (teacherId != null)
                 {
-                    using (DatabaseContext context = new())
+                    using DatabaseContext context = new();
+                    
+                    Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
+
+                    if (teacher != null)
                     {
-                        Teacher? teacher = context.Teachers.FirstOrDefault(x => x.TeacherId == (int)teacherId);
-
-                        if (teacher != null)
+                        if (teacher.Photo != null && teacher.Photo?.Length != 0)
                         {
-                            if (teacher.Photo != null && teacher.Photo?.Length != 0)
+                            BitmapImage image = Service.ConvertByteArrayToBitmapImage(teacher.Photo ?? null!);
+
+                            SaveFileDialog dialog = new();
+                            dialog.FileName = $"Педагог_{TeacherIdTextBox.Text ?? "0"}.png";
+                            dialog.Filter = "All Files (*.*)|*.*";
+                            dialog.FilterIndex = 0;
+
+                            if (dialog.ShowDialog() == true)
                             {
-                                BitmapImage image = Service.ConvertByteArrayToBitmapImage(teacher.Photo ?? null!);
+                                string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
 
-                                SaveFileDialog dialog = new();
-                                dialog.FileName = $"Педагог_{TeacherIdTextBox.Text ?? "0"}.png";
-                                dialog.Filter = "All Files (*.*)|*.*";
-                                dialog.FilterIndex = 0;
+                                BitmapEncoder encoder = new PngBitmapEncoder();
+                                encoder.Frames.Add(BitmapFrame.Create(image));
 
-                                if (dialog.ShowDialog() == true)
-                                {
-                                    string pathFile = $"{dialog.InitialDirectory}\\{dialog.FileName}".Remove(0, 1);
+                                using FileStream fileStream = new(pathFile, FileMode.Create);
 
-                                    BitmapEncoder encoder = new PngBitmapEncoder();
-                                    encoder.Frames.Add(BitmapFrame.Create(image));
-
-                                    using FileStream fileStream = new(pathFile, FileMode.Create);
-
-                                    encoder.Save(fileStream);
-                                }
+                                encoder.Save(fileStream);
                             }
                         }
                     }

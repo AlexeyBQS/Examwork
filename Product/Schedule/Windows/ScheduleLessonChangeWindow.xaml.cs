@@ -137,7 +137,7 @@ namespace Schedule.Windows
 
         private bool ValidCheckBusynessTeachers()
         {
-            MessageBoxResult Message(int numberLesson, ClassLesson classLesson, Teacher teacher, ClassLesson busyClassLesson) =>
+            static MessageBoxResult Message(int numberLesson, ClassLesson classLesson, Teacher teacher, ClassLesson busyClassLesson) =>
                 MessageBox.Show(
                     $"Учитель {teacher.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Вы уверены, что хотите продолжить?",
                     $"Ошибка!",
@@ -204,7 +204,7 @@ namespace Schedule.Windows
 
         private bool ValidCheckBusynessCabinets()
         {
-            MessageBoxResult Message(int numberLesson, ClassLesson classLesson, Cabinet cabinet, ClassLesson busyClassLesson) =>
+            static MessageBoxResult Message(int numberLesson, ClassLesson classLesson, Cabinet cabinet, ClassLesson busyClassLesson) =>
                 MessageBox.Show(
                     $"Кабинет {cabinet.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Вы уверены, что хотите продолжить?",
                     $"Ошибка!",
