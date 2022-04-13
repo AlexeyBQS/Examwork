@@ -27,6 +27,9 @@
     <Compile Update="Pages\TeacherViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Windows\ScheduleLessonChangeWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\CabinetViewPage.xaml">
@@ -48,6 +51,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\TeacherViewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\ScheduleLessonChangeWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

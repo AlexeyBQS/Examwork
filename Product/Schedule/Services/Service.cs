@@ -60,6 +60,35 @@ namespace Schedule.Services
             return new(outStream);
         }
 
+        public static string ConvertDayOfWeekToShortString(DayOfWeek dayOfWeek) => dayOfWeek switch
+        {
+            DayOfWeek.Sunday => "Вс",
+            DayOfWeek.Monday => "Пн",
+            DayOfWeek.Tuesday => "Вт",
+            DayOfWeek.Wednesday => "Ср",
+            DayOfWeek.Thursday => "Чт",
+            DayOfWeek.Friday => "Пт",
+            DayOfWeek.Saturday => "Сб",
+            _ => null!,
+        };
+
+        public static DayOfWeek? ConvertStringToDayOfWeek(string nameDayOfWeek) => nameDayOfWeek switch
+        {
+            "Sunday" => DayOfWeek.Sunday,
+            "Monday" => DayOfWeek.Monday,
+            "Tuesday" => DayOfWeek.Tuesday,
+            "Wednesday" => DayOfWeek.Wednesday,
+            "Thursday" => DayOfWeek.Thursday,
+            "Friday" => DayOfWeek.Friday,
+            "Saturday" => DayOfWeek.Saturday,
+            _ => null!,
+        };
+
+
+        public static DateTime ConvertDateOnlyToDateTime(DateOnly dateOnly) => dateOnly != default
+            ? new(dateOnly.Year, dateOnly.Month, dateOnly.Day)
+            : default;
+
         #endregion
 
         #region Getters
@@ -74,8 +103,7 @@ namespace Schedule.Services
             ? new BitmapImage(new Uri($"{Directory.GetCurrentDirectory()}\\Images\\{fileName}"))
             : null!;
 
-        private static BitmapImage defaultPhoto = GetImage("DefaultPhoto.png");
-        public static BitmapImage DefaultPhoto => defaultPhoto;
+        public static readonly BitmapImage DefaultPhoto = GetImage("DefaultPhoto.png");
 
         #endregion
 

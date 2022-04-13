@@ -16,5 +16,13 @@ namespace Schedule.Services
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question,
                 MessageBoxResult.No);
+
+        public static MessageBoxResult Action_SaveChangeScheduleWithIncreasedDifficulty() =>
+            MessageBox.Show(
+                "Вы действительно хотите сохранить изменения в расписании с повышенной сложностью?",
+                "Внимание!",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning,
+                MessageBoxResult.No);
     }
 }

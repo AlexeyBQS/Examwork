@@ -17,20 +17,250 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Text="Неделя: "/>
+                <DatePicker Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
+                            Width="150" x:Name="WeekScheduleLessonsClassesDatePicker"
+                            SelectedDateChanged="WeekScheduleLessonsClassesDatePicker_SelectedDateChanged"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                       Text="Кл."/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" 
+                       x:Name="MondayTextBlock" Text="Пн."/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                       x:Name="TuesdayTextBlock" Text="Вт."/>
+            <TextBlock Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                       x:Name="WednesdayTextBlock" Text="Ср."/>
+            <TextBlock Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                       x:Name="ThursdayTextBlock" Text="Чт."/>
+            <TextBlock Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                       x:Name="FridayTextBlock" Text="Пт."/>
+            <TextBlock Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                       x:Name="SaturdayTextBlock" Text="Сб."/>
         </Grid>
 
         <GridSplitter Grid.Row="2" Height="2" ShowsPreview="False" IsEnabled="False"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
-        <ScrollViewer Grid.Row="3" x:Name="ScheduleScrollViewer" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="ScheduleItemsControl" ItemsSource="{Binding}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <ItemsControl Grid.Row="3" x:Name="ScheduleItemsControl">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
+                                   Text="{Binding Class.Name}"/>
+
+                        <DataGrid Grid.Column="1" Grid.ColumnSpan="6" x:Name="MondayDataGrid" IsReadOnly="True"
+                                  SelectionUnit="Cell" AutoGenerateColumns="False" ItemsSource="{Binding LessonList}">
+                            <DataGrid.Columns>
+                                <!-- Monday -->
+                                <DataGridTemplateColumn Width="1.5*" Header="№">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Monday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Monday.NumberLesson}" 
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="5*" Header="Предмет">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Monday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Monday.ScheduleLesson_Name}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="2*" Header="Каб.">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Monday_Cabinet_TextBlock" TextWrapping="Wrap" Text="{Binding Monday.ScheduleLesson_Cabinet}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- Tuesday -->
+                                <DataGridTemplateColumn Width="1.5*" Header="№">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Tuesday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Tuesday.NumberLesson}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="5*" Header="Предмет">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Tuesday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Tuesday.ScheduleLesson_Name}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="2*" Header="Каб.">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Tuesday_Cabinet_TextBlock" TextWrapping="Wrap" Text="{Binding Tuesday.ScheduleLesson_Cabinet}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                                <!-- Wednesday -->
+                                <DataGridTemplateColumn Width="1.5*" Header="№">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Wednesday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Wednesday.NumberLesson}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="5*" Header="Предмет">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Wednesday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Wednesday.ScheduleLesson_Name}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="2*" Header="Каб.">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Wednesday_Cabinet_TextBlock" TextWrapping="Wrap" Text="{Binding Wednesday.ScheduleLesson_Cabinet}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                                <!-- Thursday -->
+                                <DataGridTemplateColumn Width="1.5*" Header="№">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Thursday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Thursday.NumberLesson}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="5*" Header="Предмет">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Thursday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Thursday.ScheduleLesson_Name}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="2*" Header="Каб.">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Thursday_Cabinet_TextBlock" TextWrapping="Wrap" Text="{Binding Thursday.ScheduleLesson_Cabinet}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                                <!-- Friday -->
+                                <DataGridTemplateColumn Width="1.5*" Header="№">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Friday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Friday.NumberLesson}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="5*" Header="Предмет">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Friday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Friday.ScheduleLesson_Name}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="2*" Header="Каб.">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Friday_Cabinet_TextBlock" TextWrapping="Wrap" Text="{Binding Friday.ScheduleLesson_Cabinet}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                                <!-- Saturday -->
+                                <DataGridTemplateColumn Width="1.5*" Header="№">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Saturday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Saturday.NumberLesson}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="5*" Header="Предмет">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Saturday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Saturday.ScheduleLesson_Name}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="2*" Header="Каб.">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock x:Name="Saturday_Cabinet_TextBlock" TextWrapping="Wrap" Text="{Binding Saturday.ScheduleLesson_Cabinet}"
+                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+            <ItemsControl.Template>
+                <ControlTemplate TargetType="ItemsControl">
+                    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Page>

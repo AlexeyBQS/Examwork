@@ -1,0 +1,391 @@
+﻿<Window x:Class="Schedule.Windows.ScheduleLessonChangeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Schedule.Windows"
+        mc:Ignorable="d"
+        Title="ScheduleLessonChangeWindow" Height="650" Width="550"
+        Style="{StaticResource WindowStyle}" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" x:Name="TitleTextBox" FontSize="16" Margin="0,5" TextWrapping="Wrap"
+                   TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <GridSplitter Grid.Row="1" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource StandartTextBlockStyle}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Text="Предмет"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource StandartTextBlockStyle}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Text="Каб."/>
+                <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource StandartTextBlockStyle}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Text="Пар. каб."/>
+
+                <!-- FirstLesson -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №1:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson1_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson1_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson1_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson1_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson1_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson1_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- SecondLesson -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №2:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson2_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson2_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson2_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson2_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson2_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson2_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- ThirdLesson -->
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №3:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="3" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson3_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson3_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson3_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson3_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson3_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson3_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- FourthLesson -->
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №4:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="4" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson4_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson4_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson4_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson4_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson4_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson4_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- FifthLesson -->
+                <TextBlock Grid.Row="5" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №5:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="5" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson5_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson5_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson5_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson5_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson5_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson5_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- SixthLesson -->
+                <TextBlock Grid.Row="6" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №6:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="6" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson6_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson6_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson6_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson6_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson6_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson6_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- SeventhLesson -->
+                <TextBlock Grid.Row="7" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №7:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="7" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson7_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson7_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson7_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson7_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson7_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson7_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                
+                <!-- EighthLesson -->
+                <TextBlock Grid.Row="8" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №8:"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <Grid Grid.Row="8" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Lesson_Lesson8_ComboBox" Width="150" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}" SelectionChanged="Lesson_ComboBox_SelectionChanged"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Lesson_Lesson8_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="8" Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="Cabinet_Lesson8_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="Cabinet_Lesson8_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+                <Grid Grid.Row="8" Grid.Column="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0" x:Name="PairCabinet_Lesson8_ComboBox" MinWidth="80" Height="30"
+                              Style="{StaticResource StandartComboBoxStyle}"/>
+                    <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
+                            x:Name="PairCabinet_Lesson8_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
+                </Grid>
+
+                <!-- StatusDifficulty -->
+                <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Margin="3" FontSize="14" Text="Сложность: "
+                          x:Name="StatusDifficultyTextBox" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Row="3" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Style="{StaticResource StandartButtonStyle}" Width="100"
+                        x:Name="SaveButton" Content="Сохранить" Click="SaveButton_Click"/>
+                <Button Grid.Column="1" Style="{StaticResource StandartButtonStyle}" Width="100"
+                        x:Name="CancelButton" Content="Отмена" Click="CancelButton_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -4,9 +4,7 @@
              xmlns:local="clr-namespace:Schedule"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style x:Key="MainWindowStyle" TargetType="Window">
-            <Setter Property="Width" Value="1150"/>
-            <Setter Property="Height" Value="700"/>
+        <Style x:Key="WindowStyle" TargetType="Window">
             <Setter Property="ResizeMode" Value="CanMinimize"/>
         </Style>
 

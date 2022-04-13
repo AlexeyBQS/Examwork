@@ -44,7 +44,7 @@ void WriteExcetionToFile(Exception ex)
         + $"\nExist InnerException: {ex.InnerException?.InnerException != null}"
         + $"\nMessage: {ex.InnerException?.Message}"
         + $"\nSource: {ex.InnerException?.Source}"
-        + $"\nStackTrace: {ex.InnerException?.StackTrace}"
+        + $"\nStackTrace: \n{ex.InnerException?.StackTrace}"
         + $"\nExist TargetSite: {ex.InnerException?.TargetSite != null}"
         : null!;
 
@@ -301,9 +301,6 @@ IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Class> classes, IEnumerable
                     lesson.Name == "ОБЖ"     || lesson.Name == "Биология"   || lesson.Name == "Информатика"     ||
                     lesson.Name == "ФЗК"     || lesson.Name == "Черчение"   || lesson.Name == "Технология")
                 {
-                    
-
-
                     add = true;
                 }
             }
@@ -375,7 +372,8 @@ IEnumerable<ScheduleLesson> GenScheduleLessons()
             foreach (Class _class in classes)
             {
                 IQueryable<ClassLesson> classLessons = context.ClassLessons
-                    .Where(classLesson => classLesson.ClassId == _class.ClassId);
+                    .Where(classLesson => classLesson.ClassId == _class.ClassId)
+                    .Include(classLesson => classLesson.PairClassLesson);
 
                 int numberLesson = 1;
                 foreach (ClassLesson classLesson in classLessons)
@@ -429,7 +427,8 @@ IEnumerable<ScheduleLesson> GenScheduleLessons()
                             Date = new(dateCurrent.Year, dateCurrent.Month, dateCurrent.Day),
                             NumberLesson = numberLesson,
                             ClassLessonId = classLesson.ClassLessonId,
-                            CabinetId = _class.ClassId,
+                            CabinetId = classLesson.DefaultCabinetId,
+                            PairCabinetId = classLesson.PairClassLesson?.DefaultCabinetId
                         });
 
                         ++numberLesson;
