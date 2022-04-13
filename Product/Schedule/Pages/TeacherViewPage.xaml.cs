@@ -489,6 +489,16 @@ namespace Schedule.Pages
                     }
                 }
             }
+            else
+            {
+                for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+                {
+                    (FindName($"Lesson{numberLesson}_IsAvailableCheckBox") as CheckBox)!.IsChecked = false;
+                    (FindName($"Lesson{numberLesson}_ClassNameTextBox") as TextBox)!.Text = null!;
+                    (FindName($"Lesson{numberLesson}_LessonNameTextBox") as TextBox)!.Text = null!;
+                    (FindName($"Lesson{numberLesson}_CabinetNameTextBox") as TextBox)!.Text = null!;
+                }
+            }
         }
 
         private void ScheduleLessonsTeacherDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)

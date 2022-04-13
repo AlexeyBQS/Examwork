@@ -484,10 +484,20 @@ namespace Schedule.Pages
                     else
                     {
                         isAvailableCheckBox.IsChecked = false;
-                        teacherNameTextBox.Text = null!;
+                        classNameTextBox.Text = null!;
                         lessonNameTextBox.Text = null!;
                         teacherNameTextBox.Text = null!;
                     }
+                }
+            }
+            else
+            {
+                for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+                {
+                    (FindName($"Lesson{numberLesson}_IsAvailableCheckBox") as CheckBox)!.IsChecked = false;
+                    (FindName($"Lesson{numberLesson}_ClassNameTextBox") as TextBox)!.Text = null!;
+                    (FindName($"Lesson{numberLesson}_LessonNameTextBox") as TextBox)!.Text = null!;
+                    (FindName($"Lesson{numberLesson}_TeacherNameTextBox") as TextBox)!.Text = null!;
                 }
             }
         }
