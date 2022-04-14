@@ -48,10 +48,21 @@ namespace Schedule.Pages
         private CancellationTokenSource ScheduleExportDataToken = new();
         private Task ScheduleExportDataTask = null!;
 
+        private void ScheduleExportDefaultStyle()
+        {
+            ScheduleExportStatusProgressBar.Value = 0;
+            SchduleExportStatusTextBlock.Text = null!;
+            ScheduleExportButton.IsEnabled = true;
+            ScheduleCancelButton.IsEnabled = false;
+        }
+
         private async Task ScheduleExportAsync(CancellationToken cancellationToken = default!)
         {
-            Dispatcher.Invoke(() => ScheduleExportButton.IsEnabled = false);
-            Dispatcher.Invoke(() => ScheduleCancelButton.IsEnabled = true);
+            Dispatcher.Invoke(() =>
+            {
+                ScheduleExportButton.IsEnabled = false;
+                ScheduleCancelButton.IsEnabled = true;
+            });
 
             DateTime dateStart = ExportScheduleStartDatePicker.SelectedDate!.Value.Date;
             DateTime dateEnd = ExportScheduleEndDatePicker.SelectedDate!.Value.Date;
@@ -84,12 +95,23 @@ namespace Schedule.Pages
 
             Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = "Инициализация документа...");
 
+            if (Type.GetType("Microsoft.Office.Interop.Excel.Application") == null)
+            {
+                MessageBox.Show("Не удалось запустить приложение Microsoft Excel. Проверьте наличие приложения и права доступа.",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                ScheduleExportDefaultStyle();
+                ScheduleExportDataToken.Cancel();
+
+                return;
+            }
+
             Excel.Application application = new();
             Excel.Workbook workbook = application.Workbooks.Add();
             Excel.Worksheet worksheet = workbook.Sheets[1];
 
             List<DateTime> dateTimes = scheduleLessons.Select(x => x.Date).Distinct().OrderBy(x => x).ToList();
-            List<string?> classes = context.Classes.Select(x => x.Name).OrderBy(x => x.Length).ThenBy(x => x).ToList();
+            List<string?> classes = context.Classes.Select(x => x.Name).OrderBy(x => x!.Length).ThenBy(x => x).ToList();
 
             Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = "Экспортирование...");
 
@@ -100,98 +122,123 @@ namespace Schedule.Pages
             {
                 Task.Run(() =>
                 {
-                    while (exportedRecord < countRecord)
+                    try
                     {
-                        Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...");
-                        Dispatcher.Invoke(() => ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord);
-                    }
+                        while (exportedRecord < countRecord)
+                        {
+                            cancellationToken.ThrowIfCancellationRequested();
 
-                    Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...");
-                    Dispatcher.Invoke(() => ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord);
+                            Dispatcher.Invoke(() =>
+                            {
+                                SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...";
+                                ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord;
+                            });
+                        }
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...";
+                            ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord;
+                        });
+                    }
+                    catch { }
                 }, cancellationToken);
 
-                for (int date = 0; date < dateTimes.Count; ++date)
+                try
                 {
-                    for (int classItem = 0; classItem < classes.Count; ++classItem)
+                    for (int date = 0; date < dateTimes.Count; ++date)
                     {
-                        int rowClass = 1 + date * 11;
-                        int columnClass = 1 + classItem * 3;
-
-                        // Date
-                        worksheet.Range[
-                            worksheet.Cells[rowClass, columnClass],
-                            worksheet.Cells[rowClass, columnClass + 2]
-                            ].Merge();
-
-                        worksheet.Cells[rowClass, columnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                        worksheet.Cells[rowClass, columnClass] = 
-                            $"{Service.ConvertDayOfWeekToShortString(dateTimes[date].DayOfWeek)} - {dateTimes[date]:dd.MM.yyyy}";
-
-                        // ClassName
-                        worksheet.Range[
-                            worksheet.Cells[rowClass + 1, columnClass],
-                            worksheet.Cells[rowClass + 1, columnClass + 2]
-                            ].Merge();
-
-                        worksheet.Cells[rowClass + 1, columnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                        worksheet.Cells[rowClass + 1, columnClass] = classes[classItem];
-
-                        // Header ScheduleLesson
-                        worksheet.Cells[rowClass + 2, columnClass] = "№";
-                        worksheet.Cells[rowClass + 2, columnClass + 1] = "Предмет";
-                        worksheet.Cells[rowClass + 2, columnClass + 2] = "Каб.";
-
-                        // ScheduleLessons
-                        for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+                        for (int classItem = 0; classItem < classes.Count; ++classItem)
                         {
-                            ScheduleLesson? scheduleLesson = scheduleLessons
-                                .Where(x => x.Date == dateTimes[date])
-                                .Where(x => x.ClassLesson.Class!.Name == classes[classItem])
-                                .Where(x => x.NumberLesson == numberLesson)
-                                .FirstOrDefault();
+                            int rowClass = 1 + date * 11;
+                            int columnClass = 1 + classItem * 3;
 
-                            if (scheduleLesson != null)
+                            // Date
+                            worksheet.Range[
+                                worksheet.Cells[rowClass, columnClass],
+                                worksheet.Cells[rowClass, columnClass + 2]
+                                ].Merge();
+
+                            worksheet.Cells[rowClass, columnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                            worksheet.Cells[rowClass, columnClass] =
+                                $"{Service.ConvertDayOfWeekToShortString(dateTimes[date].DayOfWeek)} - {dateTimes[date]:dd.MM.yyyy}";
+
+                            // ClassName
+                            worksheet.Range[
+                                worksheet.Cells[rowClass + 1, columnClass],
+                                worksheet.Cells[rowClass + 1, columnClass + 2]
+                                ].Merge();
+
+                            worksheet.Cells[rowClass + 1, columnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                            worksheet.Cells[rowClass + 1, columnClass] = classes[classItem];
+
+                            // Header ScheduleLesson
+                            worksheet.Cells[rowClass + 2, columnClass] = "№";
+                            worksheet.Cells[rowClass + 2, columnClass + 1] = "Предмет";
+                            worksheet.Cells[rowClass + 2, columnClass + 2] = "Каб.";
+
+                            // ScheduleLessons
+                            for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
                             {
-                                ScheduleLessonViewItemSource vis = new(scheduleLesson);
+                                cancellationToken.ThrowIfCancellationRequested();
 
-                                int rowLesson = rowClass + 2;
-                                int columnLesson = columnClass;
+                                ScheduleLesson? scheduleLesson = scheduleLessons
+                                    .Where(x => x.Date == dateTimes[date])
+                                    .Where(x => x.ClassLesson.Class!.Name == classes[classItem])
+                                    .Where(x => x.NumberLesson == numberLesson)
+                                    .FirstOrDefault();
 
-                                //NumberLesson
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
+                                if (scheduleLesson != null)
+                                {
+                                    ScheduleLessonViewItemSource vis = new(scheduleLesson);
 
-                                //LessonName
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
+                                    int rowLesson = rowClass + 2;
+                                    int columnLesson = columnClass;
 
-                                //CabinetName
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 2] = vis.ScheduleLesson_Cabinet;
+                                    //NumberLesson
+                                    worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
 
-                                ++exportedRecord;
+                                    //LessonName
+                                    worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
+                                    worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
+
+                                    //CabinetName
+                                    worksheet.Cells[rowLesson + numberLesson, columnLesson + 2] = vis.ScheduleLesson_Cabinet;
+
+                                    ++exportedRecord;
+                                }
                             }
                         }
                     }
-                }
 
-                worksheet.Columns.AutoFit();
+                    worksheet.Columns.AutoFit();
+                }
+                catch { }
             }, cancellationToken);
 
 
-            Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = "Открытие документа...");
+            try
+            {
+                Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = "Открытие документа...");
 
-            application.Visible = true;
-            application.Interactive = true;
-            application.ScreenUpdating = true;
-            application.UserControl = true;
+                application.Visible = true;
+                application.Interactive = true;
+                application.ScreenUpdating = true;
+                application.UserControl = true;
 
-            while (application.Visible == true) Thread.Sleep(100);
+                while (application.Visible == true)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    Thread.Sleep(100);
+                }
+            }
+            catch { }
+            finally
+            {
+                application.Quit();
+            }
 
-            application.Quit();
-
-            Dispatcher.Invoke(() => ScheduleExportStatusProgressBar.Value = 0);
-            Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = null!);
-            Dispatcher.Invoke(() => ScheduleExportButton.IsEnabled = true);
-            Dispatcher.Invoke(() => ScheduleCancelButton.IsEnabled = false);
+            Dispatcher.Invoke(() => ScheduleExportDefaultStyle());
         }
 
         private void ExportScheduleDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -227,11 +274,7 @@ namespace Schedule.Pages
         private void ScheduleCancelButton_Click(object sender, RoutedEventArgs e)
         {
             ScheduleExportDataToken.Cancel();
-
-            ScheduleExportStatusProgressBar.Value = 0;
-            SchduleExportStatusTextBlock.Text = null!;
-            ScheduleExportButton.IsEnabled = true;
-            ScheduleCancelButton.IsEnabled = false;
+            ScheduleExportDefaultStyle();
         }
 
         #endregion
