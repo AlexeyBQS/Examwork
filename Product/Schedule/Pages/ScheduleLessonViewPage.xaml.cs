@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -212,19 +213,21 @@ namespace Schedule.Pages
             return date;
         }
 
-        private void UpdateScheduleItemsControl()
+        private async void UpdateScheduleItemsControlAsync(CancellationToken cancellationToken = default!)
         {
             using DatabaseContext context = new();
 
             IQueryable<Class> classes = context.Classes;
-            IQueryable<ScheduleLesson> scheduleLessons = context.ScheduleLessons
-                .Include(scheduleLesson => scheduleLesson.ClassLesson)
-                .Include(scheduleLesson => scheduleLesson.ClassLesson.Lesson)
-                .Include(scheduleLesson => scheduleLesson.ClassLesson.DefaultCabinet)
-                .Include(scheduleLesson => scheduleLesson.ClassLesson.PairClassLesson)
-                .Include(scheduleLesson => scheduleLesson.ClassLesson.PairClassLesson!.Lesson)
-                .Include(scheduleLesson => scheduleLesson.ClassLesson.PairClassLesson!.DefaultCabinet)
-                .Include(scheduleLesson => scheduleLesson.Cabinet);
+            IQueryable<ScheduleLesson> scheduleLessons = await Task.Run(() =>
+                context.ScheduleLessons
+                    .Include(scheduleLesson => scheduleLesson.ClassLesson)
+                    .Include(scheduleLesson => scheduleLesson.ClassLesson.Lesson)
+                    .Include(scheduleLesson => scheduleLesson.ClassLesson.DefaultCabinet)
+                    .Include(scheduleLesson => scheduleLesson.ClassLesson.PairClassLesson)
+                    .Include(scheduleLesson => scheduleLesson.ClassLesson.PairClassLesson!.Lesson)
+                    .Include(scheduleLesson => scheduleLesson.ClassLesson.PairClassLesson!.DefaultCabinet)
+                    .Include(scheduleLesson => scheduleLesson.Cabinet)
+                , cancellationToken);
 
             WeekScheduleLessonsClasses weekLessonsClasses = null!;
             DateTime? dateValue = WeekScheduleLessonsClassesDatePicker.SelectedDate;
@@ -237,35 +240,38 @@ namespace Schedule.Pages
                 weekLessonsClasses = new(dateStart);
                 DateTime dateStartDateTime = new(dateStart.Year, dateStart.Month, dateStart.Day);
 
-                foreach (Class classItem in classes)
+                await Task.Run(() =>
                 {
-                    ClassViewItemSource classViewItemSource = new(classItem);
-
-                    IQueryable<ScheduleLesson> scheduleLessonsClass = scheduleLessons
-                        .Where(scheduleLesson => scheduleLesson.ClassLesson.ClassId == classItem.ClassId)
-                        .Where(scheduleLesson => scheduleLesson.Date >= dateStartDateTime)
-                        .Where(scheduleLesson => scheduleLesson.Date <= dateStartDateTime.AddDays(6));
-
-                    WeekScheduleLessonsClass weekScheduleLessonsClass = new(classViewItemSource, dateStart);
-
-                    for (int numberLesson = 1; numberLesson <= 7; ++numberLesson)
+                    foreach (Class classItem in classes)
                     {
-                        WeekScheduleNumberLessonClass weekScheduleNumberLessonClass = new(classViewItemSource, dateStart);
+                        ClassViewItemSource classViewItemSource = new(classItem);
 
-                        for (int day = 0; day < 7; ++day)
+                        IQueryable<ScheduleLesson> scheduleLessonsClass = scheduleLessons
+                            .Where(scheduleLesson => scheduleLesson.ClassLesson.ClassId == classItem.ClassId)
+                            .Where(scheduleLesson => scheduleLesson.Date >= dateStartDateTime)
+                            .Where(scheduleLesson => scheduleLesson.Date <= dateStartDateTime.AddDays(6));
+
+                        WeekScheduleLessonsClass weekScheduleLessonsClass = new(classViewItemSource, dateStart);
+
+                        for (int numberLesson = 1; numberLesson <= 7; ++numberLesson)
                         {
-                            ScheduleLesson? scheduleLesson = scheduleLessonsClass
-                                .Where(scheduleLesson => scheduleLesson.Date == dateStartDateTime.AddDays(day))
-                                .FirstOrDefault(scheduleLesson => scheduleLesson.NumberLesson == numberLesson);
+                            WeekScheduleNumberLessonClass weekScheduleNumberLessonClass = new(classViewItemSource, dateStart);
 
-                            if (scheduleLesson != null) weekScheduleNumberLessonClass[day + 1] = new(scheduleLesson);
+                            for (int day = 0; day < 7; ++day)
+                            {
+                                ScheduleLesson? scheduleLesson = scheduleLessonsClass
+                                    .Where(scheduleLesson => scheduleLesson.Date == dateStartDateTime.AddDays(day))
+                                    .FirstOrDefault(scheduleLesson => scheduleLesson.NumberLesson == numberLesson);
+
+                                if (scheduleLesson != null) weekScheduleNumberLessonClass[day + 1] = new(scheduleLesson);
+                            }
+
+                            weekScheduleLessonsClass[numberLesson] = weekScheduleNumberLessonClass;
                         }
 
-                        weekScheduleLessonsClass[numberLesson] = weekScheduleNumberLessonClass;
+                        weekLessonsClasses[classItem.ClassId] = weekScheduleLessonsClass;
                     }
-
-                    weekLessonsClasses[classItem.ClassId] = weekScheduleLessonsClass;
-                }
+                }, cancellationToken);
 
                 ScheduleItemsControl.ItemsSource = weekLessonsClasses;
             }
@@ -300,7 +306,7 @@ namespace Schedule.Pages
 
         private void WeekScheduleLessonsClassesDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateScheduleItemsControl();
+            UpdateScheduleItemsControlAsync();
             UpdateDayOfWeekTextBlocks();
         }
 
@@ -324,7 +330,7 @@ namespace Schedule.Pages
 
                     if (changeWindow.ShowDialog() == true)
                     {
-                        UpdateScheduleItemsControl();
+                        UpdateScheduleItemsControlAsync();
                     }
                 }
             }
