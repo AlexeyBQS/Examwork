@@ -97,6 +97,7 @@ namespace Schedule.Pages
             PairClassLessonIdComboBox.SelectedIndex = -1;
             DefaultCabinetIdComboBox.SelectedIndex = -1;
             CountLessonTextBox.Text = null!;
+            LeftLessonsTextBox.Text = null!;
             DifficultyTextBox.Text = null!;
 
             ClassLessonIdTextBox.IsEnabled = false;
@@ -106,6 +107,7 @@ namespace Schedule.Pages
             PairClassLessonIdComboBox.IsEnabled = false;
             DefaultCabinetIdComboBox.IsEnabled = false;
             CountLessonTextBox.IsEnabled = false;
+            LeftLessonsTextBox.IsEnabled = false;
             DifficultyTextBox.IsEnabled = false;
 
             //ClassIdComboBoxClearButton.IsEnabled = false;
@@ -130,50 +132,51 @@ namespace Schedule.Pages
                 {
                     ClassLessonIdTextBox.Text = lessonAndClassLesson.ClassLessonId.ToString();
 
-                    using (DatabaseContext context = new())
-                    {
-                        IEnumerable<Class> classes = context.Classes.ToList();
+                    using DatabaseContext context = new();
 
-                        ClassIdComboBox.ItemsSource = classes;
-                        ClassIdComboBox.SelectedIndex = lessonAndClassLesson.ClassId != null
-                            ? ClassIdComboBox.Items.IndexOf(context.Classes.First(c => c.ClassId == lessonAndClassLesson.ClassId))
-                            : -1;
+                    IEnumerable<Class> classes = context.Classes.ToList();
 
-                        IEnumerable<Lesson> lessons = context.Lessons.ToList();
+                    ClassIdComboBox.ItemsSource = classes;
+                    ClassIdComboBox.SelectedIndex = lessonAndClassLesson.ClassId != null
+                        ? ClassIdComboBox.Items.IndexOf(context.Classes.First(c => c.ClassId == lessonAndClassLesson.ClassId))
+                        : -1;
 
-                        LessonIdComboBox.ItemsSource = lessons;
-                        LessonIdComboBox.SelectedIndex = LessonIdComboBox.Items
-                            .IndexOf(context.Lessons.First(l => l.LessonId == lessonAndClassLesson.LessonId));
+                    IEnumerable<Lesson> lessons = context.Lessons.ToList();
 
-                        IEnumerable<Teacher> teachers = context.Teachers.ToList();
+                    LessonIdComboBox.ItemsSource = lessons;
+                    LessonIdComboBox.SelectedIndex = LessonIdComboBox.Items
+                        .IndexOf(context.Lessons.First(l => l.LessonId == lessonAndClassLesson.LessonId));
 
-                        TeacherIdComboBox.ItemsSource = teachers;
-                        TeacherIdComboBox.SelectedIndex = lessonAndClassLesson.TeacherId != null
-                            ? TeacherIdComboBox.Items.IndexOf(context.Teachers.First(t => t.TeacherId == lessonAndClassLesson.TeacherId))
-                            : -1;
+                    IEnumerable<Teacher> teachers = context.Teachers.ToList();
 
-                        IEnumerable<ClassLesson> classLessons = context.ClassLessons
-                            .Include(cl => cl.Lesson)
-                            .Where(classLesson => classLesson.ClassId == lessonAndClassLesson.ClassId &&
-                                                    (classLesson.PairClassLessonId == null
-                                                    || classLesson.PairClassLessonId == lessonAndClassLesson.ClassLessonId) &&
-                                                  classLesson.LessonId != lessonAndClassLesson.LessonId)
-                            .ToList();
+                    TeacherIdComboBox.ItemsSource = teachers;
+                    TeacherIdComboBox.SelectedIndex = lessonAndClassLesson.TeacherId != null
+                        ? TeacherIdComboBox.Items.IndexOf(context.Teachers.First(t => t.TeacherId == lessonAndClassLesson.TeacherId))
+                        : -1;
 
-                        PairClassLessonIdComboBox.ItemsSource = classLessons;
-                        PairClassLessonIdComboBox.SelectedIndex = lessonAndClassLesson.PairClassLessonId != null
-                            ? PairClassLessonIdComboBox.Items.IndexOf(context.ClassLessons.First(cl => cl.ClassLessonId == lessonAndClassLesson.PairClassLessonId))
-                            : -1;
+                    IEnumerable<ClassLesson> classLessons = context.ClassLessons
+                        .Include(cl => cl.Lesson)
+                        .Where(classLesson => classLesson.ClassId == lessonAndClassLesson.ClassId &&
+                                                (classLesson.PairClassLessonId == null
+                                                || classLesson.PairClassLessonId == lessonAndClassLesson.ClassLessonId) &&
+                                              classLesson.LessonId != lessonAndClassLesson.LessonId)
+                        .ToList();
 
-                        IEnumerable<Cabinet> cabinets = context.Cabinets.ToList();
+                    PairClassLessonIdComboBox.ItemsSource = classLessons;
+                    PairClassLessonIdComboBox.SelectedIndex = lessonAndClassLesson.PairClassLessonId != null
+                        ? PairClassLessonIdComboBox.Items.IndexOf(context.ClassLessons.First(cl => cl.ClassLessonId == lessonAndClassLesson.PairClassLessonId))
+                        : -1;
 
-                        DefaultCabinetIdComboBox.ItemsSource = cabinets;
-                        DefaultCabinetIdComboBox.SelectedIndex = lessonAndClassLesson.DefaultCabinetId != null
-                            ? DefaultCabinetIdComboBox.Items.IndexOf(context.Cabinets.First(c => c.CabinetId == lessonAndClassLesson.DefaultCabinetId))
-                            : -1;
-                    }
+                    IEnumerable<Cabinet> cabinets = context.Cabinets.ToList();
 
+                    DefaultCabinetIdComboBox.ItemsSource = cabinets;
+                    DefaultCabinetIdComboBox.SelectedIndex = lessonAndClassLesson.DefaultCabinetId != null
+                        ? DefaultCabinetIdComboBox.Items.IndexOf(context.Cabinets.First(c => c.CabinetId == lessonAndClassLesson.DefaultCabinetId))
+                        : -1;
+
+                    
                     CountLessonTextBox.Text = lessonAndClassLesson.CountLesson.ToString();
+                    LeftLessonsTextBox.Text = (lessonAndClassLesson.CountLesson - context.ScheduleLessons.Count(sl => sl.ClassLessonId == lessonAndClassLesson.ClassLessonId)).ToString();
                     DifficultyTextBox.Text = lessonAndClassLesson.Difficulty.ToString();
 
                     ClassLessonIdTextBox.IsEnabled = true;
@@ -183,6 +186,7 @@ namespace Schedule.Pages
                     PairClassLessonIdComboBox.IsEnabled = true;
                     DefaultCabinetIdComboBox.IsEnabled = true;
                     CountLessonTextBox.IsEnabled = true;
+                    LeftLessonsTextBox.IsEnabled = true;
                     DifficultyTextBox.IsEnabled = true;
 
                     TeacherIdComboBoxClearButton.IsEnabled = true;

@@ -84,7 +84,7 @@
                 <TabItem FontSize="14" Header="Просмотр">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="3.5*"/>
+                            <RowDefinition Height="4.0*"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
@@ -107,6 +107,7 @@
 
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
+                                    <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -223,6 +224,12 @@
                                 <TextBox Grid.Row="7" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
                                          x:Name="DifficultyTextBox" TextChanged="ViewTextBox_TextChanged"
                                          MaxLength="3" PreviewTextInput="OnlyDigit_PreviewTextInput"/>
+
+                                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource LabelTextBlockStyle}" 
+                                           Margin="3" Text="Осталось уроков"/>
+                                <TextBox Grid.Row="8" Grid.Column="1" Style="{StaticResource StandartTextBoxStyle}"
+                                        x:Name="LeftLessonsTextBox" TextChanged="ViewTextBox_TextChanged"
+                                         MaxLength="3" PreviewTextInput="OnlyDigit_PreviewTextInput" IsReadOnly="True"/>
                             </Grid>
                         </Grid>
                     </Grid>
