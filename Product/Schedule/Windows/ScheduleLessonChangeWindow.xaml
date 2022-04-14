@@ -41,6 +41,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
@@ -62,6 +63,8 @@
                            VerticalAlignment="Center" HorizontalAlignment="Center" Text="Каб."/>
                 <TextBlock Grid.Row="0" Grid.Column="3" Style="{StaticResource StandartTextBlockStyle}"
                            VerticalAlignment="Center" HorizontalAlignment="Center" Text="Пар. каб."/>
+                <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource StandartTextBlockStyle}"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Text="Зачет" Margin="5,0"/>
 
                 <!-- FirstLesson -->
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №1:"
@@ -99,6 +102,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson1_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="1" Grid.Column="4" x:Name="IsBold_Lesson1_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- SecondLesson -->
                 <TextBlock Grid.Row="2" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №2:"
@@ -136,6 +141,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson2_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="2" Grid.Column="4" x:Name="IsBold_Lesson2_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- ThirdLesson -->
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №3:"
@@ -173,6 +180,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson3_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="3" Grid.Column="4" x:Name="IsBold_Lesson3_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- FourthLesson -->
                 <TextBlock Grid.Row="4" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №4:"
@@ -210,6 +219,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson4_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="4" Grid.Column="4" x:Name="IsBold_Lesson4_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- FifthLesson -->
                 <TextBlock Grid.Row="5" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №5:"
@@ -247,6 +258,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson5_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="5" Grid.Column="4" x:Name="IsBold_Lesson5_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- SixthLesson -->
                 <TextBlock Grid.Row="6" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №6:"
@@ -284,6 +297,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson6_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="6" Grid.Column="4" x:Name="IsBold_Lesson6_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- SeventhLesson -->
                 <TextBlock Grid.Row="7" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №7:"
@@ -321,6 +336,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson7_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="7" Grid.Column="4" x:Name="IsBold_Lesson7_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 
                 <!-- EighthLesson -->
                 <TextBlock Grid.Row="8" Grid.Column="0" Margin="3" FontSize="12" Text="Урок №8:"
@@ -358,6 +375,8 @@
                     <Button Grid.Column="1" Width="20" Height="30" HorizontalAlignment="Left" Content="C"
                             x:Name="PairCabinet_Lesson8_ComboBox_ClearButton" Click="ComboBox_ClearButton_Click"/>
                 </Grid>
+                <CheckBox Grid.Row="8" Grid.Column="4" x:Name="IsBold_Lesson8_CheckBox"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <!-- StatusDifficulty -->
                 <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4" Margin="3" FontSize="14" Text="Сложность: "

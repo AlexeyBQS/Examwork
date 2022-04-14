@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Schedule.ViewItemSources
 {
@@ -26,6 +27,7 @@ namespace Schedule.ViewItemSources
         public int? ClassLessonId => ScheduleLesson?.ClassLessonId;
         public int? CabinetId => ScheduleLesson?.CabinetId;
         public int? PairCabinetId => ScheduleLesson?.PairCabinetId;
+        public bool IsBold => ScheduleLesson?.IsBold ?? false;
 
         public string ScheduleLesson_Name => ClassLesson?.PairClassLesson != null
             ? $"{ClassLesson?.Lesson?.Name}\n{ClassLesson?.PairClassLesson?.Lesson?.Name}"
@@ -33,6 +35,8 @@ namespace Schedule.ViewItemSources
         public string ScheduleLesson_Cabinet => PairCabinet != null
             ? $"{(Cabinet != null ? $"{Cabinet!.Name}" : "")}\n{(PairCabinet != null ? $"{PairCabinet!.Name}" : "")}"
             : $"{(Cabinet != null ? $"{Cabinet!.Name}" : "")}";
+
+        public FontWeight ScheduleLesson_FontWeight => IsBold ? FontWeights.Bold : FontWeights.Normal;
 
         // ScheduleLesson - ClassLesson
         public ClassLesson? ClassLesson => ScheduleLesson?.ClassLesson;

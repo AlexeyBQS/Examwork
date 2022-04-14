@@ -99,8 +99,8 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Monday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Monday.ScheduleLesson_Name}"
-                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                            <TextBlock x:Name="Monday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Thursday.ScheduleLesson_FontWeight}"
+                                                       Text="{Binding Monday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -117,7 +117,7 @@
                                 <DataGridTemplateColumn Width="1.5*" Header="№">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Tuesday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Tuesday.NumberLesson}"
+                                            <TextBlock x:Name="Tuesday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Tuesday.NumberLesson}" 
                                                        PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -125,8 +125,8 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Tuesday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Tuesday.ScheduleLesson_Name}"
-                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                            <TextBlock x:Name="Tuesday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Tuesday.ScheduleLesson_FontWeight}"
+                                                       Text="{Binding Tuesday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -138,12 +138,12 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                
+
                                 <!-- Wednesday -->
                                 <DataGridTemplateColumn Width="1.5*" Header="№">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Wednesday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Wednesday.NumberLesson}"
+                                            <TextBlock x:Name="Wednesday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Wednesday.NumberLesson}" 
                                                        PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -151,8 +151,8 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Wednesday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Wednesday.ScheduleLesson_Name}"
-                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                            <TextBlock x:Name="Wednesday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Wednesday.ScheduleLesson_FontWeight}"
+                                                       Text="{Binding Wednesday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -169,7 +169,7 @@
                                 <DataGridTemplateColumn Width="1.5*" Header="№">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Thursday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Thursday.NumberLesson}"
+                                            <TextBlock x:Name="Thursday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Thursday.NumberLesson}" 
                                                        PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -177,8 +177,8 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Thursday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Thursday.ScheduleLesson_Name}"
-                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                            <TextBlock x:Name="Thursday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Thursday.ScheduleLesson_FontWeight}"
+                                                       Text="{Binding Thursday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -195,7 +195,7 @@
                                 <DataGridTemplateColumn Width="1.5*" Header="№">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Friday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Friday.NumberLesson}"
+                                            <TextBlock x:Name="Friday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Friday.NumberLesson}" 
                                                        PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -203,8 +203,8 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Friday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Friday.ScheduleLesson_Name}"
-                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                            <TextBlock x:Name="Friday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Friday.ScheduleLesson_FontWeight}"
+                                                       Text="{Binding Friday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -221,7 +221,7 @@
                                 <DataGridTemplateColumn Width="1.5*" Header="№">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Saturday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Saturday.NumberLesson}"
+                                            <TextBlock x:Name="Saturday_NumberLesson_TextBlock" TextWrapping="Wrap" Text="{Binding Saturday.NumberLesson}" 
                                                        PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -229,8 +229,8 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Saturday_Name_TextBlock" TextWrapping="Wrap" Text="{Binding Saturday.ScheduleLesson_Name}"
-                                                       PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
+                                            <TextBlock x:Name="Saturday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Saturday.ScheduleLesson_FontWeight}"
+                                                       Text="{Binding Saturday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

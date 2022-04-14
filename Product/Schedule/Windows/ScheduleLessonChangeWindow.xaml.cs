@@ -60,6 +60,7 @@ namespace Schedule.Windows
                 (FindName($"Cabinet_Lesson{numberLesson}_ComboBox_ClearButton") as Button)!.IsEnabled = false;
                 (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!.IsEnabled = false;
                 (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox_ClearButton") as Button)!.IsEnabled = false;
+                (FindName($"IsBold_Lesson{numberLesson}_CheckBox") as CheckBox)!.IsEnabled = false;
             }
         }
 
@@ -91,6 +92,7 @@ namespace Schedule.Windows
                 ComboBox lessonComboBox = (FindName($"Lesson_Lesson{numberLesson}_ComboBox") as ComboBox)!;
                 ComboBox cabinetComboBox = (FindName($"Cabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
                 ComboBox pairCabinetComboBox = (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
+                CheckBox isBoldCheckBox = (FindName($"IsBold_Lesson{numberLesson}_CheckBox") as CheckBox)!;
 
                 lessonComboBox.ItemsSource = classLessons.ToList();
                 cabinetComboBox.ItemsSource = cabinets.ToList();
@@ -107,6 +109,8 @@ namespace Schedule.Windows
                 pairCabinetComboBox.SelectedIndex = scheduleLessons.FirstOrDefault(x => x.NumberLesson == numberLesson)?.PairCabinetId != null
                     ? pairCabinetComboBox.Items.IndexOf(cabinets.First(x => x.CabinetId == scheduleLessons.First(y => y.NumberLesson == numberLesson).PairCabinetId))
                     : -1;
+
+                isBoldCheckBox.IsChecked = scheduleLessons.FirstOrDefault(x => x.NumberLesson == numberLesson)?.IsBold ?? false;
             }
         }
 
@@ -217,9 +221,11 @@ namespace Schedule.Windows
 
             for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
             {
+                ComboBox lessonComboBox = (FindName($"Lesson_Lesson{numberLesson}_ComboBox") as ComboBox)!;
                 ComboBox cabinetComboBox = (FindName($"Cabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
                 ComboBox pairCabinetComboBox = (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
 
+                ClassLesson classLesson = (lessonComboBox.SelectedItem as ClassLesson)!;
                 int? cabinetId = (cabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
                 int? pairCabinetId = (pairCabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
 
@@ -233,6 +239,7 @@ namespace Schedule.Windows
                         .Include(x => x.PairCabinet)
                         .Where(x => x.Date == Date)
                         .Where(x => x.NumberLesson == numberLesson)
+                        .Where(x => x.ClassLessonId != classLesson.ClassLessonId)
                         .Where(x => x.CabinetId == cabinetId || x.PairCabinetId == cabinetId)
                         .FirstOrDefault();
 
@@ -286,10 +293,12 @@ namespace Schedule.Windows
                     ComboBox lessonComboBox = (FindName($"Lesson_Lesson{numberLesson}_ComboBox") as ComboBox)!;
                     ComboBox cabinetComboBox = (FindName($"Cabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
                     ComboBox pairCabinetComboBox = (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
+                    CheckBox isBoldCheckBox = (FindName($"IsBold_Lesson{numberLesson}_CheckBox") as CheckBox)!;
 
                     int? classLessonId = (lessonComboBox.SelectedItem as ClassLesson)?.ClassLessonId;
                     int? cabinetId = (cabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
                     int? pairCabinetId = (pairCabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
+                    bool isBold = isBoldCheckBox.IsChecked ?? false;
 
                     if (scheduleLesson != null)
                     {
@@ -299,6 +308,7 @@ namespace Schedule.Windows
                             {
                                 scheduleLesson.CabinetId = cabinetId;
                                 scheduleLesson.PairCabinetId = pairCabinetId;
+                                scheduleLesson.IsBold = isBold;
                             }
                             else
                             {
@@ -310,6 +320,7 @@ namespace Schedule.Windows
                                     NumberLesson = numberLesson,
                                     CabinetId = cabinetId,
                                     PairCabinetId = pairCabinetId,
+                                    IsBold = isBold
                                 });
                             }
                         }
@@ -328,7 +339,8 @@ namespace Schedule.Windows
                                 NumberLesson = numberLesson,
                                 ClassLessonId = classLessonId!.Value,
                                 CabinetId = cabinetId,
-                                PairCabinetId = pairCabinetId
+                                PairCabinetId = pairCabinetId,
+                                IsBold = isBold,
                             });
                         }
                     }
@@ -340,7 +352,6 @@ namespace Schedule.Windows
             DialogResult = true;
             Close();
         }
-
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -362,13 +373,17 @@ namespace Schedule.Windows
             Button cabinetComboBoxClearButton = (FindName(cabinetComboBox.Name + "_ClearButton") as Button)!;
             Button pairCabinetComboBoxClearButton = (FindName(pairCabinetComboBox.Name + "_ClearButton") as Button)!;
 
+            CheckBox isBoldCheckBox = (FindName(lessonComboBox.Name.Replace("Lesson_", "IsBold_").Replace("_ComboBox", "_CheckBox")) as CheckBox)!;
+
             if (lessonComboBox.SelectedIndex == -1)
             {
                 cabinetComboBox.SelectedIndex = -1;
                 pairCabinetComboBox.SelectedIndex = -1;
+                isBoldCheckBox.IsChecked = false;
 
                 cabinetComboBox.IsEnabled = false;
                 pairCabinetComboBox.IsEnabled = false;
+                isBoldCheckBox.IsEnabled = false;
 
                 cabinetComboBoxClearButton.IsEnabled = false;
                 pairCabinetComboBoxClearButton.IsEnabled = false;
@@ -377,6 +392,7 @@ namespace Schedule.Windows
             {
                 cabinetComboBox.IsEnabled = true;
                 pairCabinetComboBox.IsEnabled = true;
+                isBoldCheckBox.IsEnabled = true;
 
                 cabinetComboBoxClearButton.IsEnabled = true;
                 pairCabinetComboBoxClearButton.IsEnabled = true;

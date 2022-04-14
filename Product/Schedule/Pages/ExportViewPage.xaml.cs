@@ -161,6 +161,7 @@ namespace Schedule.Pages
                                 worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
 
                                 //LessonName
+                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
                                 worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
 
                                 //CabinetName

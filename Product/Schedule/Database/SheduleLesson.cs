@@ -13,6 +13,7 @@ namespace Schedule.Database
         public int ClassLessonId { get; set; } = default;
         public int? CabinetId { get; set; } = null!;
         public int? PairCabinetId { get; set; } = null!;
+        public bool IsBold { get; set; } = false;
 
         public ClassLesson ClassLesson { get; set; } = null!;
         public Cabinet? Cabinet { get; set; } = null!;
