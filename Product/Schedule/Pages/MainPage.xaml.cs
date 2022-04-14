@@ -45,6 +45,7 @@ namespace Schedule.Pages
             new("Дисциплины", new LessonViewPage()),
             new("Дисциплины класса", new ClassLessonViewPage()),
             new("Расписание", new ScheduleLessonViewPage()),
+            new("Экспорт", new ExportViewPage()),
         };
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
