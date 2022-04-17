@@ -99,7 +99,7 @@
                                 <DataGridTemplateColumn Width="5*" Header="Предмет">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock x:Name="Monday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Thursday.ScheduleLesson_FontWeight}"
+                                            <TextBlock x:Name="Monday_Name_TextBlock" TextWrapping="Wrap" FontWeight="{Binding Monday.ScheduleLesson_FontWeight}"
                                                        Text="{Binding Monday.ScheduleLesson_Name}" PreviewMouseDown="ScheduleTextBlock_PreviewMouseDown"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
