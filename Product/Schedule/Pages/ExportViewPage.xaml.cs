@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Schedule.ViewItemSources;
 using Schedule.Services;
+using System.Drawing;
 
 namespace Schedule.Pages
 {
@@ -113,6 +114,8 @@ namespace Schedule.Pages
             Excel.Workbook workbook = application.Workbooks.Add();
             Excel.Worksheet worksheet = workbook.Sheets[1];
 
+            application.ScreenUpdating = true;
+
             List<DateTime> dateTimes = scheduleLessons.Select(x => x.Date).Distinct().OrderBy(x => x).ToList();
             List<string?> classes = context.Classes.Select(x => x.Name).OrderBy(x => x!.Length).ThenBy(x => x).ToList();
 
@@ -123,7 +126,7 @@ namespace Schedule.Pages
 
             await Task.Run(() =>
             {
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     if (countRecord <= 0) return;
 
@@ -143,7 +146,20 @@ namespace Schedule.Pages
                         SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...";
                         ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord;
                     });
+
+                    await Task.Delay(10);
                 }, cancellationToken);
+
+                int rowMarginDate = 3;
+
+                int rowEnd = 2 + (11 + rowMarginDate) * dateTimes.Count - 3;
+                int columnEnd = 2 + 3 * classes.Count;
+
+                // Change color borders of cells
+                worksheet.Range[
+                    worksheet.Cells[1, 1],
+                    worksheet.Cells[rowEnd, columnEnd]
+                    ].Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.White);
 
                 for (int date = 0; date < dateTimes.Count; ++date)
                 {
@@ -153,78 +169,85 @@ namespace Schedule.Pages
                     {
                         if (cancellationToken.IsCancellationRequested) break;
 
-                        int currentRowClass = 1 + date * 11;
-                        int currentColumnClass = 1 + classItem * 3;
+                        int rowClass = 2 + (date * 11) + (rowMarginDate * date);
+                        int columnClass = 2 + classItem * 3;
 
-                        int currentRowLesson = currentRowClass + 2;
-                        int currentColumnLesson = currentColumnClass;
+                        int rowLesson = rowClass + 2;
+                        int columnLesson = columnClass;
+
+                        async void SettingBordersAsync(int rowClassAsync, int columnClassAsync)
+                        {
+                            await Task.Run(() =>
+                            {
+                                // Change color borders of cells
+                                worksheet.Range[
+                                    worksheet.Cells[rowClassAsync, columnClassAsync],
+                                    worksheet.Cells[rowClassAsync + 10, columnClassAsync + 2]
+                                    ].Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
+
+                                // Changing size borders of cells
+                                worksheet.Range[
+                                    worksheet.Cells[rowClassAsync, columnClassAsync],
+                                    worksheet.Cells[rowClassAsync + 10, columnClassAsync + 2]
+                                    ].Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                            });
+                        }
+                        SettingBordersAsync(rowClass, columnClass);
 
                         // Date
                         worksheet.Range[
-                            worksheet.Cells[currentRowClass, currentColumnClass],
-                            worksheet.Cells[currentRowClass, currentColumnClass + 2]
+                            worksheet.Cells[rowClass, columnClass],
+                            worksheet.Cells[rowClass, columnClass + 2]
                             ].Merge();
 
-                        worksheet.Cells[currentRowClass, currentColumnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                        worksheet.Cells[currentRowClass, currentColumnClass] =
+                        worksheet.Cells[rowClass, columnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                        worksheet.Cells[rowClass, columnClass] =
                             $"{Service.ConvertDayOfWeekToShortString(dateTimes[date].DayOfWeek)} - {dateTimes[date]:dd.MM.yyyy}";
 
                         // ClassName
                         worksheet.Range[
-                            worksheet.Cells[currentRowClass + 1, currentColumnClass],
-                            worksheet.Cells[currentRowClass + 1, currentColumnClass + 2]
+                            worksheet.Cells[rowClass + 1, columnClass],
+                            worksheet.Cells[rowClass + 1, columnClass + 2]
                             ].Merge();
 
-                        worksheet.Cells[currentRowClass + 1, currentColumnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                        worksheet.Cells[currentRowClass + 1, currentColumnClass] = classes[classItem];
+                        worksheet.Cells[rowClass + 1, columnClass].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                        worksheet.Cells[rowClass + 1, columnClass] = classes[classItem];
 
                         // Header ScheduleLesson
-                        worksheet.Cells[currentRowClass + 2, currentColumnClass] = "№";
-                        worksheet.Cells[currentRowClass + 2, currentColumnClass + 1] = "Предмет";
-                        worksheet.Cells[currentRowClass + 2, currentColumnClass + 2] = "Каб.";
+                        worksheet.Cells[rowClass + 2, columnClass] = "№";
+                        worksheet.Cells[rowClass + 2, columnClass + 1] = "Предмет";
+                        worksheet.Cells[rowClass + 2, columnClass + 2] = "Каб.";
 
                         // ScheduleLessons
-                        async void FillScheduleLessonsAsync(int dateAsync, int classItemAsync, int rowLesson, int columnLesson, CancellationToken cancellationToken = default!)
+                        for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
                         {
-                            for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+                            if (cancellationToken.IsCancellationRequested) break;
+
+                            ScheduleLesson? scheduleLesson = default!;
+
+                            scheduleLesson = scheduleLessons
+                                .Where(x => x.Date == dateTimes[date])
+                                .Where(x => x.ClassLesson.Class!.Name == classes[classItem])
+                                .Where(x => x.NumberLesson == numberLesson)
+                                .FirstOrDefault();
+
+                            if (scheduleLesson != null)
                             {
-                                if (cancellationToken.IsCancellationRequested) break;
+                                ScheduleLessonViewItemSource vis = new(scheduleLesson);
 
-                                ScheduleLesson? scheduleLesson = default!;
+                                //NumberLesson
+                                worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
 
-                                Dispatcher.Invoke(() =>
-                                {
-                                    scheduleLesson = scheduleLessons
-                                        .Where(x => x.Date == dateTimes[dateAsync])
-                                        .Where(x => x.ClassLesson.Class!.Name == classes[classItemAsync])
-                                        .Where(x => x.NumberLesson == numberLesson)
-                                        .FirstOrDefault();
-                                });
+                                //LessonName
+                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
+                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
 
-                                await Task.Run(() =>
-                                {
-                                    if (scheduleLesson != null)
-                                    {
-                                        ScheduleLessonViewItemSource vis = new(scheduleLesson);
+                                //CabinetName
+                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 2] = vis.ScheduleLesson_Cabinet;
 
-                                        //NumberLesson
-                                        worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
-
-                                        //LessonName
-                                        worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
-                                        worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
-
-                                        //CabinetName
-                                        worksheet.Cells[rowLesson + numberLesson, columnLesson + 2] = vis.ScheduleLesson_Cabinet;
-
-                                        ++exportedRecord;
-                                    }
-                                }, cancellationToken);
+                                ++exportedRecord;
                             }
                         }
-
-                        Task.Run(() => FillScheduleLessonsAsync(date, classItem, currentRowLesson, currentColumnLesson), cancellationToken);
-                        Thread.Sleep(10);
                     }
                 }
 
@@ -241,6 +264,7 @@ namespace Schedule.Pages
                 application.Interactive = true;
                 application.ScreenUpdating = true;
                 application.UserControl = true;
+                application.ScreenUpdating = true;
 
                 while (application.Visible == true)
                 {
