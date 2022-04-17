@@ -6,6 +6,7 @@
 		<UseWPF>true</UseWPF>
 		<StartupObject>Schedule.Program</StartupObject>
 		<ApplicationIcon>Images\Icon.ico</ApplicationIcon>
+		<Platforms>AnyCPU;x86</Platforms>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Images\DefaultPhoto.png" />
