@@ -41,7 +41,45 @@ namespace Schedule.Pages
 
             ExportScheduleStartDatePicker.SelectedDate = DateTime.Today.Date.AddDays(-dayOfWeek + 1);
             ExportScheduleEndDatePicker.SelectedDate = ExportScheduleStartDatePicker.SelectedDate!.Value.AddDays(5);
+
+            ExportReportStartDatePicker.SelectedDate = DateTime.Today.Date.AddDays(-dayOfWeek + 1);
+            ExportReportEndDatePicker.SelectedDate = ExportReportStartDatePicker.SelectedDate!.Value.AddDays(5);
+
             ScheduleExportStatusProgressBar.Maximum = 1.0;
+            ReportExportStatusProgressBar.Maximum = 1.0;
+        }
+
+        private void ExportDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DatePicker datePicker = (DatePicker)sender;
+
+            if (datePicker.SelectedDate == null)
+            {
+                datePicker.SelectedDate = DateTime.Today.Date;
+            }
+
+            if (datePicker.Name.Contains("Start"))
+            {
+                DatePicker pairDatePicker = (FindName(datePicker.Name.Replace("Start", "End")) as DatePicker)!;
+
+                if (pairDatePicker == null) return;
+
+                if (pairDatePicker.SelectedDate < datePicker.SelectedDate)
+                {
+                    pairDatePicker.SelectedDate = datePicker.SelectedDate;
+                }
+            }
+            else if (datePicker.Name.Contains("End"))
+            {
+                DatePicker pairDatePicker = (FindName(datePicker.Name.Replace("End", "Start")) as DatePicker)!;
+
+                if (pairDatePicker == null) return;
+
+                if (pairDatePicker.SelectedDate > datePicker.SelectedDate)
+                {
+                    pairDatePicker.SelectedDate = datePicker.SelectedDate;
+                }
+            }
         }
 
         #region ScheduleExport
@@ -100,7 +138,7 @@ namespace Schedule.Pages
             {
                 Excel.Application app = new();
             }
-            catch (Exception e)
+            catch
             {
                 MessageBox.Show("Ошибка инициализации Excel документа. Проверьте наличие приложения Excel и права доступа к нему."
                     , "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -278,31 +316,6 @@ namespace Schedule.Pages
             Dispatcher.Invoke(() => ScheduleExportDefaultStyle());
         }
 
-        private void ExportScheduleDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DatePicker datePicker = (DatePicker)sender;
-
-            if (datePicker.SelectedDate == null)
-            {
-                datePicker.SelectedDate = DateTime.Today.Date;
-            }
-
-            if (datePicker.Name == "ExportScheduleStartDatePicker")
-            {
-                if (ExportScheduleEndDatePicker.SelectedDate < ExportScheduleStartDatePicker.SelectedDate)
-                {
-                    ExportScheduleEndDatePicker.SelectedDate = ExportScheduleStartDatePicker.SelectedDate;
-                }
-            }
-            else if (datePicker.Name == "ExportScheduleEndDatePicker")
-            {
-                if (ExportScheduleStartDatePicker.SelectedDate > ExportScheduleEndDatePicker.SelectedDate)
-                {
-                    ExportScheduleStartDatePicker.SelectedDate = ExportScheduleEndDatePicker.SelectedDate;
-                }
-            }
-        }
-
         private void ScheduleExportButton_Click(object sender, RoutedEventArgs e)
         {
             ScheduleExportDataTask = ScheduleExportAsync(ScheduleExportDataToken.Token);
@@ -318,7 +331,258 @@ namespace Schedule.Pages
 
         #region Report
 
+        private CancellationTokenSource ReportExportDataToken = new();
+        private Task ReportExportDataTask = null!;
 
+        private void ReportExportDefaultStyle()
+        {
+            ReportExportStatusProgressBar.Value = 0;
+            ReportExportStatusTextBlock.Text = null!;
+            ReportExportButton.IsEnabled = true;
+            ReportCancelButton.IsEnabled = false;
+        }
+
+        private async Task ReportExportAsync(CancellationToken cancellationToken = default!)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                ReportExportButton.IsEnabled = false;
+                ReportCancelButton.IsEnabled = true;
+            });
+
+            DateTime dateStart = ExportReportStartDatePicker.SelectedDate!.Value.Date;
+            DateTime dateEnd = ExportReportEndDatePicker.SelectedDate!.Value.Date;
+            string path = $"{Directory.GetCurrentDirectory()}";
+            string fileName = $"Отчет_{DateTime.Now.ToString().Replace(":", ".")}";
+
+            using DatabaseContext context = new();
+
+            Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Получение расписания...");
+
+            IQueryable<ScheduleLesson> scheduleLessons = default!;
+
+            await Task.Run(() =>
+            {
+                scheduleLessons = context.ScheduleLessons
+                   .Where(x => x.Date >= dateStart && x.Date <= dateEnd)
+                   .Include(x => x.Cabinet)
+                   .Include(x => x.PairCabinet)
+                   .Include(x => x.ClassLesson)
+                   .Include(x => x.ClassLesson.Class)
+                   .Include(x => x.ClassLesson.Lesson)
+                   .Include(x => x.ClassLesson.Teacher)
+                   .Include(x => x.ClassLesson.PairClassLesson)
+                   .Include(x => x.ClassLesson.PairClassLesson!.Class)
+                   .Include(x => x.ClassLesson.PairClassLesson!.Lesson)
+                   .Include(x => x.ClassLesson.PairClassLesson!.Teacher)
+                   .OrderBy(x => x.Date)
+                   .ThenBy(x => x.ClassLesson.Class!.Name);
+            }, cancellationToken);
+
+            Dispatcher.Invoke(() => ReportExportStatusProgressBar.Value += 0.2);
+            Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Инициализация документа...");
+
+            try
+            {
+                Excel.Application app = new();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка инициализации Excel документа. Проверьте наличие приложения Excel и права доступа к нему."
+                    , "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                Dispatcher.Invoke(() => ScheduleExportDefaultStyle());
+            }
+
+            if (cancellationToken.IsCancellationRequested) return;
+
+            Excel.Application application = new();
+            Excel.Workbook workbook = application.Workbooks.Add();
+            Excel.Worksheet worksheet = workbook.Sheets[1];
+
+            application.ScreenUpdating = true;
+
+            List<DateTime> dateTimes = scheduleLessons.Select(x => x.Date).Distinct().OrderBy(x => x).ToList();
+            List<string?> classes = context.Classes.Select(x => x.Name).OrderBy(x => x!.Length).ThenBy(x => x).ToList();
+
+            Dispatcher.Invoke(() => ReportExportStatusProgressBar.Value += 0.1);
+            Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Расчет...");
+
+            Dictionary<int, int> countConductedLessonClasses = new();
+            Dictionary<int, int> countConductedLessonTeachers = new();
+            int CountConductedLessons() => countConductedLessonClasses.Select(x => x.Value).Sum();
+
+            foreach (Class classItem in context.Classes)
+            {
+                countConductedLessonClasses[classItem.ClassId] = scheduleLessons
+                    .Where(x => x.ClassLesson.Class!.ClassId == classItem.ClassId)
+                    .Count();
+            }
+
+            foreach (Teacher teacherItem in context.Teachers)
+            {
+                countConductedLessonTeachers[teacherItem.TeacherId] = scheduleLessons
+                    .Where(x => x.ClassLesson.Teacher!.TeacherId == teacherItem.TeacherId || (x.ClassLesson.PairClassLesson != null && x.ClassLesson.PairClassLesson.Teacher!.TeacherId == teacherItem.TeacherId))
+                    .Count();
+            }
+
+            Dispatcher.Invoke(() => ReportExportStatusProgressBar.Value += 0.1);
+            Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Формирование...");
+
+            // Filling excel document
+
+            int CountRows() => 10 + (context.Teachers.Count() > context.Classes.Count() ? context.Teachers.Count() : context.Classes.Count()) + 1;
+
+            // Clear color borders
+            worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[CountRows(), 11]]
+                .Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.White);
+
+            // Header
+            worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 11]].Merge();
+            worksheet.Cells[1, 1].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[1, 1] = "Отчет о проведенных занятиях";
+
+            // Create report date
+            worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[3, 11]].Merge();
+            worksheet.Cells[3, 1] = $"Дата составления отчета: {DateTime.Now:dd.MM.yyyy HH.mm.ss}";
+
+            // Period report
+            worksheet.Range[worksheet.Cells[4, 1], worksheet.Cells[4, 11]].Merge();
+            worksheet.Cells[4, 1] = $"Период отчетности: {dateStart.Date.ToShortDateString()} - {dateEnd.Date.ToShortDateString()}";
+
+            // Count classes
+            worksheet.Range[worksheet.Cells[5, 1], worksheet.Cells[5, 11]].Merge();
+            worksheet.Cells[5, 1] = $"Всего классов: {context.Classes.Count()}";
+
+            // Count teachers
+            worksheet.Range[worksheet.Cells[6, 1], worksheet.Cells[6, 11]].Merge();
+            worksheet.Cells[6, 1] = $"Всего педагогов: {context.Teachers.Count()}";
+
+            // Count Lessons
+            worksheet.Range[worksheet.Cells[7, 1], worksheet.Cells[7, 11]].Merge();
+            worksheet.Cells[7, 1] = $"Всего проведено занятий: {CountConductedLessons()}";
+
+
+            int startTables = 9;
+
+            // Count conducted lessons by class
+            worksheet.Range[worksheet.Cells[startTables, 2], worksheet.Cells[startTables, 5]].Merge();
+            worksheet.Cells[startTables, 2].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[startTables, 2] = "Проведено занятий по классам";
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 2], worksheet.Cells[startTables + 1, 5]]
+                .Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 2], worksheet.Cells[startTables + 1, 5]]
+                .Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 2], worksheet.Cells[startTables + 1, 3]].Merge();
+            worksheet.Cells[startTables + 1, 2].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[startTables + 1, 2] = "Класс";
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 4], worksheet.Cells[startTables + 1, 5]].Merge();
+            worksheet.Cells[startTables + 1, 4].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[startTables + 1, 4] = "Кол-во";
+
+            int indexClass = 0;
+            foreach (var classItem in countConductedLessonClasses)
+            {
+                int classId = classItem.Key;
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexClass, 2], worksheet.Cells[startTables + 2 + indexClass, 5]]
+                    .Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexClass, 2], worksheet.Cells[startTables + 2 + indexClass, 5]]
+                    .Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexClass, 2], worksheet.Cells[startTables + 2 + indexClass, 3]].Merge();
+                worksheet.Cells[startTables + 2 + indexClass, 2] = context.Classes.First(x => x.ClassId == classId).Name;
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexClass, 4], worksheet.Cells[startTables + 2 + indexClass, 5]].Merge();
+                worksheet.Cells[startTables + 2 + indexClass, 4] = classItem.Value;
+
+                ++indexClass;
+            }
+
+            // Count conducted lessons by teachers
+            worksheet.Range[worksheet.Cells[startTables, 7], worksheet.Cells[startTables, 10]].Merge();
+            worksheet.Cells[startTables, 7].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[startTables, 7] = "Проведено занятий по педагогам";
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 7], worksheet.Cells[startTables + 1, 10]]
+                .Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 7], worksheet.Cells[startTables + 1, 10]]
+                .Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 7], worksheet.Cells[startTables + 1, 8]].Merge();
+            worksheet.Cells[startTables + 1, 7].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[startTables + 1, 7] = "Педагог";
+
+            worksheet.Range[worksheet.Cells[startTables + 1, 9], worksheet.Cells[startTables + 1, 10]].Merge();
+            worksheet.Cells[startTables + 1, 9].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Cells[startTables + 1, 9] = "Кол-во";
+
+            int indexTeacher = 0;
+            foreach (var teacherItem in countConductedLessonTeachers)
+            {
+                int teacherId = teacherItem.Key;
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexTeacher, 7], worksheet.Cells[startTables + 2 + indexTeacher, 10]]
+                    .Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexTeacher, 7], worksheet.Cells[startTables + 2 + indexTeacher, 10]]
+                    .Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexTeacher, 7], worksheet.Cells[startTables + 2 + indexTeacher, 8]].Merge();
+                worksheet.Cells[startTables + 2 + indexTeacher, 7] = context.Teachers.First(x => x.TeacherId == teacherId).ToShortString();
+
+                worksheet.Range[worksheet.Cells[startTables + 2 + indexTeacher, 9], worksheet.Cells[startTables + 2 + indexTeacher, 10]].Merge();
+                worksheet.Cells[startTables + 2 + indexTeacher, 9] = teacherItem.Value;
+
+                ++indexTeacher;
+            }
+
+            worksheet.Columns.AutoFit();
+            worksheet.Rows.AutoFit();
+
+            // Openning excel document
+
+            Dispatcher.Invoke(() => ReportExportStatusProgressBar.Value += 0.6);
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Открытие документа...");
+
+                await Task.Delay(500, cancellationToken);
+
+                application.Visible = true;
+                application.Interactive = true;
+                application.ScreenUpdating = true;
+                application.UserControl = true;
+                application.ScreenUpdating = true;
+
+                while (application.Visible == true)
+                {
+                    if (cancellationToken.IsCancellationRequested) break;
+                    await Task.Delay(100, cancellationToken);
+                }
+            }
+
+            application.Quit();
+
+            Dispatcher.Invoke(() => ReportExportDefaultStyle());
+        }
+
+        private void ReportExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReportExportDataTask = ReportExportAsync(ReportExportDataToken.Token);
+        }
+
+        private void ReportCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ReportExportDataToken.Cancel();
+            ReportExportDefaultStyle();
+        }
 
         #endregion
     }
