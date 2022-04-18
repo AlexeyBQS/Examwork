@@ -1,0 +1,82 @@
+﻿<Page x:Class="Schedule.Pages.SettingViewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Schedule.Pages"
+      mc:Ignorable="d" 
+      Title="SettingViewPage"
+      Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="18" Text="Настройки"/>
+
+        <GridSplitter Grid.Row="1" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" FontSize="18" Text="Пароль"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource StandartTextBlockStyle}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           x:Name="StatusPasswordTextBox" Text="Пароль не установлен"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введите старый пароль:"/>
+                <PasswordBox Grid.Row="2" Grid.Column="2" Style="{StaticResource StandartPasswordBoxStyle}"
+                             x:Name="OldPasswordBox"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введите новый пароль:"/>
+                <PasswordBox Grid.Row="4" Grid.Column="2" Style="{StaticResource StandartPasswordBoxStyle}"
+                             x:Name="NewPasswordBox"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введите повторите пароль:"/>
+                <PasswordBox Grid.Row="6" Grid.Column="2" Style="{StaticResource StandartPasswordBoxStyle}"
+                             x:Name="RepeatNewPasswordBox"/>
+
+                <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource StandartButtonStyle}"
+                        Height="30" Width="150" Content="Установить пароль" x:Name="ChangePasswordButton"
+                        Click="ChangePasswordButton_Click"/>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Row="3" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+    </Grid>
+</Page>

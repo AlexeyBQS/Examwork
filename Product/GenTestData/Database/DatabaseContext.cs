@@ -15,6 +15,7 @@ namespace Schedule.Database
         public DbSet<Lesson> Lessons { get; set; } = default!;
         public DbSet<ClassLesson> ClassLessons { get; set; } = default!;
         public DbSet<ScheduleLesson> ScheduleLessons { get; set; } = default!;
+        public DbSet<Password> Passwords { get; set; } = default!;
 
         public DatabaseContext()
         {

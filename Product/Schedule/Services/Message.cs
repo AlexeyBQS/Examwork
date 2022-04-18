@@ -24,5 +24,12 @@ namespace Schedule.Services
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning,
                 MessageBoxResult.No);
+
+        public static void Message_IncorrectPassword()=>
+            MessageBox.Show(
+                "Неверный пароль!",
+                "Ошибка!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
     }
 }

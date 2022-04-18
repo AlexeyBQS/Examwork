@@ -9,6 +9,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\AuthViewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\CabinetViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,6 +30,9 @@
     <Compile Update="Pages\ScheduleLessonViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\SettingViewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\TeacherViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -35,6 +41,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\AuthViewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\CabinetViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -54,6 +63,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ScheduleLessonViewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\SettingViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\TeacherViewPage.xaml">

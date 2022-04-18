@@ -1,4 +1,5 @@
 ﻿using Schedule.Pages;
+using Schedule.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,9 @@ namespace Schedule
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new MainPage();
+            MainFrame.Content = PasswordManager.GetPasswordFromDatabase() is not null
+                ? new AuthViewPage()
+                : new MainPage();
         }
     }
 }
