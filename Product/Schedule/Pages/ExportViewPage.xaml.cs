@@ -433,9 +433,15 @@ namespace Schedule.Pages
 
             int CountRows() => 10 + (context.Teachers.Count() > context.Classes.Count() ? context.Teachers.Count() : context.Classes.Count()) + 1;
 
-            // Clear color borders
+            // Setting sheet
             worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[CountRows(), 11]]
                 .Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.White);
+
+            worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[7, 1]]
+                .HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+
+            worksheet.Range[worksheet.Cells[3, 5], worksheet.Cells[7, 5]]
+                .HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
 
             // Header
             worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[1, 11]].Merge();
@@ -443,25 +449,39 @@ namespace Schedule.Pages
             worksheet.Cells[1, 1] = "Отчет о проведенных занятиях";
 
             // Create report date
-            worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[3, 11]].Merge();
-            worksheet.Cells[3, 1] = $"Дата составления отчета: {DateTime.Now:dd.MM.yyyy HH.mm.ss}";
+            worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[3, 4]].Merge();
+            worksheet.Cells[3, 1] = "Дата составления отчета:";
+
+            worksheet.Range[worksheet.Cells[3, 5], worksheet.Cells[3, 7]].Merge();
+            worksheet.Cells[3, 5] = $"{DateTime.Now:HH:mm:ss dd.MM.yyyy}";
 
             // Period report
-            worksheet.Range[worksheet.Cells[4, 1], worksheet.Cells[4, 11]].Merge();
-            worksheet.Cells[4, 1] = $"Период отчетности: {dateStart.Date.ToShortDateString()} - {dateEnd.Date.ToShortDateString()}";
+            worksheet.Range[worksheet.Cells[4, 1], worksheet.Cells[4, 4]].Merge();
+            worksheet.Cells[4, 1] = "Период отчетности:";
+
+            worksheet.Range[worksheet.Cells[4, 5], worksheet.Cells[4, 7]].Merge();
+            worksheet.Cells[4, 5] = $"{dateStart.ToShortDateString()} - {dateEnd.ToShortDateString()}";
 
             // Count classes
-            worksheet.Range[worksheet.Cells[5, 1], worksheet.Cells[5, 11]].Merge();
-            worksheet.Cells[5, 1] = $"Всего классов: {context.Classes.Count()}";
+            worksheet.Range[worksheet.Cells[5, 1], worksheet.Cells[5, 4]].Merge();
+            worksheet.Cells[5, 1] = "Всего классов:";
+
+            worksheet.Range[worksheet.Cells[5, 5], worksheet.Cells[5, 7]].Merge();
+            worksheet.Cells[5, 5] = $"{context.Classes.Count()}";
 
             // Count teachers
-            worksheet.Range[worksheet.Cells[6, 1], worksheet.Cells[6, 11]].Merge();
-            worksheet.Cells[6, 1] = $"Всего педагогов: {context.Teachers.Count()}";
+            worksheet.Range[worksheet.Cells[6, 1], worksheet.Cells[6, 4]].Merge();
+            worksheet.Cells[6, 1] = "Всего педагогов: ";
+
+            worksheet.Range[worksheet.Cells[6, 5], worksheet.Cells[6, 7]].Merge();
+            worksheet.Cells[6, 5] = $"{context.Teachers.Count()}";
 
             // Count Lessons
-            worksheet.Range[worksheet.Cells[7, 1], worksheet.Cells[7, 11]].Merge();
-            worksheet.Cells[7, 1] = $"Всего проведено занятий: {CountConductedLessons()}";
+            worksheet.Range[worksheet.Cells[7, 1], worksheet.Cells[7, 4]].Merge();
+            worksheet.Cells[7, 1] = "Всего проведено занятий:";
 
+            worksheet.Range[worksheet.Cells[7, 5], worksheet.Cells[7, 7]].Merge();
+            worksheet.Cells[7, 5] = $"{CountConductedLessons()}";
 
             int startTables = 9;
 
