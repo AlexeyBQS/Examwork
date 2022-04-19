@@ -36,6 +36,7 @@ namespace Schedule.Pages
             (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание - Настройки";
 
             TrackPasswordBlockAsync(CancellationTokenSource.Token);
+            TrackPasswordBlockAsync(CancellationTokenSource.Token);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
