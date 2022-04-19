@@ -6,6 +6,7 @@
     <Application.Resources>
         <Style x:Key="WindowStyle" TargetType="Window">
             <Setter Property="ResizeMode" Value="CanMinimize"/>
+            <Setter Property="Background" Value="Cornsilk"/>
         </Style>
 
         <Style x:Key="MenuPageStyle" TargetType="Page">
