@@ -133,5 +133,14 @@ namespace Schedule.Pages
         }
 
         #endregion
+
+        #region SessionBlock
+
+        private void CloseSessionButton_Click(object sender, RoutedEventArgs e)
+        {
+            (Window.GetWindow(this) as MainWindow)!.MainFrame.Content = new AuthViewPage();
+        }
+
+        #endregion
     }
 }

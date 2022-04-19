@@ -16,6 +16,8 @@
             <RowDefinition Height="2"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -101,12 +103,40 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Style="{StaticResource StandartButtonStyle}" Height="30" Width="200"
+                <Button Style="{StaticResource StandartButtonStyle}" Height="30" Width="170"
                         Content="Удалить базу данных" x:Name="DeleteDatabaseButton" Click="DeleteDatabaseButton_Click"/>
             </Grid>
         </Grid>
 
         <GridSplitter Grid.Row="5" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="6">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontSize="18" Text="Сессия"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Style="{StaticResource StandartButtonStyle}" Height="30" Width="170"
+                        Content="Выйти" x:Name="CloseSessionButton" Click="CloseSessionButton_Click"/>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Row="7" Height="2" ShowsPreview="False" IsEnabled="False"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>
