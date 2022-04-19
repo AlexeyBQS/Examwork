@@ -8,6 +8,6 @@ namespace Schedule.Services
 {
     public class ConfigControlFile
     {
-        public string ConnectionString { get; set; } = $"Data Source=ScheduleDatabase.db";
+        public string DatabaseFileName { get; set; } = $"ScheduleDatabase.db";
     }
 }

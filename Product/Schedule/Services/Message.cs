@@ -31,5 +31,13 @@ namespace Schedule.Services
                 "Ошибка!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+
+        public static MessageBoxResult Action_DeleteDatabase()=>
+            MessageBox.Show(
+                "Вы действительно хотите удалить базу данных?",
+                "Внимание!",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning,
+                MessageBoxResult.No);
     }
 }

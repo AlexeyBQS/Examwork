@@ -2,6 +2,7 @@
 using Schedule.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -104,6 +105,30 @@ namespace Schedule.Pages
             }
 
             CheckPasswordBlock();
+        }
+
+        #endregion
+
+        #region DatabaseBlock
+
+        private async void TrackDatabaseBlockAsync(CancellationToken cancellationToken = default!)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                DeleteDatabaseButton.IsEnabled = File.Exists($"{Directory.GetCurrentDirectory()}{ConfigManager.DatabaseFileName}");
+
+                await Task.Delay(100);
+            }
+        }
+
+        private void DeleteDatabaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Message.Action_DeleteDatabase() == MessageBoxResult.Yes)
+            {
+                using DatabaseContext context = new();
+
+                context.Database.EnsureDeletedAsync();
+            }
         }
 
         #endregion

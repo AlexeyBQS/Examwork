@@ -14,7 +14,7 @@ namespace Schedule.Services
     /// </summary>
     public static class ConfigManager
     {
-        private static string NameConfigFile => "config.json";
+        private static string NameConfigFile => "Config.json";
         private static string PathConfigFile => $"{Directory.GetCurrentDirectory()}\\{NameConfigFile}";
 
         static ConfigManager()
@@ -34,14 +34,18 @@ namespace Schedule.Services
             set => File.WriteAllText(PathConfigFile, JsonSerializer.Serialize(value));
         }
 
+        public static string DatabaseFileName
+        {
+            get => ConfigFile.DatabaseFileName;
+            set => ConfigFile.DatabaseFileName = value;
+        }
 
         /// <summary>
         /// Строка подключения к базе данных
         /// </summary>
         public static string ConnectionString
         {
-            get => ConfigFile.ConnectionString;
-            set => ConfigFile.ConnectionString = value;
+            get => $"Data Source={DatabaseFileName};";
         }
     }
 }
