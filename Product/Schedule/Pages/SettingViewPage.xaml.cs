@@ -36,7 +36,8 @@ namespace Schedule.Pages
             (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание - Настройки";
 
             TrackPasswordBlockAsync(CancellationTokenSource.Token);
-            TrackPasswordBlockAsync(CancellationTokenSource.Token);
+            TrackDatabaseBlockAsync(CancellationTokenSource.Token);
+            StartAnimationCheckBox.IsChecked = ConfigManager.CancelStartAnimation;
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -134,11 +135,20 @@ namespace Schedule.Pages
 
         #endregion
 
+        #region StartLogoAnimation
+
+        private void StartAnimationCheckBox_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            ConfigManager.CancelStartAnimation = StartAnimationCheckBox.IsChecked ?? false;
+        }
+
+        #endregion
+
         #region SessionBlock
 
         private void CloseSessionButton_Click(object sender, RoutedEventArgs e)
         {
-            (Window.GetWindow(this) as MainWindow)!.MainFrame.Content = new AuthViewPage();
+            (Window.GetWindow(this) as MainWindow)!.MainFrame.Content = new StartViewPage();
         }
 
         #endregion

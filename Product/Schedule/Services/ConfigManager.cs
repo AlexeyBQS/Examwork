@@ -34,10 +34,18 @@ namespace Schedule.Services
             set => File.WriteAllText(PathConfigFile, JsonSerializer.Serialize(value));
         }
 
+        /// <summary>
+        /// Имя файла базы данных
+        /// </summary>
         public static string DatabaseFileName
         {
             get => ConfigFile.DatabaseFileName;
-            set => ConfigFile.DatabaseFileName = value;
+            set
+            {
+                ConfigControlFile file = ConfigFile;
+                file.DatabaseFileName = value;
+                ConfigFile = file;
+            }
         }
 
         /// <summary>
@@ -46,6 +54,20 @@ namespace Schedule.Services
         public static string ConnectionString
         {
             get => $"Data Source={DatabaseFileName};";
+        }
+
+        /// <summary>
+        /// Отключить анимацию при загрузке приложения
+        /// </summary>
+        public static bool CancelStartAnimation
+        {
+            get => ConfigFile.CancelStartAnimation;
+            set
+            {
+                ConfigControlFile file = ConfigFile;
+                file.CancelStartAnimation = value;
+                ConfigFile = file;
+            }
         }
     }
 }

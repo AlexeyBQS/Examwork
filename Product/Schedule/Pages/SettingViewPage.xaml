@@ -18,6 +18,8 @@
             <RowDefinition Height="2"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -137,6 +139,34 @@
         </Grid>
 
         <GridSplitter Grid.Row="7" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="8">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontSize="18" Text="Загрузка"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Grid.Row="0" Grid.Column="0" FontSize="14" Margin="10,10,0,0" Content="Отключить анимацию при загрузке программы"
+                          x:Name="StartAnimationCheckBox" Checked="StartAnimationCheckBox_CheckChanged" Unchecked="StartAnimationCheckBox_CheckChanged"/>
+            </Grid>
+        </Grid>
+        
+        <GridSplitter Grid.Row="9" Height="2" ShowsPreview="False" IsEnabled="False"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>

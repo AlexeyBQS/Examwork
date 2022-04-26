@@ -9,5 +9,6 @@ namespace Schedule.Services
     public class ConfigControlFile
     {
         public string DatabaseFileName { get; set; } = $"ScheduleDatabase.db";
+        public bool CancelStartAnimation { get; set; } = false;
     }
 }
