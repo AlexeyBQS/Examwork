@@ -9,6 +9,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\AboutProgramViewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\AuthViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -44,6 +47,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\AboutProgramViewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\AuthViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
