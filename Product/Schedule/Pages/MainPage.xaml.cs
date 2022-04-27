@@ -39,6 +39,7 @@ namespace Schedule.Pages
 
         private readonly MenuElement[] Menu = new MenuElement[]
         {
+            new("Инструкция", new InstructionViewPage()),
             new("Педагоги", new TeacherViewPage()),
             new("Кабинеты", new CabinetViewPage()),
             new("Классы", new ClassViewPage()),
@@ -56,6 +57,7 @@ namespace Schedule.Pages
             window.WindowTitle = "Расписание";
 
             MenuListBox.ItemsSource = Menu;
+            if (MenuListBox.Items.Count > 0) MenuListBox.SelectedIndex = 0;
         }
 
         private void MenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

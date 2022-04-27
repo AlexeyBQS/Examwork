@@ -1,0 +1,74 @@
+﻿<Page x:Class="Schedule.Pages.InstructionViewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Schedule.Pages"
+      mc:Ignorable="d" 
+      Title="InstructionViewPage"
+      Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="18" Text="Инструкция"/>
+
+        <GridSplitter Grid.Row="1" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontSize="18" Text="Заполнение"/>
+
+            <Grid Grid.Row="1" Margin="5,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Row="3" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontSize="18" Text="Порядок заполнения"/>
+
+            <Grid Grid.Row="1" Margin="5,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" TextAlignment="Left" FontSize="16" Margin="0"
+                           Text="Заполнение программы данными производится в следующием порядке:"/>
+
+                <TextBlock Grid.Row="1" TextAlignment="Center" FontSize="16" Margin="0,5,0,0"
+                           Text="Педагоги > Кабинеты > Классы > Дисциплины > Дисциплины класса > Расписание"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
