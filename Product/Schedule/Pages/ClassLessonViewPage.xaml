@@ -51,8 +51,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <GridSplitter Grid.Column="1" Width="2" ShowsPreview="False" IsEnabled="False"
-                          VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+            <GridSplitter Grid.Column="1" Width="2" Style="{StaticResource VerticalGridSplitter}"/>
 
             <ListBox Grid.Column="2" x:Name="LessonAndClassLessonListBox" Background="Transparent" BorderThickness="0"
                      ItemsSource="{Binding}" SelectionMode="Single" SelectionChanged="LessonAndClassLessonLessonListBox_SelectionChanged">
@@ -76,8 +75,7 @@
             </ListBox>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Width="2" ShowsPreview="False" IsEnabled="False"
-                      VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Style="{StaticResource VerticalGridSplitter}"/>
 
         <Grid Grid.Column="2">
             <TabControl Background="Transparent" BorderThickness="0">
@@ -239,8 +237,7 @@
             </TabControl>
         </Grid>
 
-        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Height="2" ShowsPreview="False" IsEnabled="False"
-                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource HorizontalGridSplitter}"/>
 
         <Grid Grid.Row="2" Grid.Column="0">
             <Grid.ColumnDefinitions>
@@ -265,7 +262,6 @@
                     Content="Удалить" x:Name="DeleteClassLessonButton" Click="DeleteClassLessonButton_Click"/>
         </Grid>
 
-        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" Height="2" ShowsPreview="False" IsEnabled="False"
-                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource HorizontalGridSplitter}"/>
     </Grid>
 </Page>

@@ -4,9 +4,17 @@
              xmlns:local="clr-namespace:Schedule"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <LinearGradientBrush x:Key="BackgroundWindowColor">
+            <GradientStop Offset="0.00" Color="#FF97A0DE"/>
+            <GradientStop Offset="0.50" Color="Azure"/>
+            <GradientStop Offset="1.00" Color="#FF009CFF"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="GridSplitterColor" Color="#8269ff"/>
+
         <Style x:Key="WindowStyle" TargetType="Window">
             <Setter Property="ResizeMode" Value="CanMinimize"/>
-            <Setter Property="Background" Value="Cornsilk"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundWindowColor}"/>
         </Style>
 
         <Style x:Key="MenuPageStyle" TargetType="Page">
@@ -73,6 +81,24 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="HorizontalGridSplitter" TargetType="GridSplitter">
+            <Setter Property="Height" Value="2"/>
+            <Setter Property="ShowsPreview" Value="False"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="{StaticResource GridSplitterColor}"/>
+        </Style>
+
+        <Style x:Key="VerticalGridSplitter" TargetType="GridSplitter">
+            <Setter Property="Width" Value="2"/>
+            <Setter Property="ShowsPreview" Value="False"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{StaticResource GridSplitterColor}"/>
         </Style>
     </Application.Resources>
 </Application>

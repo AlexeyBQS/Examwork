@@ -64,8 +64,7 @@
                        x:Name="SaturdayTextBlock" Text="Сб."/>
         </Grid>
 
-        <GridSplitter Grid.Row="2" Height="2" ShowsPreview="False" IsEnabled="False"
-                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="2" Style="{StaticResource HorizontalGridSplitter}"/>
 
         <ItemsControl Grid.Row="3" x:Name="ScheduleItemsControl">
             <ItemsControl.ItemTemplate>

@@ -19,8 +19,7 @@
         <TextBlock Grid.Row="0" x:Name="TitleTextBox" FontSize="16" Margin="0,5" TextWrapping="Wrap"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <GridSplitter Grid.Row="1" Height="2" ShowsPreview="False" IsEnabled="False"
-                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="1" Style="{StaticResource HorizontalGridSplitter}"/>
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -384,8 +383,7 @@
             </Grid>
         </Grid>
 
-        <GridSplitter Grid.Row="3" Height="2" ShowsPreview="False" IsEnabled="False"
-                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        <GridSplitter Grid.Row="3" Style="{StaticResource HorizontalGridSplitter}"/>
 
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>

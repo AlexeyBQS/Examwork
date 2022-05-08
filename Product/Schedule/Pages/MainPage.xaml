@@ -27,8 +27,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <GridSplitter Grid.Column="1" Width="2" ShowsPreview="False" IsEnabled="False"
-        VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <GridSplitter Grid.Column="1" Style="{StaticResource VerticalGridSplitter}"/>
 
         <Frame Grid.Column="2" x:Name="MenuFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
