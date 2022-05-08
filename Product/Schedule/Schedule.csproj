@@ -11,6 +11,9 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Images\DefaultPhoto.png" />
+	  <None Remove="Images\Instruction1.png" />
+	  <None Remove="Images\Instruction2.png" />
+	  <None Remove="Images\Instruction3.png" />
 	  <None Remove="Images\Logo.png" />
 	</ItemGroup>
 	<ItemGroup>
@@ -31,6 +34,12 @@
 	  <EmbeddedResource Include="Images\DefaultPhoto.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <Resource Include="Images\Instruction1.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Images\Instruction2.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
 	  <EmbeddedResource Include="Images\Logo.png" />
 	</ItemGroup>
 

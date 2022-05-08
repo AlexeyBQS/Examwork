@@ -30,17 +30,44 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" FontSize="18" Text="Заполнение"/>
+            <TextBlock Grid.Row="0" FontSize="18" Text="Добавление записи"/>
 
             <Grid Grid.Row="1" Margin="5,5,0,5">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" TextAlignment="Left" FontSize="16" Margin="0"
+                               HorizontalAlignment="Center" Text="1. Добавить новую запись"/>
+
+                    <Image Grid.Row="1" Width="384" Height="216"
+                           Source="pack://application:,,,/Images/Instruction1.png"/>
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" TextAlignment="Left" FontSize="16" Margin="0"
+                               HorizontalAlignment="Center" Text="2. Заполнить запись данными и сохранить изменения"/>
+
+                    <Image Grid.Row="1" Width="384" Height="216"
+                           Source="pack://application:,,,/Images/Instruction2.png"/>
+                </Grid>
             </Grid>
         </Grid>
 
@@ -68,6 +95,29 @@
 
                 <TextBlock Grid.Row="1" TextAlignment="Center" FontSize="16" Margin="0,5,0,0"
                            Text="Педагоги > Кабинеты > Классы > Дисциплины > Дисциплины класса > Расписание"/>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Row="5" Height="2" ShowsPreview="False" IsEnabled="False"
+                      VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+        <Grid Grid.Row="6">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" FontSize="18" Text="Заполнение расписания"/>
+
+            <Grid Grid.Row="1" Margin="5,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                
             </Grid>
         </Grid>
     </Grid>
