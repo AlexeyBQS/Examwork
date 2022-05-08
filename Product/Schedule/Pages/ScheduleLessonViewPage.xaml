@@ -81,7 +81,11 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"
-                                   Text="{Binding Class.Name}"/>
+                                   Text="{Binding Class.Name}">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="270"/>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
 
                         <DataGrid Grid.Column="1" Grid.ColumnSpan="6" x:Name="MondayDataGrid" IsReadOnly="True"
                                   SelectionUnit="Cell" AutoGenerateColumns="False" ItemsSource="{Binding LessonList}">
