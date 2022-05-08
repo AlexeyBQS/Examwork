@@ -97,25 +97,5 @@
         </Grid>
 
         <GridSplitter Grid.Row="5" Style="{StaticResource HorizontalGridSplitter}"/>
-
-        <Grid Grid.Row="6">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0" FontSize="18" Text="Заполнение расписания"/>
-
-            <Grid Grid.Row="1" Margin="5,5,0,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <!-- -->
-            </Grid>
-        </Grid>
     </Grid>
 </Page>
