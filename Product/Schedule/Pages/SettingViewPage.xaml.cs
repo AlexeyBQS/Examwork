@@ -117,7 +117,7 @@ namespace Schedule.Pages
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                DeleteDatabaseButton.IsEnabled = File.Exists($"{Directory.GetCurrentDirectory()}{ConfigManager.DatabaseFileName}");
+                DeleteDatabaseButton.IsEnabled = File.Exists($"{Directory.GetCurrentDirectory()}\\{ConfigManager.DatabaseFileName}");
 
                 await Task.Delay(100);
             }

@@ -65,7 +65,7 @@
             </ListBox>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Style="{StaticResource HorizontalGridSplitter}"/>
+        <GridSplitter Grid.Column="1" Grid.RowSpan="4" Style="{StaticResource VerticalGridSplitter}"/>
 
         <Grid Grid.Column="2">
             <TabControl Background="Transparent" BorderThickness="0">
