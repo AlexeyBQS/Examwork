@@ -377,7 +377,7 @@ namespace Schedule.Pages
                 {
                     using (DatabaseContext context = new())
                     {
-                        ClassLesson classLesson = context.ClassLessons.First(cl => cl.ClassLessonId == viewItemSource.LessonId);
+                        ClassLesson classLesson = context.ClassLessons.First(cl => cl.ClassLessonId == viewItemSource.ClassLessonId);
 
                         context.ClassLessons.Remove(classLesson);
                         context.SaveChangesAsync();

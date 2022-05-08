@@ -141,13 +141,12 @@ namespace Schedule.Windows
 
         private bool ValidCheckBusynessTeachers()
         {
-            static MessageBoxResult Message(int numberLesson, ClassLesson classLesson, Teacher teacher, ClassLesson busyClassLesson) =>
+            static void Message(int numberLesson, ClassLesson classLesson, Teacher teacher, ClassLesson busyClassLesson) =>
                 MessageBox.Show(
-                    $"Учитель {teacher.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Вы уверены, что хотите продолжить?",
+                    $"Учитель {teacher.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Удалите данный урок у текущего класса или выберите другой урок.",
                     $"Ошибка!",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Error,
-                    MessageBoxResult.No
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
                     );
 
             using DatabaseContext context = new();
@@ -177,8 +176,11 @@ namespace Schedule.Windows
 
                         Teacher? teacher = teacherId != null ? context.Teachers.FirstOrDefault(x => x.TeacherId == teacherId) : null;
 
-                        if (busyScheduleLesson != null && Message(numberLesson, classLesson, teacher!, busyScheduleLesson.ClassLesson) == MessageBoxResult.No)
+                        if (busyScheduleLesson != null)
+                        {
+                            Message(numberLesson, classLesson, teacher!, busyScheduleLesson.ClassLesson);
                             return false;
+                        }
                     }
 
                     if (pairTeacherId != null)
@@ -197,8 +199,11 @@ namespace Schedule.Windows
 
                         Teacher? pairTeacher = pairTeacherId != null ? context.Teachers.FirstOrDefault(x => x.TeacherId == pairTeacherId) : null;
 
-                        if (busyScheduleLesson != null && Message(numberLesson, classLesson, pairTeacher!, busyScheduleLesson.ClassLesson!.PairClassLesson!) == MessageBoxResult.No)
+                        if (busyScheduleLesson != null)
+                        {
+                            Message(numberLesson, classLesson, pairTeacher!, busyScheduleLesson.ClassLesson!.PairClassLesson!);
                             return false;
+                        }
                     }
                 }
             }
@@ -282,71 +287,71 @@ namespace Schedule.Windows
 
             using DatabaseContext context = new();
 
-            if (ValidCheckBusynessTeachers() && ValidCheckBusynessCabinets())
+            if (!ValidCheckBusynessTeachers() || !ValidCheckBusynessCabinets()) return;
+
+            for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
             {
-                for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+
+                ScheduleLesson? scheduleLesson = context.ScheduleLessons
+                    .Include(x => x.ClassLesson)
+                    .FirstOrDefault(x => x.Date == Date && x.NumberLesson == numberLesson && x.ClassLesson.ClassId == ClassId);
+
+                ComboBox lessonComboBox = (FindName($"Lesson_Lesson{numberLesson}_ComboBox") as ComboBox)!;
+                ComboBox cabinetComboBox = (FindName($"Cabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
+                ComboBox pairCabinetComboBox = (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
+                CheckBox isBoldCheckBox = (FindName($"IsBold_Lesson{numberLesson}_CheckBox") as CheckBox)!;
+
+                int? classLessonId = (lessonComboBox.SelectedItem as ClassLesson)?.ClassLessonId;
+                int? cabinetId = (cabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
+                int? pairCabinetId = (pairCabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
+                bool isBold = isBoldCheckBox.IsChecked ?? false;
+
+                if (scheduleLesson != null)
                 {
-
-                    ScheduleLesson? scheduleLesson = context.ScheduleLessons
-                        .FirstOrDefault(x => x.Date == Date && x.NumberLesson == numberLesson);
-
-                    ComboBox lessonComboBox = (FindName($"Lesson_Lesson{numberLesson}_ComboBox") as ComboBox)!;
-                    ComboBox cabinetComboBox = (FindName($"Cabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
-                    ComboBox pairCabinetComboBox = (FindName($"PairCabinet_Lesson{numberLesson}_ComboBox") as ComboBox)!;
-                    CheckBox isBoldCheckBox = (FindName($"IsBold_Lesson{numberLesson}_CheckBox") as CheckBox)!;
-
-                    int? classLessonId = (lessonComboBox.SelectedItem as ClassLesson)?.ClassLessonId;
-                    int? cabinetId = (cabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
-                    int? pairCabinetId = (pairCabinetComboBox.SelectedItem as Cabinet)?.CabinetId;
-                    bool isBold = isBoldCheckBox.IsChecked ?? false;
-
-                    if (scheduleLesson != null)
+                    if (classLessonId != null)
                     {
-                        if (classLessonId != null)
+                        if (scheduleLesson.ClassLessonId == classLessonId)
                         {
-                            if (scheduleLesson.ClassLessonId == classLessonId)
-                            {
-                                scheduleLesson.CabinetId = cabinetId;
-                                scheduleLesson.PairCabinetId = pairCabinetId;
-                                scheduleLesson.IsBold = isBold;
-                            }
-                            else
-                            {
-                                context.ScheduleLessons.Remove(scheduleLesson);
-                                context.ScheduleLessons.Add(new ScheduleLesson
-                                {
-                                    ClassLessonId = classLessonId.Value,
-                                    Date = Date,
-                                    NumberLesson = numberLesson,
-                                    CabinetId = cabinetId,
-                                    PairCabinetId = pairCabinetId,
-                                    IsBold = isBold
-                                });
-                            }
+                            scheduleLesson.CabinetId = cabinetId;
+                            scheduleLesson.PairCabinetId = pairCabinetId;
+                            scheduleLesson.IsBold = isBold;
                         }
                         else
                         {
                             context.ScheduleLessons.Remove(scheduleLesson);
+                            context.ScheduleLessons.Add(new ScheduleLesson
+                            {
+                                ClassLessonId = classLessonId.Value,
+                                Date = Date,
+                                NumberLesson = numberLesson,
+                                CabinetId = cabinetId,
+                                PairCabinetId = pairCabinetId,
+                                IsBold = isBold
+                            });
                         }
                     }
                     else
                     {
-                        if (classLessonId != null)
-                        {
-                            context.ScheduleLessons.Add(new ScheduleLesson
-                            {
-                                Date = Date,
-                                NumberLesson = numberLesson,
-                                ClassLessonId = classLessonId!.Value,
-                                CabinetId = cabinetId,
-                                PairCabinetId = pairCabinetId,
-                                IsBold = isBold,
-                            });
-                        }
+                        context.ScheduleLessons.Remove(scheduleLesson);
                     }
-
-                    context.SaveChanges();
                 }
+                else
+                {
+                    if (classLessonId != null)
+                    {
+                        context.ScheduleLessons.Add(new ScheduleLesson
+                        {
+                            Date = Date,
+                            NumberLesson = numberLesson,
+                            ClassLessonId = classLessonId!.Value,
+                            CabinetId = cabinetId,
+                            PairCabinetId = pairCabinetId,
+                            IsBold = isBold,
+                        });
+                    }
+                }
+
+                context.SaveChanges();
             }
 
             DialogResult = true;
