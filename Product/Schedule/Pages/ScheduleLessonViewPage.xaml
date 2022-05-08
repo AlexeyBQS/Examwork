@@ -18,12 +18,14 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="2*"/>
@@ -34,6 +36,12 @@
                 <DatePicker Grid.Column="1" Style="{StaticResource StandartDatePickerStyle}"
                             Width="150" x:Name="WeekScheduleLessonsClassesDatePicker"
                             SelectedDateChanged="WeekScheduleLessonsClassesDatePicker_SelectedDateChanged"/>
+            </Grid>
+
+            <Grid Grid.Column="3">
+                <Button Style="{StaticResource StandartButtonStyle}" Margin="0" Width="150" Height="25" Content="Обновить"
+                        HorizontalAlignment="Left"
+                        x:Name="UpdateScheduleItemsCotnrolButton" Click="UpdateScheduleItemsCotnrolButton_Click"/>
             </Grid>
         </Grid>
 

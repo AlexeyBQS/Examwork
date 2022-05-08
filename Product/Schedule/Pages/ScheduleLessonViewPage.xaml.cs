@@ -335,5 +335,10 @@ namespace Schedule.Pages
                 }
             }
         }
+
+        private void UpdateScheduleItemsCotnrolButton_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateScheduleItemsControlAsync();
+        }
     }
 }
