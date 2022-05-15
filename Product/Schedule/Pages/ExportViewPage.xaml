@@ -14,10 +14,16 @@
             <RowDefinition Height="2"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
+            <TextBlock Grid.Row="0" FontSize="18" Text="Экспорт"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
@@ -74,7 +80,7 @@
 
         <GridSplitter Grid.Row="1" Style="{StaticResource HorizontalGridSplitter}"/>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
