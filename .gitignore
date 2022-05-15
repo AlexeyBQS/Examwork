@@ -10,8 +10,9 @@ Product/.vs
 Documents/*.tmp
 Presentation/*.tmp
 
-# Template Microsoft Visio files
+# Template Microsoft Office files
 Schemes/*.~vsdx
+Documents/~*
 
 # Metadata and libraries on project "Shedule"
 Product/Schedule/bin
