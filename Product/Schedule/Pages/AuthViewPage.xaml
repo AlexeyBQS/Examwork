@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Schedule.Pages"
       mc:Ignorable="d" 
       Title="AuthViewPage"
-      Style="{StaticResource MenuPageStyle}" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+      Style="{StaticResource MenuPageStyle}" Loaded="Page_Loaded">
 
     <Grid>
         <Grid.RowDefinitions>
