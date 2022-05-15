@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Schedule.Pages"
       mc:Ignorable="d" 
       Title="SettingViewPage"
-      Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+      Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded">
 
     <Grid>
         <Grid.RowDefinitions>

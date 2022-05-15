@@ -40,11 +40,6 @@ namespace Schedule.Pages
             StartAnimationCheckBox.IsChecked = ConfigManager.CancelStartAnimation;
         }
 
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            CancellationTokenSource.Cancel();
-        }
-
         #region PasswordBlock
 
         private void CheckPasswordBlock()
