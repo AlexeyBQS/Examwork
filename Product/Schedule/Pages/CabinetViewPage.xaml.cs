@@ -335,10 +335,12 @@ namespace Schedule.Pages
                         {
                             BitmapImage image = Service.ConvertByteArrayToBitmapImage(cabinet.Photo ?? null!);
 
-                            SaveFileDialog dialog = new();
-                            dialog.FileName = $"Кабинет_{CabinetIdTextBox.Text ?? "0"}.png";
-                            dialog.Filter = "All Files (*.*)|*.*";
-                            dialog.FilterIndex = 0;
+                            SaveFileDialog dialog = new()
+                            {
+                                FileName = $"Кабинет_{CabinetIdTextBox.Text ?? "0"}.png",
+                                Filter = "All Files (*.*)|*.*",
+                                FilterIndex = 0
+                            };
 
                             if (dialog.ShowDialog() == true)
                             {
@@ -359,10 +361,12 @@ namespace Schedule.Pages
 
         private void ChangeCabinetPhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new();
-            dialog.Filter = "Image Files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png;";
-            dialog.FilterIndex = 0;
-            dialog.Multiselect = false;
+            OpenFileDialog dialog = new()
+            {
+                Filter = "Image Files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png;",
+                FilterIndex = 0,
+                Multiselect = false
+            };
 
             if (dialog.ShowDialog() == true)
             {

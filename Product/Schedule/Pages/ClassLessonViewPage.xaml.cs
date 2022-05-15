@@ -252,10 +252,11 @@ namespace Schedule.Pages
 
                 using (DatabaseContext context = new())
                 {
-                    ClassLesson classLesson = new();
-
-                    classLesson.ClassId = classId;
-                    classLesson.LessonId = lessonId;
+                    ClassLesson classLesson = new()
+                    {
+                        ClassId = classId,
+                        LessonId = lessonId
+                    };
 
                     context.ClassLessons.Add(classLesson);
                     context.SaveChangesAsync();

@@ -36,11 +36,6 @@ namespace Schedule.Pages
             TrackLengthPasswordBoxAsync(CancellationTokenSource.Token);
         }
 
-        private void Page_Unloaded(object sender, RoutedEventArgs e)
-        {
-            CancellationTokenSource.Cancel();
-        }
-
         private async void TrackLengthPasswordBoxAsync(CancellationToken cancellationToken = default!)
         {
             while (!cancellationToken.IsCancellationRequested)

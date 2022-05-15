@@ -25,14 +25,14 @@ namespace Schedule.Services
                 MessageBoxImage.Warning,
                 MessageBoxResult.No);
 
-        public static void Message_IncorrectPassword()=>
+        public static void Message_IncorrectPassword() =>
             MessageBox.Show(
                 "Неверный пароль!",
                 "Ошибка!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
 
-        public static MessageBoxResult Action_DeleteDatabase()=>
+        public static MessageBoxResult Action_DeleteDatabase() =>
             MessageBox.Show(
                 "Вы действительно хотите удалить базу данных?",
                 "Внимание!",

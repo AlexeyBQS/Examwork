@@ -84,7 +84,7 @@ namespace Schedule.Pages
 
         #region ScheduleExport
 
-        private CancellationTokenSource ScheduleExportDataToken = new();
+        private readonly CancellationTokenSource ScheduleExportDataToken = new();
         private Task ScheduleExportDataTask = null!;
 
         private void ScheduleExportDefaultStyle()
@@ -331,7 +331,7 @@ namespace Schedule.Pages
 
         #region Report
 
-        private CancellationTokenSource ReportExportDataToken = new();
+        private readonly CancellationTokenSource ReportExportDataToken = new();
         private Task ReportExportDataTask = null!;
 
         private void ReportExportDefaultStyle()
