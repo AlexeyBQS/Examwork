@@ -31,9 +31,9 @@
 	  <EmbeddedResource Include="Images\Icon.ico" />
 	</ItemGroup>
 	<ItemGroup>
-	  <EmbeddedResource Include="Images\DefaultPhoto.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </EmbeddedResource>
+	  <Resource Include="Images\DefaultPhoto.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
 	  <Resource Include="Images\Instruction1.png">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>

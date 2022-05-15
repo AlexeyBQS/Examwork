@@ -52,7 +52,7 @@
                                HorizontalAlignment="Center" Text="1. Добавить новую запись"/>
 
                     <Image Grid.Row="1" Width="384" Height="216"
-                           Source="pack://application:,,,/Images/Instruction1.png"/>
+                           Source="/Schedule;component/Images/Instruction1.png"/>
                 </Grid>
 
                 <Grid Grid.Row="0" Grid.Column="1">
@@ -65,7 +65,7 @@
                                HorizontalAlignment="Center" Text="2. Заполнить запись данными и сохранить изменения"/>
 
                     <Image Grid.Row="1" Width="384" Height="216"
-                           Source="pack://application:,,,/Images/Instruction2.png"/>
+                           Source="/Schedule;component/Images/Instruction2.png"/>
                 </Grid>
             </Grid>
         </Grid>

@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -98,12 +99,18 @@ namespace Schedule.Services
             ? new DateTime((dateTime ?? new()).Year, (dateTime ?? new()).Month, (dateTime ?? new()).Day)
             : null!;
 
+        private static BitmapImage GetResourceImage(string fileName)
+        {
+            Uri imageUri = new("pack://application:,,,/" + Assembly.GetExecutingAssembly().GetName().Name + ";component/Images/" + fileName, UriKind.RelativeOrAbsolute);
+            return new BitmapImage(imageUri);
+        }
+
         private static BitmapImage GetImage(string fileName) =>
             File.Exists($"{Directory.GetCurrentDirectory()}\\Images\\{fileName}")
             ? new BitmapImage(new Uri($"{Directory.GetCurrentDirectory()}\\Images\\{fileName}"))
             : null!;
 
-        public static readonly BitmapImage DefaultPhoto = GetImage("DefaultPhoto.png");
+        public static readonly BitmapImage DefaultPhoto = GetResourceImage("DefaultPhoto.png");
 
         #endregion
 
