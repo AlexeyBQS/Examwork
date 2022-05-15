@@ -39,5 +39,11 @@ namespace Schedule.Services
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning,
                 MessageBoxResult.No);
+
+        public static void Message_EmptyScheduleLessons() => MessageBox.Show(
+                    "Нет расписания на выбранный период!"
+                    , "Уведомление"
+                    , MessageBoxButton.OK
+                    , MessageBoxImage.Information);
     }
 }

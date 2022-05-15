@@ -20,6 +20,7 @@ using System.IO;
 using Schedule.ViewItemSources;
 using Schedule.Services;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Schedule.Pages
 {
@@ -112,7 +113,7 @@ namespace Schedule.Pages
 
             Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = "Получение расписания...");
 
-            IQueryable<ScheduleLesson> scheduleLessons = default!;
+            IEnumerable<ScheduleLesson> scheduleLessons = default!;
 
             await Task.Run(() =>
             {
@@ -125,12 +126,18 @@ namespace Schedule.Pages
                    .Include(x => x.ClassLesson.Lesson)
                    .Include(x => x.ClassLesson.Teacher)
                    .Include(x => x.ClassLesson.PairClassLesson)
-                   .Include(x => x.ClassLesson.PairClassLesson!.Class)
                    .Include(x => x.ClassLesson.PairClassLesson!.Lesson)
                    .Include(x => x.ClassLesson.PairClassLesson!.Teacher)
                    .OrderBy(x => x.Date)
-                   .ThenBy(x => x.ClassLesson.Class!.Name);
+                   .ThenBy(x => x.ClassLesson.Class!.Name)
+                   .ToList();
             }, cancellationToken);
+
+            if (!scheduleLessons.Any())
+            {
+                Message.Message_EmptyScheduleLessons();
+                return;
+            }
 
             Dispatcher.Invoke(() => SchduleExportStatusTextBlock.Text = "Инициализация документа...");
 
@@ -152,7 +159,11 @@ namespace Schedule.Pages
             Excel.Workbook workbook = application.Workbooks.Add();
             Excel.Worksheet worksheet = workbook.Sheets[1];
 
-            application.ScreenUpdating = true;
+            application.Visible = false;
+            application.Interactive = false;
+            application.ScreenUpdating = false;
+            application.UserControl = false;
+            application.ScreenUpdating = false;
 
             List<DateTime> dateTimes = scheduleLessons.Select(x => x.Date).Distinct().OrderBy(x => x).ToList();
             List<string?> classes = context.Classes.Select(x => x.Name).OrderBy(x => x!.Length).ThenBy(x => x).ToList();
@@ -162,32 +173,30 @@ namespace Schedule.Pages
             int exportedRecord = 0;
             int countRecord = scheduleLessons.Count();
 
-            await Task.Run(() =>
+            Task counterTask = Task.Run(async () =>
             {
-                Task.Run(async () =>
+                if (countRecord <= 0) return;
+
+                while (exportedRecord < countRecord && !cancellationToken.IsCancellationRequested)
                 {
-                    if (countRecord <= 0) return;
-
-                    while (exportedRecord < countRecord)
-                    {
-                        if (cancellationToken.IsCancellationRequested) break;
-
-                        Dispatcher.Invoke(() =>
-                        {
-                            SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...";
-                            ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord;
-                        });
-                    }
-
                     Dispatcher.Invoke(() =>
                     {
                         SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...";
                         ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord;
                     });
+                }
 
-                    await Task.Delay(10);
-                }, cancellationToken);
+                Dispatcher.Invoke(() =>
+                {
+                    SchduleExportStatusTextBlock.Text = $"Экспортирование {exportedRecord}/{countRecord}...";
+                    ScheduleExportStatusProgressBar.Value = (double)exportedRecord / countRecord;
+                });
 
+                await Task.Delay(10);
+            }, cancellationToken);
+
+            await Task.Run(() =>
+            {
                 int rowMarginDate = 3;
 
                 int rowEnd = 2 + (11 + rowMarginDate) * dateTimes.Count - 3;
@@ -199,38 +208,27 @@ namespace Schedule.Pages
                     worksheet.Cells[rowEnd, columnEnd]
                     ].Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.White);
 
-                for (int date = 0; date < dateTimes.Count; ++date)
+                for (int date = 0; date < dateTimes.Count && !cancellationToken.IsCancellationRequested; ++date)
                 {
-                    if (cancellationToken.IsCancellationRequested) break;
-
-                    for (int classItem = 0; classItem < classes.Count; ++classItem)
+                    for (int classItem = 0; classItem < classes.Count && !cancellationToken.IsCancellationRequested; ++classItem)
                     {
-                        if (cancellationToken.IsCancellationRequested) break;
-
                         int rowClass = 2 + (date * 11) + (rowMarginDate * date);
                         int columnClass = 2 + classItem * 3;
 
                         int rowLesson = rowClass + 2;
                         int columnLesson = columnClass;
 
-                        async void SettingBordersAsync(int rowClassAsync, int columnClassAsync)
-                        {
-                            await Task.Run(() =>
-                            {
-                                // Change color borders of cells
-                                worksheet.Range[
-                                    worksheet.Cells[rowClassAsync, columnClassAsync],
-                                    worksheet.Cells[rowClassAsync + 10, columnClassAsync + 2]
-                                    ].Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
+                        // Change color borders of cells
+                        worksheet.Range[
+                            worksheet.Cells[rowClass, columnClass],
+                            worksheet.Cells[rowClass + 10, columnClass + 2]
+                            ].Borders.Color = ColorTranslator.ToOle(System.Drawing.Color.Black);
 
-                                // Changing size borders of cells
-                                worksheet.Range[
-                                    worksheet.Cells[rowClassAsync, columnClassAsync],
-                                    worksheet.Cells[rowClassAsync + 10, columnClassAsync + 2]
-                                    ].Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                            });
-                        }
-                        SettingBordersAsync(rowClass, columnClass);
+                        // Changing size borders of cells
+                        worksheet.Range[
+                            worksheet.Cells[rowClass, columnClass],
+                            worksheet.Cells[rowClass + 10, columnClass + 2]
+                            ].Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
 
                         // Date
                         worksheet.Range[
@@ -256,35 +254,28 @@ namespace Schedule.Pages
                         worksheet.Cells[rowClass + 2, columnClass + 1] = "Предмет";
                         worksheet.Cells[rowClass + 2, columnClass + 2] = "Каб.";
 
+                        IEnumerable<ScheduleLesson> scheduleLessonsClass = scheduleLessons
+                            .Where(x => x.Date == dateTimes[date])
+                            .Where(x => x.ClassLesson.Class!.Name == classes[classItem]);
+
                         // ScheduleLessons
-                        for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
+                        foreach (ScheduleLesson scheduleLesson in scheduleLessonsClass)
                         {
-                            if (cancellationToken.IsCancellationRequested) break;
+                            int numberLesson = scheduleLesson.NumberLesson;
 
-                            ScheduleLesson? scheduleLesson = default!;
+                            ScheduleLessonViewItemSource vis = new(scheduleLesson);
 
-                            scheduleLesson = scheduleLessons
-                                .Where(x => x.Date == dateTimes[date])
-                                .Where(x => x.ClassLesson.Class!.Name == classes[classItem])
-                                .Where(x => x.NumberLesson == numberLesson)
-                                .FirstOrDefault();
+                            //NumberLesson
+                            worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
 
-                            if (scheduleLesson != null)
-                            {
-                                ScheduleLessonViewItemSource vis = new(scheduleLesson);
+                            //LessonName
+                            worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
+                            worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
 
-                                //NumberLesson
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson] = numberLesson.ToString();
+                            //CabinetName
+                            worksheet.Cells[rowLesson + numberLesson, columnLesson + 2] = vis.ScheduleLesson_Cabinet;
 
-                                //LessonName
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1].Font.Bold = vis.IsBold;
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 1] = vis.ScheduleLesson_Name;
-
-                                //CabinetName
-                                worksheet.Cells[rowLesson + numberLesson, columnLesson + 2] = vis.ScheduleLesson_Cabinet;
-
-                                ++exportedRecord;
-                            }
+                            ++exportedRecord;
                         }
                     }
                 }
@@ -304,15 +295,25 @@ namespace Schedule.Pages
                 application.UserControl = true;
                 application.ScreenUpdating = true;
 
-                while (application.Visible == true)
+                while (application.Visible == true && !cancellationToken.IsCancellationRequested)
                 {
-                    if (cancellationToken.IsCancellationRequested) break;
                     await Task.Delay(100, cancellationToken);
                 }
             }
 
+            application.Visible = false;
+            application.Interactive = false;
+            application.ScreenUpdating = false;
+            application.UserControl = false;
+            application.ScreenUpdating = false;
+
             application.Quit();
 
+            Marshal.ReleaseComObject(worksheet);
+            Marshal.ReleaseComObject(workbook);
+            Marshal.ReleaseComObject(application.Workbooks);
+            Marshal.ReleaseComObject(application);
+            
             Dispatcher.Invoke(() => ScheduleExportDefaultStyle());
         }
 
@@ -359,25 +360,20 @@ namespace Schedule.Pages
 
             Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Получение расписания...");
 
-            IQueryable<ScheduleLesson> scheduleLessons = default!;
-
-            await Task.Run(() =>
-            {
-                scheduleLessons = context.ScheduleLessons
-                   .Where(x => x.Date >= dateStart && x.Date <= dateEnd)
-                   .Include(x => x.Cabinet)
-                   .Include(x => x.PairCabinet)
-                   .Include(x => x.ClassLesson)
-                   .Include(x => x.ClassLesson.Class)
-                   .Include(x => x.ClassLesson.Lesson)
-                   .Include(x => x.ClassLesson.Teacher)
-                   .Include(x => x.ClassLesson.PairClassLesson)
-                   .Include(x => x.ClassLesson.PairClassLesson!.Class)
-                   .Include(x => x.ClassLesson.PairClassLesson!.Lesson)
-                   .Include(x => x.ClassLesson.PairClassLesson!.Teacher)
-                   .OrderBy(x => x.Date)
-                   .ThenBy(x => x.ClassLesson.Class!.Name);
-            }, cancellationToken);
+            IQueryable<ScheduleLesson> scheduleLessons = context.ScheduleLessons
+                .Where(x => x.Date >= dateStart && x.Date <= dateEnd)
+                .Include(x => x.Cabinet)
+                .Include(x => x.PairCabinet)
+                .Include(x => x.ClassLesson)
+                .Include(x => x.ClassLesson.Class)
+                .Include(x => x.ClassLesson.Lesson)
+                .Include(x => x.ClassLesson.Teacher)
+                .Include(x => x.ClassLesson.PairClassLesson)
+                .Include(x => x.ClassLesson.PairClassLesson!.Class)
+                .Include(x => x.ClassLesson.PairClassLesson!.Lesson)
+                .Include(x => x.ClassLesson.PairClassLesson!.Teacher)
+                .OrderBy(x => x.Date)
+                .ThenBy(x => x.ClassLesson.Class!.Name);
 
             Dispatcher.Invoke(() => ReportExportStatusProgressBar.Value += 0.2);
             Dispatcher.Invoke(() => ReportExportStatusTextBlock.Text = "Инициализация документа...");
@@ -400,7 +396,11 @@ namespace Schedule.Pages
             Excel.Workbook workbook = application.Workbooks.Add();
             Excel.Worksheet worksheet = workbook.Sheets[1];
 
-            application.ScreenUpdating = true;
+            application.Visible = false;
+            application.Interactive = false;
+            application.ScreenUpdating = false;
+            application.UserControl = false;
+            application.ScreenUpdating = false;
 
             List<DateTime> dateTimes = scheduleLessons.Select(x => x.Date).Distinct().OrderBy(x => x).ToList();
             List<string?> classes = context.Classes.Select(x => x.Name).OrderBy(x => x!.Length).ThenBy(x => x).ToList();
@@ -412,14 +412,14 @@ namespace Schedule.Pages
             Dictionary<int, int> countConductedLessonTeachers = new();
             int CountConductedLessons() => countConductedLessonClasses.Select(x => x.Value).Sum();
 
-            foreach (Class classItem in context.Classes)
+            foreach (Class classItem in context.Classes.ToList().OrderBy(x => (x.Name ?? string.Empty).Length).ThenBy(x => x.Name))
             {
                 countConductedLessonClasses[classItem.ClassId] = scheduleLessons
                     .Where(x => x.ClassLesson.Class!.ClassId == classItem.ClassId)
                     .Count();
             }
 
-            foreach (Teacher teacherItem in context.Teachers)
+            foreach (Teacher teacherItem in context.Teachers.OrderBy(x => x.Surname))
             {
                 countConductedLessonTeachers[teacherItem.TeacherId] = scheduleLessons
                     .Where(x => x.ClassLesson.Teacher!.TeacherId == teacherItem.TeacherId || (x.ClassLesson.PairClassLesson != null && x.ClassLesson.PairClassLesson.Teacher!.TeacherId == teacherItem.TeacherId))
@@ -588,7 +588,18 @@ namespace Schedule.Pages
                 }
             }
 
+            application.Visible = false;
+            application.Interactive = false;
+            application.ScreenUpdating = false;
+            application.UserControl = false;
+            application.ScreenUpdating = false;
+
             application.Quit();
+            
+            Marshal.ReleaseComObject(worksheet);
+            Marshal.ReleaseComObject(workbook);
+            Marshal.ReleaseComObject(application.Workbooks);
+            Marshal.ReleaseComObject(application);
 
             Dispatcher.Invoke(() => ReportExportDefaultStyle());
         }
