@@ -253,15 +253,16 @@ IEnumerable<ClassLesson> GenClassLessons(IEnumerable<Class> classes, IEnumerable
         foreach (Lesson lesson in lessons)
         {
             bool add = false;
-            ClassLesson classLesson = new();
-
-            classLesson.ClassId = _class.ClassId;
-            classLesson.LessonId = null!;
-            classLesson.TeacherId = _class.TeacherId;
-            classLesson.PairClassLessonId = null!;
-            classLesson.DefaultCabinetId = null!;
-            classLesson.CountLesson = rand.Next(30, 60);
-            classLesson.Difficulty = rand.Next(5, 10);
+            ClassLesson classLesson = new()
+            {
+                ClassId = _class.ClassId,
+                LessonId = null!,
+                TeacherId = _class.TeacherId,
+                PairClassLessonId = null!,
+                DefaultCabinetId = null!,
+                CountLesson = rand.Next(30, 60),
+                Difficulty = rand.Next(5, 10)
+            };
 
             if (_class.Name == "1А" || _class.Name == "1Б" || _class.Name == "1В" ||
                 _class.Name == "2А" || _class.Name == "2Б" || _class.Name == "2В" ||

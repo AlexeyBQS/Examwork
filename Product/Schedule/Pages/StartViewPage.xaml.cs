@@ -29,7 +29,7 @@ namespace Schedule.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание - Загрузка";
+            (Window.GetWindow(this) as MainWindow)!.WindowTitle = "Расписание";
 
             if (!ConfigManager.CancelStartAnimation)
             {
@@ -52,11 +52,11 @@ namespace Schedule.Pages
             {
                 brush.Color = Color.FromArgb(i, 0, 0, 0);
 
-                Task.Run(() => Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
                     LogoTextBlock.Foreground = brush;
                     DescriptionTextBlock.Foreground = brush;
-                }));
+                });
 
                 await Task.Delay(1);
             }

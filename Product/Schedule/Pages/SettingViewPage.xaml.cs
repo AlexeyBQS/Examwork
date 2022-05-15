@@ -29,7 +29,7 @@ namespace Schedule.Pages
             InitializeComponent();
         }
 
-        private CancellationTokenSource CancellationTokenSource = new();
+        private readonly CancellationTokenSource CancellationTokenSource = new();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -77,7 +77,7 @@ namespace Schedule.Pages
                         : (NewPasswordBox.Password == RepeatNewPasswordBox.Password)
                     );
 
-                await Task.Delay(100);
+                await Task.Delay(100, CancellationToken.None);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Schedule.Pages
             {
                 DeleteDatabaseButton.IsEnabled = File.Exists($"{Directory.GetCurrentDirectory()}\\{ConfigManager.DatabaseFileName}");
 
-                await Task.Delay(100);
+                await Task.Delay(100, CancellationToken.None);
             }
         }
 

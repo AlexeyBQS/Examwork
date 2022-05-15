@@ -27,7 +27,7 @@ namespace Schedule.Pages
             InitializeComponent();
         }
 
-        private CancellationTokenSource CancellationTokenSource = new();
+        private readonly CancellationTokenSource CancellationTokenSource = new();
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -46,16 +46,16 @@ namespace Schedule.Pages
             while (!cancellationToken.IsCancellationRequested)
             {
                 AuthButton.IsEnabled = PasswordBox.Password.Length > 0;
-                await Task.Delay(10);
+                await Task.Delay(10, CancellationToken.None);
             }
         }
 
         private void AuthButton_Click(object sender, RoutedEventArgs e)
         {
-            PasswordManager input = PasswordManager.GetPassword(PasswordBox.Password);
-            PasswordManager correct = PasswordManager.GetPasswordFromDatabase()!;
+            PasswordManager? input = PasswordManager.GetPassword(PasswordBox.Password);
+            PasswordManager? correct = PasswordManager.GetPasswordFromDatabase()!;
 
-            if (input == correct)
+            if (input! == correct!)
             {
                 (Window.GetWindow(this) as MainWindow)!.MainFrame.Content = new MainPage();
             }
