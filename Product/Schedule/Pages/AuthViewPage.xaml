@@ -42,7 +42,7 @@
                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
                            VerticalAlignment="Center" Margin="3,0" Text="Пароль"/>
                 <PasswordBox Grid.Row="2" Grid.Column="1" Style="{StaticResource StandartPasswordBoxStyle}"
-                             x:Name="PasswordBox"/>
+                             x:Name="PasswordBox" KeyUp="PasswordBox_KeyUp"/>
 
                 <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource StandartButtonStyle}"
                         Height="30" Width="100" Content="Войти" x:Name="AuthButton" Click="AuthButton_Click" IsEnabled="False"/>

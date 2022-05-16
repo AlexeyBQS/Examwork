@@ -60,5 +60,13 @@ namespace Schedule.Pages
                 PasswordBox.Password = string.Empty;
             }
         }
+
+        private void PasswordBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AuthButton_Click(sender, e);
+            }
+        }
     }
 }
