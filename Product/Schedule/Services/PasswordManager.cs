@@ -87,10 +87,16 @@ namespace Schedule.Services
 
         public static bool operator ==(PasswordManager passwordManager1, PasswordManager passwordManager2)
         {
+            if (passwordManager1 is null && passwordManager2 is null) return true;
+            if (passwordManager1 is null || passwordManager2 is null) return false;
+
             return passwordManager1.Hash == passwordManager2.Hash;
         }
         public static bool operator !=(PasswordManager passwordManager1, PasswordManager passwordManager2)
         {
+            if (passwordManager1 is null && passwordManager2 is null) return false;
+            if (passwordManager1 is null || passwordManager2 is null) return true;
+
             return passwordManager1.Hash != passwordManager2.Hash;
         }
     }

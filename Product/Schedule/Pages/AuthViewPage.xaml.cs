@@ -63,7 +63,7 @@ namespace Schedule.Pages
 
         private void PasswordBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (AuthButton.IsEnabled && e.Key == Key.Enter)
             {
                 AuthButton_Click(sender, e);
             }
