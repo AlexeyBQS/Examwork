@@ -2,8 +2,10 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Schedule.Controls"
       xmlns:local="clr-namespace:Schedule.Pages"
+      xmlns:gif="http://wpfanimatedgif.codeplex.com"
       mc:Ignorable="d" 
       Title="AboutProgramViewPage"
       Style="{StaticResource MenuElementPageStyle}" Loaded="Page_Loaded">
@@ -30,7 +32,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,0"
-                           Text="О программе"/>
+                           Text="О программе" x:Name="TitleTextBlock" MouseDown="TitleTextBlock_MouseDown"/>
 
                 <Grid Grid.Row="1" Margin="5,0">
                     <Grid.RowDefinitions>
@@ -53,5 +55,13 @@
                 </Grid>
             </Grid>
         </Border>
+
+        <!-- Easter egg -->
+        <controls:ClippingBorder Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" x:Name="EasterEggBorder"
+                BorderBrush="{StaticResource GridSplitterColor}" BorderThickness="2" CornerRadius="10" Visibility="Hidden"
+                Width="358" Height="376">
+            <controls:GifImage x:Name="EasterEggGifImage" Visibility="Hidden" AutoStart="False"
+                               GifSource="/Schedule;component/Images/СhinaRockJohnson.gif"/>
+        </controls:ClippingBorder>
     </Grid>
 </Page>

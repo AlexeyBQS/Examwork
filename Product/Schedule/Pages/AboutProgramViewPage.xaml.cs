@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Schedule.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,31 @@ namespace Schedule.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void TitleTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.ClickCount == 2)
+            {
+                if (EasterEggGifImage.Visibility == Visibility.Hidden)
+                {
+                    EasterEgg();
+                }
+            }
+        }
+
+        private async void EasterEgg()
+        {
+            EasterEggBorder.Visibility = Visibility.Visible;
+            EasterEggGifImage.Visibility = Visibility.Visible;
+            EasterEggGifImage.StartAnimation();
+
+            await Task.Delay(8000);
+
+            EasterEggBorder.Visibility = Visibility.Hidden;
+            EasterEggGifImage.Visibility = Visibility.Hidden;
+            EasterEggGifImage.StopAnimation();
+            EasterEggGifImage.FrameIndex = 0;
         }
     }
 }
