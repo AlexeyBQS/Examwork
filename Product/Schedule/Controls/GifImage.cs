@@ -19,6 +19,8 @@ namespace Schedule.Controls
         private GifBitmapDecoder _gifDecoder = null!;
         private Int32Animation _animation = null!;
 
+        public Int32Animation Animation => _animation;
+
         public int FrameIndex
         {
             get { return (int)GetValue(FrameIndexProperty); }
@@ -97,6 +99,25 @@ namespace Schedule.Controls
         private static void GifSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             (sender as GifImage)!.Initialize();
+        }
+
+        public double SpeedRatio
+        {
+            get { return (double)GetValue(SpeedRatioProperty); }
+            set { SetValue(SpeedRatioProperty, value); }
+        }
+        
+        public static readonly DependencyProperty SpeedRatioProperty =
+            DependencyProperty.Register("SpeedRatio", typeof(double), typeof(GifImage), new UIPropertyMetadata(1.0, SpeedRatioPropertyChanged));
+
+        private static void SpeedRatioPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            GifImage gifImage = (sender as GifImage)!;
+
+            if (gifImage.Animation != null)
+            {
+                gifImage.Animation.SpeedRatio = (double)e.NewValue;
+            }
         }
 
         /// <summary>

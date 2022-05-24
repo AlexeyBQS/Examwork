@@ -17,6 +17,7 @@
 	  <None Remove="Images\Logo.png" />
 	  <None Remove="Images\СhinaRockJohnson.gif" />
 	  <None Remove="Images\СhinaRockJohnson.mp4" />
+	  <None Remove="Sounds\СhinaRockJohnson.wav" />
 	</ItemGroup>
 	<ItemGroup>
 	  <COMReference Include="Microsoft.Office.Interop.Excel">
@@ -43,6 +44,9 @@
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
 	  <Resource Include="Images\Instruction2.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Sounds\СhinaRockJohnson.wav">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Resource>
 	  <EmbeddedResource Include="Images\Logo.png" />

@@ -1,7 +1,9 @@
 ﻿using Schedule.Controls;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,15 +46,22 @@ namespace Schedule.Pages
 
         private async void EasterEgg()
         {
+            SoundPlayer soundPlayer = new(
+                Application.GetResourceStream(new Uri("pack://application:,,,/Schedule;component/Sounds/СhinaRockJohnson.wav")).Stream);
+            EasterEggGifImage.SpeedRatio = 1.6;
+
             EasterEggBorder.Visibility = Visibility.Visible;
             EasterEggGifImage.Visibility = Visibility.Visible;
             EasterEggGifImage.StartAnimation();
+            soundPlayer.Play();
 
-            await Task.Delay(8000);
+            await Task.Delay(5250);
 
             EasterEggBorder.Visibility = Visibility.Hidden;
             EasterEggGifImage.Visibility = Visibility.Hidden;
+            soundPlayer.Stop();
             EasterEggGifImage.StopAnimation();
+            
             EasterEggGifImage.FrameIndex = 0;
         }
     }

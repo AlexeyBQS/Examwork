@@ -58,7 +58,7 @@
 
         <!-- Easter egg -->
         <controls:ClippingBorder Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" x:Name="EasterEggBorder"
-                BorderBrush="{StaticResource GridSplitterColor}" BorderThickness="2" CornerRadius="10" Visibility="Hidden"
+                BorderBrush="{StaticResource GridSplitterColor}" BorderThickness="2" CornerRadius="25" Visibility="Hidden"
                 Width="358" Height="376">
             <controls:GifImage x:Name="EasterEggGifImage" Visibility="Hidden" AutoStart="False"
                                GifSource="/Schedule;component/Images/СhinaRockJohnson.gif"/>
