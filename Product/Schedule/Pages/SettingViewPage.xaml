@@ -71,7 +71,7 @@
                              x:Name="NewPasswordBox"/>
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
-                           HorizontalAlignment="Right" VerticalAlignment="Center" Text="Введите повторите пароль:"/>
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Text="Повторите пароль:"/>
                 <PasswordBox Grid.Row="6" Grid.Column="2" Style="{StaticResource StandartPasswordBoxStyle}"
                              x:Name="RepeatNewPasswordBox"/>
 
