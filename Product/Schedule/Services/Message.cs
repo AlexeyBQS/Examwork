@@ -12,7 +12,7 @@ namespace Schedule.Services
     {
         public static MessageBoxResult Action_DeleteRecord() => MessageBox.Show(
             "Вы действительно хотите удалить запись?",
-            "Внимание!",
+            "Подтверждение",
             MessageBoxButton.YesNo,
             MessageBoxImage.Question,
             MessageBoxResult.No);
@@ -52,13 +52,13 @@ namespace Schedule.Services
 
         public static void Message_NotExistFiles(string[] notExistFiles) => MessageBox.Show(
             $"Отсутствуют некоторые файлы программы:\n\n{string.Join("\n", notExistFiles)}\n\nПереустановите программу или обратитесь к системному адиминистратору",
-            "Ошибка",
+            "Ошибка!",
             MessageBoxButton.OK,
             MessageBoxImage.Error);
 
         public static void Message_BusyTeacher(int numberLesson, ClassLesson classLesson, Teacher teacher, ClassLesson busyClassLesson) => MessageBox.Show(
             $"Учитель {teacher.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Удалите данный урок у текущего класса или выберите другой урок.",
-            $"Ошибка!",
+            $"Внимание!",
             MessageBoxButton.OK,
             MessageBoxImage.Error);
 
