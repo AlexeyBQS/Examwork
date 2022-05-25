@@ -21,10 +21,10 @@ namespace Schedule.Controls
 
         public Int32Animation Animation => _animation;
 
-        public int FrameIndex
+        static GifImage()
         {
-            get { return (int)GetValue(FrameIndexProperty); }
-            set { SetValue(FrameIndexProperty, value); }
+            VisibilityProperty.OverrideMetadata(typeof(GifImage),
+                new FrameworkPropertyMetadata(VisibilityPropertyChanged));
         }
 
         private void Initialize()
@@ -40,12 +40,6 @@ namespace Schedule.Controls
             _isInitialized = true;
         }
 
-        static GifImage()
-        {
-            VisibilityProperty.OverrideMetadata(typeof(GifImage),
-                new FrameworkPropertyMetadata(VisibilityPropertyChanged));
-        }
-
         private static void VisibilityPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             if ((Visibility)e.NewValue == Visibility.Visible)
@@ -56,6 +50,12 @@ namespace Schedule.Controls
             {
                 ((GifImage)sender).StopAnimation();
             }
+        }
+
+        public int FrameIndex
+        {
+            get { return (int)GetValue(FrameIndexProperty); }
+            set { SetValue(FrameIndexProperty, value); }
         }
 
         public static readonly DependencyProperty FrameIndexProperty =
@@ -106,18 +106,13 @@ namespace Schedule.Controls
             get { return (double)GetValue(SpeedRatioProperty); }
             set { SetValue(SpeedRatioProperty, value); }
         }
-        
+
         public static readonly DependencyProperty SpeedRatioProperty =
             DependencyProperty.Register("SpeedRatio", typeof(double), typeof(GifImage), new UIPropertyMetadata(1.0, SpeedRatioPropertyChanged));
 
         private static void SpeedRatioPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            GifImage gifImage = (sender as GifImage)!;
-
-            if (gifImage.Animation != null)
-            {
-                gifImage.Animation.SpeedRatio = (double)e.NewValue;
-            }
+            (sender as GifImage)!.Animation.SpeedRatio = (double)e.NewValue;
         }
 
         /// <summary>
