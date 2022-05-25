@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Schedule.Services;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -41,11 +42,7 @@ namespace Schedule
             }
             else
             {
-                MessageBox.Show(
-                    $"Отсутствуют некоторые файлы программы:\n\n{string.Join("\n", NotExistFiles())}\n\nПереустановите программу или обратитесь к системному адиминистратору",
-                    "Ошибка",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                Message.Message_NotExistFiles(NotExistFiles());
             }
 #endif
         }

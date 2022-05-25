@@ -147,9 +147,7 @@ namespace Schedule.Pages
             }
             catch
             {
-                MessageBox.Show("Ошибка инициализации Excel документа. Проверьте наличие приложения Excel и права доступа к нему."
-                    , "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                Message.Message_ErrorInitalizeExcel();
                 Dispatcher.Invoke(() => ScheduleExportDefaultStyle());
             }
 
@@ -384,9 +382,7 @@ namespace Schedule.Pages
             }
             catch
             {
-                MessageBox.Show("Ошибка инициализации Excel документа. Проверьте наличие приложения Excel и права доступа к нему."
-                    , "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                Message.Message_ErrorInitalizeExcel();
                 Dispatcher.Invoke(() => ScheduleExportDefaultStyle());
             }
 

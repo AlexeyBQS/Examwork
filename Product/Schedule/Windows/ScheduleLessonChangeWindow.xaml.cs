@@ -141,14 +141,6 @@ namespace Schedule.Windows
 
         private bool ValidCheckBusynessTeachers()
         {
-            static void Message(int numberLesson, ClassLesson classLesson, Teacher teacher, ClassLesson busyClassLesson) =>
-                MessageBox.Show(
-                    $"Учитель {teacher.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Удалите данный урок у текущего класса или выберите другой урок.",
-                    $"Ошибка!",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                    );
-
             using DatabaseContext context = new();
 
             for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
@@ -178,7 +170,7 @@ namespace Schedule.Windows
 
                         if (busyScheduleLesson != null)
                         {
-                            Message(numberLesson, classLesson, teacher!, busyScheduleLesson.ClassLesson);
+                            Message.Message_BusyTeacher(numberLesson, classLesson, teacher!, busyScheduleLesson.ClassLesson);
                             return false;
                         }
                     }
@@ -201,7 +193,7 @@ namespace Schedule.Windows
 
                         if (busyScheduleLesson != null)
                         {
-                            Message(numberLesson, classLesson, pairTeacher!, busyScheduleLesson.ClassLesson!.PairClassLesson!);
+                            Message.Message_BusyTeacher(numberLesson, classLesson, pairTeacher!, busyScheduleLesson.ClassLesson!.PairClassLesson!);
                             return false;
                         }
                     }
@@ -213,15 +205,6 @@ namespace Schedule.Windows
 
         private bool ValidCheckBusynessCabinets()
         {
-            static MessageBoxResult Message(int numberLesson, ClassLesson classLesson, Cabinet cabinet, ClassLesson busyClassLesson) =>
-                MessageBox.Show(
-                    $"Кабинет {cabinet.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Вы уверены, что хотите продолжить?",
-                    $"Ошибка!",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Error,
-                    MessageBoxResult.No
-                    );
-
             using DatabaseContext context = new();
 
             for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
@@ -250,7 +233,7 @@ namespace Schedule.Windows
 
                     Cabinet? cabinet = cabinetId != null ? context.Cabinets.FirstOrDefault(x => x.CabinetId == cabinetId) : null;
 
-                    if (busyScheduleLesson != null && Message(numberLesson, busyScheduleLesson.ClassLesson, cabinet!, busyScheduleLesson.ClassLesson) == MessageBoxResult.No)
+                    if (busyScheduleLesson != null && Message.Action_BusyCabinet(numberLesson, busyScheduleLesson.ClassLesson, cabinet!, busyScheduleLesson.ClassLesson) == MessageBoxResult.No)
                         return false;
                 }
 
@@ -269,7 +252,7 @@ namespace Schedule.Windows
 
                     Cabinet? pairCabinet = pairCabinetId != null ? context.Cabinets.FirstOrDefault(x => x.CabinetId == cabinetId) : null;
 
-                    if (busyScheduleLesson != null && Message(numberLesson, busyScheduleLesson.ClassLesson, pairCabinet!, busyScheduleLesson.ClassLesson) == MessageBoxResult.No)
+                    if (busyScheduleLesson != null && Message.Action_BusyCabinet(numberLesson, busyScheduleLesson.ClassLesson, pairCabinet!, busyScheduleLesson.ClassLesson) == MessageBoxResult.No)
                         return false;
                 }
             }
