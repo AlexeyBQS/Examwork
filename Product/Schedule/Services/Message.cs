@@ -35,7 +35,7 @@ namespace Schedule.Services
             "Неверный пароль!",
             "Ошибка!",
             MessageBoxButton.OK,
-            MessageBoxImage.Error);
+            MessageBoxImage.Information);
 
 
         public static void Message_EmptyScheduleLessons() => MessageBox.Show(
@@ -66,7 +66,7 @@ namespace Schedule.Services
             $"Кабинет {cabinet.ToShortString()} дисциплины {classLesson.Lesson!.Name} занят в это время на уроке №{numberLesson} {busyClassLesson.Lesson!.Name} класса {busyClassLesson.Class!.Name}. Вы уверены, что хотите продолжить?",
             $"Ошибка!",
             MessageBoxButton.YesNo,
-            MessageBoxImage.Error,
+            MessageBoxImage.Warning,
             MessageBoxResult.No);
     }
 }
