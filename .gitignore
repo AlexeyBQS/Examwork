@@ -6,12 +6,11 @@ Product/.vs
 .temp/
 
 # Template Microsoft Office files
-Documents/*.tmp
-Presentation/*.tmp
-
-# Template Microsoft Office files
-Schemes/*.~vsdx
 Documents/~*
+Documents/*.tmp
+Presentation/~*
+Presentation/*.tmp
+Schemes/*.~vsdx
 
 # Metadata and libraries on project "Shedule"
 Product/Schedule/bin
