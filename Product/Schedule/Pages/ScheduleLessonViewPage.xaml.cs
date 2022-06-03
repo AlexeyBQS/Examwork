@@ -253,7 +253,7 @@ namespace Schedule.Pages
 
                         WeekScheduleLessonsClass weekScheduleLessonsClass = new(classViewItemSource, dateStart);
 
-                        for (int numberLesson = 1; numberLesson <= 7; ++numberLesson)
+                        for (int numberLesson = 1; numberLesson <= 8; ++numberLesson)
                         {
                             WeekScheduleNumberLessonClass weekScheduleNumberLessonClass = new(classViewItemSource, dateStart);
 
