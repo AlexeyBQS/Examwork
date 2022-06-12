@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Schedule"
         mc:Ignorable="d"
-        Title="MainWindow" Width="1150" Height="700"
-        Style="{StaticResource WindowStyle}" Loaded="Window_Loaded">
+        Title="MainWindow"
+        Style="{StaticResource MainWindowStyle}" Loaded="Window_Loaded">
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>

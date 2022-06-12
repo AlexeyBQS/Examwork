@@ -12,15 +12,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="2"/>
-            <RowDefinition/>
+            <RowDefinition Height="1*" MaxHeight="65"/>
             <RowDefinition Height="2"/>
-            <RowDefinition Height="0.4*"/>
+            <RowDefinition Height="0.4*" MaxHeight="25"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*" MaxWidth="620"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
@@ -69,7 +69,7 @@
                 <TabItem FontSize="14" Header="Просмотр">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="3.5*"/>
+                            <RowDefinition Height="3.5*" MaxHeight="430"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
@@ -177,9 +177,9 @@
                 <TabItem FontSize="14" Header="Фильтры">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*" MaxHeight="430"/>
                             <RowDefinition/>
-                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="2*" MaxHeight="80"/>
                         </Grid.RowDefinitions>
 
                         <Grid Grid.Row="0">
@@ -284,7 +284,7 @@
 
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
+                                <RowDefinition MaxHeight="10"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>

@@ -13,13 +13,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"  MinHeight="200"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition MinWidth="150"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 

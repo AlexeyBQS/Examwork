@@ -13,18 +13,25 @@
         <SolidColorBrush x:Key="GridSplitterColor" Color="#8269ff"/>
 
         <Style x:Key="WindowStyle" TargetType="Window">
-            <Setter Property="ResizeMode" Value="CanMinimize"/>
+            <Setter Property="ResizeMode" Value="CanResize"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundWindowColor}"/>
+        </Style>
+
+        <Style x:Key="MainWindowStyle" TargetType="Window">
+            <Setter Property="MinWidth" Value="1150"/>
+            <Setter Property="MinHeight" Value="661"/>
+            <Setter Property="ResizeMode" Value="CanResize"/>
             <Setter Property="Background" Value="{StaticResource BackgroundWindowColor}"/>
         </Style>
 
         <Style x:Key="MenuPageStyle" TargetType="Page">
-            <Setter Property="Width" Value="1150"/>
-            <Setter Property="Height" Value="661"/>
+            <Setter Property="MinWidth" Value="1150"/>
+            <Setter Property="MinHeight" Value="661"/>
         </Style>
 
         <Style x:Key="MenuElementPageStyle" TargetType="Page">
-            <Setter Property="Width" Value="1000"/>
-            <Setter Property="Height" Value="661"/>
+            <Setter Property="MinWidth" Value="1000"/>
+            <Setter Property="MinHeight" Value="661"/>
         </Style>
 
         <Style x:Key="CaptionLabelStyle" TargetType="Label">
