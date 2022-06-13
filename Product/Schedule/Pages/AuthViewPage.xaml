@@ -27,7 +27,9 @@
                     <RowDefinition/>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
-                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
@@ -41,10 +43,16 @@
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource StandartTextBlockStyle}"
                            VerticalAlignment="Center" Margin="3,0" Text="Пароль"/>
-                <PasswordBox Grid.Row="2" Grid.Column="1" Style="{StaticResource StandartPasswordBoxStyle}"
-                             x:Name="PasswordBox" KeyUp="PasswordBox_KeyUp"/>
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <PasswordBox Style="{StaticResource StandartPasswordBoxStyle}" x:Name="PasswordBox" KeyUp="PasswordBox_KeyUp"/>
+                    <TextBox Style="{StaticResource StandartTextBoxStyle}" x:Name="PasswordTextBox" KeyUp="PasswordTextBox_KeyUp" Visibility="Collapsed"/>
+                </Grid>
 
-                <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource StandartButtonStyle}"
+                <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Показать пароль"
+                          HorizontalAlignment="Center" FontSize="14" x:Name="ShowPasswordCheckBox"
+                          Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked"/>
+
+                <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource StandartButtonStyle}"
                         Height="30" Width="100" Content="Войти" x:Name="AuthButton" Click="AuthButton_Click" IsEnabled="False"/>
             </Grid>
         </Border>
