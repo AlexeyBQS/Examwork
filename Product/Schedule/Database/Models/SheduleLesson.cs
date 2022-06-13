@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schedule.Database
+namespace Schedule.Database.Models
 {
     public class ScheduleLesson
     {

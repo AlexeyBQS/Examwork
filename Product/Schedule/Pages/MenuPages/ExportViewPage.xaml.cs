@@ -21,6 +21,7 @@ using Schedule.ViewItemSources;
 using Schedule.Services;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Schedule.Database.Models;
 
 namespace Schedule.Pages
 {

@@ -9,40 +9,40 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Pages\AboutProgramViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\AboutProgramViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\AuthViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\CabinetViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\CabinetViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\ClassViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\ClassViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\ExportViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\ExportViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\InstructionViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\InstructionViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\LessonViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\LessonViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\MainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\ScheduleLessonViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\ScheduleLessonViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\SettingViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\SettingViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\StartViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\TeacherViewPage.xaml.cs">
+    <Compile Update="Pages\MenuPages\TeacherViewPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Windows\ScheduleLessonChangeWindow.xaml.cs">
@@ -50,25 +50,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\AboutProgramViewPage.xaml">
+    <Page Update="Pages\MenuPages\AboutProgramViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\AuthViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\CabinetViewPage.xaml">
+    <Page Update="Pages\MenuPages\CabinetViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\ClassViewPage.xaml">
+    <Page Update="Pages\MenuPages\ClassViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\ExportViewPage.xaml">
+    <Page Update="Pages\MenuPages\ExportViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\InstructionViewPage.xaml">
+    <Page Update="Pages\MenuPages\InstructionViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\LessonViewPage.xaml">
+    <Page Update="Pages\MenuPages\LessonViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\MainPage.xaml">
@@ -77,16 +77,16 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\ScheduleLessonViewPage.xaml">
+    <Page Update="Pages\MenuPages\ScheduleLessonViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\SettingViewPage.xaml">
+    <Page Update="Pages\MenuPages\SettingViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\StartViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\TeacherViewPage.xaml">
+    <Page Update="Pages\MenuPages\TeacherViewPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\ScheduleLessonChangeWindow.xaml">

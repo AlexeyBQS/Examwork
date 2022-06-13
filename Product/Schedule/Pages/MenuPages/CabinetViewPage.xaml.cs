@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using Schedule.Database;
+using Schedule.Database.Models;
 using Schedule.Services;
 using Schedule.ViewItemSources;
 using System;

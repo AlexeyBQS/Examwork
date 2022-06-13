@@ -1,4 +1,4 @@
-﻿using Schedule.Database;
+﻿using Schedule.Database.Models;
 using Schedule.Services;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Schedule.Database;
+using Schedule.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
