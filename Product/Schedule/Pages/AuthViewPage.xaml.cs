@@ -47,7 +47,9 @@ namespace Schedule.Pages
 
         private void AuthButton_Click(object sender, RoutedEventArgs e)
         {
-            PasswordManager? input = PasswordManager.GetPassword(PasswordBox.Password);
+            bool showedPassword = ShowPasswordCheckBox.IsChecked ?? false;
+
+            PasswordManager? input = PasswordManager.GetPassword(showedPassword ? PasswordTextBox.Text : PasswordBox.Password);
             PasswordManager? correct = PasswordManager.GetPasswordFromDatabase()!;
 
             if (input! == correct!)
