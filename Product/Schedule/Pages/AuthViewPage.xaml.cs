@@ -40,7 +40,7 @@ namespace Schedule.Pages
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                AuthButton.IsEnabled = PasswordBox.Password.Length > 0;
+                AuthButton.IsEnabled = PasswordBox.Password.Length > 0 || PasswordTextBox.Text.Length > 0;
                 await Task.Delay(10, CancellationToken.None);
             }
         }
